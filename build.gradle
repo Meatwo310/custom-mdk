@@ -135,6 +135,7 @@ tasks.named('jar', Jar).configure {
         ])
     }
     finalizedBy 'reobfJar'
+    archiveFileName = "${project.archivesBaseName}-forge-${minecraft_version}-v${project.version}.jar"
 }
 
 tasks.withType(JavaCompile).configureEach {
