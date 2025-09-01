@@ -1,4 +1,4 @@
-name: Build MOD Jar
+name: Build and Release
 
 on:
   workflow_dispatch:
@@ -8,9 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -30,11 +27,32 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
+          name: jars
           path: build/libs/
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: jars
+
+      - name: Set release file path
+        id: set_release_file
+        run: |
+          if [ -f *-all.jar ]; then
+            echo "path=*-all.jar" >> $GITHUB_OUTPUT
+          else
+            echo "path=*.jar" >> $GITHUB_OUTPUT
+          fi
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/') # タグがpushされたときのみ実行
         with:
           generate_release_notes: true
-          files: build/libs/*.jar
+          files: ${{ steps.set_release_file.outputs.path }}
