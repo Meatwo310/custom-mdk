@@ -18,11 +18,11 @@ plugins {
 
 apply plugin: 'org.spongepowered.mixin'
 
-version = mod_version
+version = "v${mod_version}"
 group = mod_group_id
 
 base {
-    archivesName = mod_id
+    archivesName = "${mod_id}-forge-${minecraft_version}"
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -144,7 +144,6 @@ tasks.named('jar', Jar).configure {
         ])
     }
     finalizedBy 'reobfJar'
-    archiveFileName = "${project.archivesBaseName}-forge-${minecraft_version}-v${project.version}.jar"
 }
 
 tasks.withType(JavaCompile).configureEach {
