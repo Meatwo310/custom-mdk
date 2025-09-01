@@ -7,6 +7,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class ExampleMod {
     public static final String MODID = "examplemod";
 
-    public ExampleMod(FMLJavaModLoadingContext context) {
+    public ExampleMod(FMLJavaModLoadingContext ctx) {
     }
 }
