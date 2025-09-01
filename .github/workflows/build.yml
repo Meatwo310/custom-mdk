@@ -27,7 +27,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: jars
           path: build/libs/
 
   release:
@@ -39,8 +38,6 @@ jobs:
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
-        with:
-          name: jars
 
       - name: Set release file path
         id: set_release_file
