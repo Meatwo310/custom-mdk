@@ -28,6 +28,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: build/libs/
+          name: artifact
 
   release:
     runs-on: ubuntu-latest
@@ -38,6 +39,8 @@ jobs:
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
+        with:
+          name: artifact
 
       - name: Set release file path
         id: set_release_file
