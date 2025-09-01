@@ -109,6 +109,9 @@ dependencies {
 
     runtimeOnly fg.deobf("curse.maven:catalogue-459701:4766090")
     runtimeOnly fg.deobf("curse.maven:configured-457570:5180900")
+    runtimeOnly fg.deobf("curse.maven:jei-238222:6600311")
+    runtimeOnly fg.deobf("curse.maven:jei-integration-265917:4999754")
+    runtimeOnly fg.deobf("curse.maven:jade-324717:6855440")
 }
 
 mixin {
