@@ -118,12 +118,18 @@ dependencies {
     minecraft("net.minecraftforge:forge:$minecraft_version-$forge_version")
     annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
 
+//    // Mixin Extras
+//    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0")!!)
+//    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.0")) {
+//        jarJar.ranged(this, "[0.5.0,)")
+//    }
+
     // Default Dependencies
     runtimeOnly(fg.deobf("curse.maven:catalogue-459701:4766090"))
     runtimeOnly(fg.deobf("curse.maven:configured-457570:5180900"))
+    runtimeOnly(fg.deobf("curse.maven:jade-324717:6855440"))
     runtimeOnly(fg.deobf("curse.maven:jei-238222:6600311"))
     runtimeOnly(fg.deobf("curse.maven:jei-integration-265917:4999754"))
-    runtimeOnly(fg.deobf("curse.maven:jade-324717:6855440"))
 }
 
 mixin {
