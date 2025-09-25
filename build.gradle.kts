@@ -12,7 +12,6 @@ plugins {
     id("org.spongepowered.mixin") version "0.7.+"
 }
 
-// Mod configuration - directly defined for IDE completion support
 object ModConfig {
     // Environment Properties
     const val minecraftVersion = "1.20.1"
