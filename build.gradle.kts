@@ -179,6 +179,10 @@ tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
 
+tasks.withType<JavaExec> {
+    standardInput = System.`in`
+}
+
 tasks.register("setupServer") {
     group = "custom"
     description = "Sets up the server run directory with eula.txt and server.properties"
