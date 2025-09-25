@@ -178,3 +178,22 @@ tasks.named<Jar>("jar") {
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
+
+tasks.register("setupServer") {
+    group = "custom"
+    description = "Sets up the server run directory with eula.txt and server.properties"
+
+    doLast {
+        project.run {
+            file("run-server").mkdirs()
+            file("run-server/eula.txt").writeText("eula=true")
+            file("run-server/server.properties").writeText("""
+                allow-flight=true
+                enable-command-block=true
+                gamemode=creative
+                online-mode=false
+                """.trimIndent()
+            )
+        }
+    }
+}
