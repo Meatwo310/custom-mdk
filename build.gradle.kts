@@ -62,11 +62,13 @@ minecraft {
         }
 
         create("server") {
+            workingDirectory(project.file("run-server"))
             property("forge.enabledGameTestNamespaces", mod_id)
             args("--nogui")
         }
 
         create("gameTestServer") {
+            workingDirectory(project.file("run-server"))
             property("forge.enabledGameTestNamespaces", mod_id)
         }
 
