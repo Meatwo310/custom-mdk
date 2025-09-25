@@ -12,30 +12,32 @@ plugins {
     id("org.spongepowered.mixin") version "0.7.+"
 }
 
-// Kotlin DSL-friendly property accessor
-fun Project.prop(name: String): String = findProperty(name) as? String ?: error("Property '$name' not found")
+// Mod configuration - directly defined for IDE completion support
+object ModConfig {
+    // Environment Properties
+    const val minecraftVersion = "1.20.1"
+    const val minecraftVersionRange = "[1.20.1,1.21)"
+    const val forgeVersion = "47.4.0"
+    const val forgeVersionRange = "[47.4,)"
+    const val loaderVersionRange = "[47,)"
+    const val mappingChannel = "parchment"
+    const val mappingVersion = "2023.09.03-1.20.1"
+    
+    // Mod Properties
+    const val modId = "examplemod"
+    const val modName = "Example Mod"
+    const val modLicense = "MIT"
+    const val modVersion = "0.1.0"
+    const val modGroupId = "io.github.meatwo310.examplemod"
+    const val modAuthors = "Meatwo310"
+    const val modDescription = ""
+}
 
-// Extension properties for cleaner access to gradle.properties
-val Project.modVersion get() = prop("mod_version")
-val Project.modGroupId get() = prop("mod_group_id") 
-val Project.modId get() = prop("mod_id")
-val Project.minecraftVersion get() = prop("minecraft_version")
-val Project.minecraftVersionRange get() = prop("minecraft_version_range")
-val Project.mappingChannel get() = prop("mapping_channel")
-val Project.mappingVersion get() = prop("mapping_version")
-val Project.forgeVersion get() = prop("forge_version")
-val Project.forgeVersionRange get() = prop("forge_version_range")
-val Project.loaderVersionRange get() = prop("loader_version_range")
-val Project.modName get() = prop("mod_name")
-val Project.modLicense get() = prop("mod_license")
-val Project.modAuthors get() = prop("mod_authors")
-val Project.modDescription get() = prop("mod_description")
-
-version = "v$modVersion"
-group = modGroupId
+version = "v${ModConfig.modVersion}"
+group = ModConfig.modGroupId
 
 base {
-    archivesName.set("$modId-forge-$minecraftVersion")
+    archivesName.set("${ModConfig.modId}-forge-${ModConfig.minecraftVersion}")
 }
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -43,7 +45,7 @@ java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 println("Java: ${System.getProperty("java.version")}, JVM: ${System.getProperty("java.vm.version")} (${System.getProperty("java.vendor")}), Arch: ${System.getProperty("os.arch")}")
 
 minecraft {
-    mappings(mappingChannel, mappingVersion)
+    mappings(ModConfig.mappingChannel, ModConfig.mappingVersion)
     copyIdeResources.set(true)
 //    accessTransformer(file("src/main/resources/META-INF/accesstransformer.cfg"))
 
@@ -52,7 +54,7 @@ minecraft {
         property("forge.logging.markers", "REGISTRIES")
         property("forge.logging.console.level", "debug")
 
-        mods.create(modId) {
+        mods.create(ModConfig.modId) {
             source(sourceSets.main.get())
         }
 
@@ -62,23 +64,23 @@ minecraft {
 
     runs {
         create("client") {
-            property("forge.enabledGameTestNamespaces", modId)
+            property("forge.enabledGameTestNamespaces", ModConfig.modId)
         }
 
         create("server") {
             workingDirectory(project.file("run-server"))
-            property("forge.enabledGameTestNamespaces", modId)
+            property("forge.enabledGameTestNamespaces", ModConfig.modId)
             args("--nogui")
         }
 
         create("gameTestServer") {
             workingDirectory(project.file("run-server"))
-            property("forge.enabledGameTestNamespaces", modId)
+            property("forge.enabledGameTestNamespaces", ModConfig.modId)
         }
 
         create("data") {
             workingDirectory(project.file("run-data"))
-            args("--mod", modId, "--all", "--output", file("src/generated/resources/"), "--existing", file("src/main/resources/"))
+            args("--mod", ModConfig.modId, "--all", "--output", file("src/generated/resources/"), "--existing", file("src/main/resources/"))
         }
     }
 }
@@ -121,7 +123,7 @@ repositories {
 }
 
 dependencies {
-    minecraft("net.minecraftforge:forge:$minecraftVersion-$forgeVersion")
+    minecraft("net.minecraftforge:forge:${ModConfig.minecraftVersion}-${ModConfig.forgeVersion}")
     annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
 
 //    // Mixin Extras
@@ -139,23 +141,23 @@ dependencies {
 }
 
 mixin {
-    add(sourceSets.main.get(), "$modId.refmap.json")
-    config("$modId.mixins.json")
+    add(sourceSets.main.get(), "${ModConfig.modId}.refmap.json")
+    config("${ModConfig.modId}.mixins.json")
 }
 
 tasks.named<ProcessResources>("processResources") {
     val replaceProperties = mapOf(
-        "minecraft_version" to minecraftVersion,
-        "minecraft_version_range" to minecraftVersionRange,
-        "forge_version" to forgeVersion,
-        "forge_version_range" to forgeVersionRange,
-        "loader_version_range" to loaderVersionRange,
-        "mod_id" to modId,
-        "mod_name" to modName,
-        "mod_license" to modLicense,
-        "mod_version" to modVersion,
-        "mod_authors" to modAuthors,
-        "mod_description" to modDescription,
+        "minecraft_version" to ModConfig.minecraftVersion,
+        "minecraft_version_range" to ModConfig.minecraftVersionRange,
+        "forge_version" to ModConfig.forgeVersion,
+        "forge_version_range" to ModConfig.forgeVersionRange,
+        "loader_version_range" to ModConfig.loaderVersionRange,
+        "mod_id" to ModConfig.modId,
+        "mod_name" to ModConfig.modName,
+        "mod_license" to ModConfig.modLicense,
+        "mod_version" to ModConfig.modVersion,
+        "mod_authors" to ModConfig.modAuthors,
+        "mod_description" to ModConfig.modDescription,
     )
 
     inputs.properties(replaceProperties)
@@ -167,12 +169,12 @@ tasks.named<ProcessResources>("processResources") {
 
 tasks.named<Jar>("jar") {
     manifest.attributes(
-        "Specification-Title" to modId,
-        "Specification-Vendor" to modAuthors,
+        "Specification-Title" to ModConfig.modId,
+        "Specification-Vendor" to ModConfig.modAuthors,
         "Specification-Version" to "1",
         "Implementation-Title" to project.name,
         "Implementation-Version" to archiveVersion,
-        "Implementation-Vendor" to modAuthors,
+        "Implementation-Vendor" to ModConfig.modAuthors,
         "Implementation-Timestamp" to ZonedDateTime.now()
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ"))
     )
