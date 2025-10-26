@@ -106,17 +106,15 @@ repositories {
 //        }
 //    }
 
-    repositories {
-        exclusiveContent {
-            forRepository {
-                maven {
-                    url = uri("https://cursemaven.com")
-                }
+    exclusiveContent {
+        forRepository {
+            maven {
+                url = uri("https://cursemaven.com")
             }
-            forRepositories(fg.repository)
-            filter {
-                includeGroup("curse.maven")
-            }
+        }
+        forRepositories(fg.repository)
+        filter {
+            includeGroup("curse.maven")
         }
     }
 }
