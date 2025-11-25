@@ -30,7 +30,7 @@ object ModConfig {
     const val mod_description = ""
 }
 
-version = "${ModConfig.mod_version}"
+version = ModConfig.mod_version
 group = ModConfig.mod_group_id
 
 base {
