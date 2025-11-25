@@ -71,9 +71,41 @@ configurations {
 }
 
 repositories {
+//    exclusiveContent {
+//        forRepository {
+//            maven {
+//                name = "Modrinth"
+//                url = uri("https://api.modrinth.com/maven")
+//            }
+//        }
+//        forRepositories(fg.repository)
+//        filter {
+//            includeGroup("maven.modrinth")
+//        }
+//    }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                url = uri("https://cursemaven.com")
+            }
+        }
+        filter {
+            includeGroup("curse.maven")
+        }
+    }
 }
 
 dependencies {
+    // Default Dependencies
+    localRuntime("curse.maven:catalogue-459701:6926815")
+    localRuntime("curse.maven:configured-457570:7122915")
+    localRuntime("curse.maven:jade-324717:6853386")
+    localRuntime("curse.maven:jei-238222:7057366")
+    localRuntime("curse.maven:jei-integration-reborn-1291136:7078944")
+    localRuntime("curse.maven:kotlin-for-forge-351264:6994056")
+
+    // Mod Dependencies
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
