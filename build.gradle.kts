@@ -25,7 +25,7 @@ object ModConfig {
     const val mod_name = "Example Mod"
     const val mod_license = "MIT"
     const val mod_version = "0.1.0"
-    const val mod_group_id = "io.github.meatwo310.examplemod"
+    const val mod_group_id = "net.meatwo310.examplemod"
     const val mod_authors = "Meatwo310"
     const val mod_description = ""
 }

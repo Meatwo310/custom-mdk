@@ -1,8 +1,6 @@
-package io.github.meatwo310.examplemod;
+package net.meatwo310.examplemod;
 
-import io.github.meatwo310.examplemod.config.ServerConfig;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(ExampleMod.MODID)
