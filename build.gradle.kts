@@ -91,6 +91,11 @@ repositories {
 //        dir("libs")
 //    }
 
+//    maven {
+//        name = "ModMaven"
+//        url = uri("https://modmaven.dev/")
+//    }
+
 //    exclusiveContent {
 //        forRepository {
 //            maven {
