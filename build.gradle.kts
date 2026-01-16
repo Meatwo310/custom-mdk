@@ -30,11 +30,11 @@ object ModConfig {
     const val mod_description = ""
 }
 
-version = ModConfig.mod_version
+version = "v${ModConfig.mod_version}"
 group = ModConfig.mod_group_id
 
 base {
-    archivesName.set("${ModConfig.mod_id}-forge-${ModConfig.minecraft_version}")
+    archivesName.set("${ModConfig.mod_id}-${ModConfig.minecraft_version}-forge")
 }
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
