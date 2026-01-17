@@ -13,7 +13,7 @@
 - 📚 Parchment マッピング
 - ⚙️ Kotlin DSL 移行済みのビルドスクリプト
 - 📝 EditorConfig による簡易的なコードスタイル統一
-- 📦️ JEI など開発用 Mod 同梱
+- 📦️ JEI など開発用 Mod セットアップ済み
 
 
 ## 📖 使い方
@@ -24,9 +24,10 @@
 2. リポジトリをローカルへクローンします。
 3. `build.gradle.kts` の `ModConfig` オブジェクトを編集します。
 4. `src/main/java/` 内のパッケージ構造を `mod_group_id` に合わせて移動します。
-5. `examplemod.mixins.json` のファイル名・中身を、 `mod_id` に合わせてリネーム・編集します。
-6. `LICENSE` ファイルを好きなライセンスに差し替えます。 MIT ライセンスを使用する場合は、 `LICENSE` ファイルの名義 `Meatwo310` を、ご自身の名前/ハンドルネーム等へ変更します。
-7. この `README.md` ファイルを削除するか、 `TEMPLATE-README.md` 等へリネームしてください。
+5. `ExampleMod.java` を、 `mod_id` に合わせてリネームします。
+6. `examplemod.mixins.json` のファイル名・中身を、 `mod_id` に合わせてリネーム・編集します。
+7. `LICENSE` ファイルを好きなライセンスに差し替えます。 MIT ライセンスを使用する場合は、 `LICENSE` ファイルの名義 `Meatwo310` を、ご自身の名前/ハンドルネーム等へ変更します。
+8. この `README.md` ファイルを削除するか、 `TEMPLATE-README.md` 等へリネームしてください。
 
 ### 🔨 ビルド
 
@@ -34,7 +35,7 @@
 # Mod をビルド
 ./gradlew build
 
-# 出力 jar は build/libs/ に生成されます
+# 成果物は build/libs/ に生成されます
 # フォーマット:  {mod_id}-{minecraft_version}-forge-v{mod_version}.jar
 ```
 > [!TIP]
