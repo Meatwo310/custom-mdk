@@ -45,7 +45,17 @@ java {
     }
 }
 
-println("Java: ${System.getProperty("java.version")}, JVM: ${System.getProperty("java.vm.version")} (${System.getProperty("java.vendor")}), Arch: ${System.getProperty("os.arch")}")
+with(System.getProperties()) {
+    println("Java: ${get("java.version")}, JVM: ${get("java.vm.version")} (${get("java.vendor")}), Arch: ${get("os.arch")}")
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    doFirst {
+        with(javaCompiler.get().metadata) {
+            println("Java: $javaRuntimeVersion, JVM: $jvmVersion, Vendor: $vendor")
+        }
+    }
+}
 
 minecraft {
     mappings(ModConfig.MAPPING_CHANNEL, ModConfig.MAPPING_VERSION)
