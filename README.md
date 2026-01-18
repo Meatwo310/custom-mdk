@@ -1,5 +1,89 @@
 # Custom MDK
 
+A customized Minecraft Mod Development Kit (MDK) that extends the official Forge MDK with additional features for modern mod development. Currently supports **Forge** for **Minecraft 1.20.1**.
+
+Latest version: https://github.com/Meatwo310/custom-mdk/
+
+
+## ✨ Features
+
+- 🔄 Automated build & release via GitHub Actions
+- 🧪 Pre-configured Mixin environment
+- 📛 Jar naming with version and loader info
+- 📚 Parchment mappings
+- ⚙️ Build scripts migrated to Kotlin DSL
+- 📝 Unified code style with EditorConfig
+- 📦️ Pre-configured development mods (JEI, etc.)
+
+
+## 📖 Usage
+
+### 🗂️ Setup
+
+1. Click the `Use this template` button to create a new repository.
+2. Clone the repository to your local machine.
+3. Edit the `ModConfig` object in `build.gradle.kts`.
+4. Move the package structure in `src/main/java/` to match `mod_group_id`.
+5. Rename `ExampleMod.java` to match `mod_id`.
+6. Rename and edit `examplemod.mixins.json` (both filename and contents) to match `mod_id`.
+7. Replace the `LICENSE` file with your preferred license. If using MIT License, change the name `Meatwo310` in the `LICENSE` file to your own name/handle.
+8. Delete this `README.md` file or rename it to something like `TEMPLATE-README.md`.
+
+### 🔨 Build
+
+```bash
+# Build the mod
+./gradlew build
+
+# Output will be in build/libs/
+# Format: {mod_id}-{minecraft_version}-forge-v{mod_version}.jar
+```
+> [!TIP]
+> Commits pushed to GitHub are automatically built by GitHub Actions and uploaded as artifacts.
+
+### 🐞 Running Development Environment
+
+```bash
+# Run client
+./gradlew runClient
+
+# Run server
+./gradlew setupServer  # Agree to EULA and generate server.properties
+./gradlew runServer
+
+# Run data generation
+./gradlew runData
+```
+
+### 🚀 Release
+You can create a release by pushing a tag.
+```bash
+# Create and push a tag for version 1.20.1-forge-v0.1.0
+git tag 1.20.1-forge-v0.1.0
+git push origin 1.20.1-forge-v0.1.0
+```
+
+
+## ⚖️ License
+
+This template is published under the MIT License. See the `LICENSE` file for details.
+
+For projects generated from this template, Meatwo310 does not enforce any license. (Open source licenses are recommended!)
+
+> [!WARNING]
+> Don't forget to change the license name to your own!
+
+
+## 🤝 Contributing
+
+Don't like the template? Feel free to fork and customize it! I'll happily incorporate useful improvements 👀
+
+Issues and pull requests are welcome!
+
+---
+
+# 🇯🇵日本語版
+
 公式の Forge MDK を拡張し、モダンな Mod 開発向けの追加機能を備えたカスタマイズ版 Minecraft Mod Development Kit (MDK) です。現在は **Minecraft 1.20.1** の **Forge** をサポートしています。
 
 最新版: https://github.com/Meatwo310/custom-mdk/
