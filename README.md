@@ -23,9 +23,9 @@ Latest version: https://github.com/Meatwo310/custom-mdk/
 1. Click the `Use this template` button to create a new repository.
 2. Clone the repository to your local machine.
 3. Edit the `ModConfig` object in `build.gradle.kts`.
-4. Move the package structure in `src/main/java/` to match `mod_group_id`.
-5. Rename `ExampleMod.java` to match `mod_id`.
-6. Rename and edit `examplemod.mixins.json` (both filename and contents) to match `mod_id`.
+4. Move the package structure in `src/main/java/` to match `MOD_GROUP_ID`.
+5. Rename `ExampleMod.java` to match `MOD_ID`.
+6. Rename and edit `examplemod.mixins.json` (both filename and contents) to match `MOD_ID`.
 7. Replace the `LICENSE` file with your preferred license. If using MIT License, change the name `Meatwo310` in the `LICENSE` file to your own name/handle.
 8. Delete this `README.md` file or rename it to something like `TEMPLATE-README.md`.
 
@@ -107,9 +107,9 @@ Issues and pull requests are welcome!
 1. `Use this template` ボタンをクリックして、新しいリポジトリを作成します。
 2. リポジトリをローカルへクローンします。
 3. `build.gradle.kts` の `ModConfig` オブジェクトを編集します。
-4. `src/main/java/` 内のパッケージ構造を `mod_group_id` に合わせて移動します。
-5. `ExampleMod.java` を、 `mod_id` に合わせてリネームします。
-6. `examplemod.mixins.json` のファイル名・中身を、 `mod_id` に合わせてリネーム・編集します。
+4. `src/main/java/` 内のパッケージ構造を `MOD_GROUP_ID` に合わせて移動します。
+5. `ExampleMod.java` を、 `MOD_ID` に合わせてリネームします。
+6. `examplemod.mixins.json` のファイル名・中身を、 `MOD_ID` に合わせてリネーム・編集します。
 7. `LICENSE` ファイルを好きなライセンスに差し替えます。 MIT ライセンスを使用する場合は、 `LICENSE` ファイルの名義 `Meatwo310` を、ご自身の名前/ハンドルネーム等へ変更します。
 8. この `README.md` ファイルを削除するか、 `TEMPLATE-README.md` 等へリネームしてください。
 
