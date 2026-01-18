@@ -52,7 +52,7 @@ with(System.getProperties()) {
 tasks.withType<JavaCompile>().configureEach {
     doFirst {
         with(javaCompiler.get().metadata) {
-            println("Java: $javaRuntimeVersion, JVM: $jvmVersion, Vendor: $vendor")
+            println("Compiling with Java: $javaRuntimeVersion, JVM: $jvmVersion ($vendor)")
         }
     }
 }
