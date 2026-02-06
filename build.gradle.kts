@@ -80,13 +80,14 @@ minecraft {
     runs {
         create("client") {
             property("forge.enabledGameTestNamespaces", ModConfig.MOD_ID)
-            args("-XX:+AllowEnhancedClassRedefinition")
+            jvmArgs("-XX:+AllowEnhancedClassRedefinition")
         }
 
         create("server") {
             workingDirectory(project.file("run-server"))
             property("forge.enabledGameTestNamespaces", ModConfig.MOD_ID)
-            args("--nogui", "-XX:+AllowEnhancedClassRedefinition")
+            args("--nogui")
+            jvmArgs("-XX:+AllowEnhancedClassRedefinition")
         }
 
         create("gameTestServer") {
