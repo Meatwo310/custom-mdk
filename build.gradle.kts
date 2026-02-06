@@ -28,6 +28,8 @@ object ModConfig {
     const val MOD_GROUP_ID = "net.meatwo310.examplemod"
     const val MOD_AUTHORS = "Meatwo310"
     const val MOD_DESCRIPTION = ""
+    const val MOD_DISPLAY_URL = ""
+    const val MOD_CREDITS = ""
 }
 
 version = "v${ModConfig.MOD_VERSION}"
@@ -177,6 +179,8 @@ tasks.named<ProcessResources>("processResources") {
         "mod_version" to ModConfig.MOD_VERSION,
         "mod_authors" to ModConfig.MOD_AUTHORS,
         "mod_description" to ModConfig.MOD_DESCRIPTION,
+        "mod_display_url" to ModConfig.MOD_DISPLAY_URL,
+        "mod_credits" to ModConfig.MOD_CREDITS
     )
 
     inputs.properties(replaceProperties)
