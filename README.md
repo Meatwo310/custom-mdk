@@ -3,7 +3,7 @@
 A customized Minecraft Mod Development Kit (MDK) that extends the official Forge MDK with additional features for modern mod development.
 
 Supported versions:
-- [1.20.1 Forge](https://github.com/Meatwo310/custom-mdk/tree/1.20.1-forge)
+- [1.20.1 Forge](https://github.com/Meatwo310/custom-mdk/tree/1.20.1-forge) (default)
 - [26.1 NeoForge](https://github.com/Meatwo310/custom-mdk/tree/26.1-neo)
 
 Latest version: https://github.com/Meatwo310/custom-mdk/
@@ -25,6 +25,7 @@ Latest version: https://github.com/Meatwo310/custom-mdk/
 ### 🗂️ Setup
 
 1. Click the `Use this template` button to create a new repository.
+    - If you want to use a version other than 1.20.1 Forge, make sure to enable `Include all branches`. After creating the repository, change the default branch if necessary.
 2. Clone the repository to your local machine.
 3. Edit the `ModConfig` object in `build.gradle.kts`.
 
@@ -101,7 +102,11 @@ Issues and pull requests are welcome!
 
 # 🇯🇵日本語版
 
-公式の Forge MDK を拡張し、モダンな Mod 開発向けの追加機能を備えたカスタマイズ版 Minecraft Mod Development Kit (MDK) です。現在は **Minecraft 1.20.1** の **Forge** をサポートしています。
+公式の Forge MDK を拡張し、モダンな Mod 開発向けの追加機能を備えたカスタマイズ版 Minecraft Mod Development Kit (MDK) です。
+
+対応バージョン:
+- [1.20.1 Forge](https://github.com/Meatwo310/custom-mdk/tree/1.20.1-forge) (デフォルト)
+- [26.1 NeoForge](https://github.com/Meatwo310/custom-mdk/tree/26.1-neo)
 
 最新版: https://github.com/Meatwo310/custom-mdk/
 
@@ -122,6 +127,7 @@ Issues and pull requests are welcome!
 ### 🗂️ セットアップ
 
 1. `Use this template` ボタンをクリックして、新しいリポジトリを作成します。
+    - 1.20.1 Forge 以外のバージョンを使用する場合は、 `Include all branches` を有効化してください。作成後、必要に応じてデフォルトブランチを変更してください。
 2. リポジトリをローカルへクローンします。
 3. `build.gradle.kts` の `ModConfig` オブジェクトを編集します。
 
