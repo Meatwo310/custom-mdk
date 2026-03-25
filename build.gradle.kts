@@ -27,9 +27,43 @@ object ModConfig {
 }
 
 repositories {
+//    flatDir {
+//        dir("libs")
+//    }
+
+//    maven {
+//        name = "ModMaven"
+//        url = uri("https://modmaven.dev/")
+//    }
+
+//    exclusiveContent {
+//        forRepository {
+//            maven {
+//                name = "Modrinth"
+//                url = uri("https://api.modrinth.com/maven")
+//            }
+//        }
+//        filter {
+//            includeGroup("maven.modrinth")
+//        }
+//    }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                url = uri("https://cursemaven.com")
+            }
+        }
+        filter {
+            includeGroup("curse.maven")
+        }
+    }
 }
 
 dependencies {
+    // Default Dependencies
+
+    // Mod Dependencies
 }
 
 /// Project Settings ///
