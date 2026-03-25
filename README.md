@@ -14,7 +14,7 @@ Latest version: https://github.com/Meatwo310/custom-mdk/
 - 🔄 Automated build & release via GitHub Actions
 - 🧪 Pre-configured Mixin environment
 - 📛 Jar naming with version and loader info
-- 📚 Parchment mappings
+- 📚 Parchment mappings (1.20.1 Forge only)
 - ⚙️ Build scripts migrated to Kotlin DSL
 - 📝 Unified code style with EditorConfig
 - 📦️ Pre-configured development mods (JEI, etc.)
@@ -27,15 +27,19 @@ Latest version: https://github.com/Meatwo310/custom-mdk/
 1. Click the `Use this template` button to create a new repository.
 2. Clone the repository to your local machine.
 3. Edit the `ModConfig` object in `build.gradle.kts`.
-   - `MOD_ID`: The internal name of your mod. Used for item/block IDs, etc.
-   - `MOD_NAME`: The display name of your mod. Used in JEI/Jade mod list, Mod Menu, etc.
-   - `MOD_LICENSE`: The license of your mod. Open source licenses like MIT are recommended.
-   - `MOD_VERSION`: The version of your mod. Semantic versioning is recommended.
-   - `MOD_GROUP_ID`: The group ID of your mod. Recommended format is `io.github.<GitHub-username>.<MOD_ID>`. If you own a domain, you can also use the reverse of that (e.g., meatwo310.net + examplemod → `net.meatwo310.examplemod`).
-   - `MOD_AUTHORS`: The author(s) of your mod. You can specify multiple authors separated by commas.
-   - `MOD_DESCRIPTION`: A description of your mod. Displayed in Mod menu, etc.
-   - `MOD_DISPLAY_URL`: The homepage of your mod. Recommended to set to your GitHub repository URL.
-   - `MOD_CREDITS`: The credits for your mod. Displayed in Mod menu, etc.
+
+    | Constant Name           | Description                                                                | Example                                          |
+    |:------------------------|:---------------------------------------------------------------------------|:-------------------------------------------------|
+    | `MOD_ID`                | Internal name. Used for item/block IDs, etc.                               | `examplemod`                                     |
+    | `MOD_NAME`              | Display name. Used in JEI/Jade tooltip, Mod menu, etc.                     | `Example Mod`                                    |
+    | `MOD_LICENSE`           | License. Open source licenses like MIT are recommended.                    | `MIT`                                            |
+    | `MOD_VERSION`           | Version. Semantic versioning is recommended.                               | `0.1.0`                                          |
+    | `MOD_GROUP_ID`          | Group ID. Recommended format is `io.github.<GitHub-Username>.<MOD_ID>`.    | `io.github.meatwo310.examplemod`                 |
+    | `MOD_AUTHORS`           | Authors. Comma-separated for multiple authors. Displayed in Mod menu, etc. | `Meatwo310`                                      |
+    | `MOD_DESCRIPTION`       | Description. Can be multi-line. Displayed in Mod menu, etc.                | `An example mod.`                                |
+    | `MOD_DISPLAY_URL`       | Homepage URL. Displayed in Mod menu, etc.                                  | `https://github.com/Meatwo310/custom-mdk`        |
+    | `MOD_ISSUE_TRACKER_URL` | Issue tracker URL. Displayed in Mod menu, etc.                             | `https://github.com/Meatwo310/custom-mdk/issues` |
+
 4. Move the package structure in `src/main/java/` to match `MOD_GROUP_ID`.
 5. Rename `ExampleMod.java` to match `MOD_ID`.
 6. Rename and edit `examplemod.mixins.json` (both filename and contents) to match `MOD_ID`.
@@ -107,7 +111,7 @@ Issues and pull requests are welcome!
 - 🔄 GitHub Actions による自動ビルド・リリース
 - 🧪 セットアップ済み Mixin 環境
 - 📛 バージョン・ローダー付き jar 名
-- 📚 Parchment マッピング
+- 📚 Parchment マッピング (1.20.1 Forge のみ)
 - ⚙️ Kotlin DSL 移行済みのビルドスクリプト
 - 📝 EditorConfig による簡易的なコードスタイル統一
 - 📦️ JEI など開発用 Mod セットアップ済み
@@ -120,15 +124,20 @@ Issues and pull requests are welcome!
 1. `Use this template` ボタンをクリックして、新しいリポジトリを作成します。
 2. リポジトリをローカルへクローンします。
 3. `build.gradle.kts` の `ModConfig` オブジェクトを編集します。
-   - `MOD_ID`: Mod の内部的な名前です。アイテムやブロックの ID 等にも使用されます。
-   - `MOD_NAME`: Mod の表示名です。 JEI/Jade の Mod 名表示や、 Mod メニュー等に使用されます。
-   - `MOD_LICENSE`: Mod のライセンスです。 MIT などオープンソースライセンスを推奨します。
-   - `MOD_VERSION`: Mod のバージョンです。セマンティックバージョニングを推奨します。
-   - `MOD_GROUP_ID`: Mod のグループ ID です。 `io.github.<GitHubユーザー名>.<MOD_ID>` を推奨します。ドメインを所有している場合は、それを逆にしたものから始めることもできます (例: meatwo310.net + examplemod → `net.meatwo310.examplemod`) 。
-   - `MOD_AUTHORS`: Mod の作者名です。コンマ区切りで複数人を指定できます。
-   - `MOD_DESCRIPTION`: Mod の説明です。 Mod メニュー等で表示されます。
-   - `MOD_DISPLAY_URL`: Mod のホームページです。 GitHub リポジトリ URL の指定を推奨します。
-   - `MOD_CREDITS`: Mod のクレジット欄です。 Mod メニュー等で表示されます。
+
+    | 定数名                     | 説明                                               | 例                                                |
+    |:------------------------|:-------------------------------------------------|:-------------------------------------------------|
+    | `MOD_ID`                | 内部的な名前。アイテムやブロックの ID 等にも使用される。                   | `examplemod`                                     |
+    | `MOD_NAME`              | 表示名。 JEI/Jade の Mod 名表示や、 Mod メニュー等に使用される。       | `Example Mod`                                    |
+    | `MOD_LICENSE`           | ライセンス。 MIT などオープンソースライセンスを推奨。                    | `MIT`                                            |
+    | `MOD_VERSION`           | バージョン。セマンティックバージョニングを推奨。                         | `0.1.0`                                          |
+    | `MOD_GROUP_ID`          | グループ ID。 `io.github.<GitHubユーザー名>.<MOD_ID>` を推奨。 | `io.github.meatwo310.examplemod`                 |
+    | `MOD_AUTHORS`           | 作者名。コンマ区切りで複数人を指定可能。 Mod メニュー等で表示。               | `Meatwo310`                                      |
+    | `MOD_DESCRIPTION`       | 説明。複数行設定可能。 Mod メニュー等で表示。                        | `An example mod.`                                |
+    | `MOD_DISPLAY_URL`       | ホームページ。 Mod メニュー等で表示。                            | `https://github.com/Meatwo310/custom-mdk`        |
+    | `MOD_ISSUE_TRACKER_URL` | 不具合報告用 URL。 Mod メニュー等で表示。                        | `https://github.com/Meatwo310/custom-mdk/issues` |
+    | `MOD_CREDITS`           | クレジット欄。 Mod メニュー等で表示。                            | `Special thanks to the original MDK!`            |
+
 4. `src/main/java/` 内のパッケージ構造を `MOD_GROUP_ID` に合わせて移動します。
 5. `ExampleMod.java` を、 `MOD_ID` に合わせてリネームします。
 6. `examplemod.mixins.json` のファイル名・中身を、 `MOD_ID` に合わせてリネーム・編集します。
