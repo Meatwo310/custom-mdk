@@ -5,9 +5,7 @@ plugins {
     id("net.neoforged.moddev") version "2.0.141"
 }
 
-tasks.named<Wrapper>("wrapper").configure {
-    distributionType = Wrapper.DistributionType.BIN
-}
+/// Mod Settings ///
 
 object ModConfig {
     // Environment Properties
@@ -28,17 +26,26 @@ object ModConfig {
     const val MOD_CREDITS = ""
 }
 
+repositories {
+}
+
+dependencies {
+}
+
+/// Project Settings ///
+
 version = "v${ModConfig.MOD_VERSION}"
 group = ModConfig.MOD_GROUP_ID
+
+tasks.named<Wrapper>("wrapper").configure {
+    distributionType = Wrapper.DistributionType.BIN
+}
 
 sourceSets.main.get().resources {
     srcDir("src/generated/resources")
 
     exclude("**/*.bbmodel")
     exclude("src/generated/**/.cache")
-}
-
-repositories {
 }
 
 base {
@@ -114,9 +121,6 @@ neoForge {
 configurations {
     val localRuntime by configurations.creating
     runtimeClasspath.get().extendsFrom(localRuntime)
-}
-
-dependencies {
 }
 
 val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata") {
