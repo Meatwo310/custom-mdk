@@ -1,6 +1,10 @@
 # Custom MDK
 
-A customized Minecraft Mod Development Kit (MDK) that extends the official Forge MDK with additional features for modern mod development. Currently supports **Forge** for **Minecraft 1.20.1**.
+A customized Minecraft Mod Development Kit (MDK) that extends the official Forge MDK with additional features for modern mod development.
+
+Supported versions:
+- [1.20.1 Forge](https://github.com/Meatwo310/custom-mdk/tree/1.20.1-forge)
+- [26.1 NeoForge](https://github.com/Meatwo310/custom-mdk/tree/26.1-neo)
 
 Latest version: https://github.com/Meatwo310/custom-mdk/
 
@@ -29,7 +33,7 @@ Latest version: https://github.com/Meatwo310/custom-mdk/
    - `MOD_VERSION`: The version of your mod. Semantic versioning is recommended.
    - `MOD_GROUP_ID`: The group ID of your mod. Recommended format is `io.github.<GitHub-username>.<MOD_ID>`. If you own a domain, you can also use the reverse of that (e.g., meatwo310.net + examplemod → `net.meatwo310.examplemod`).
    - `MOD_AUTHORS`: The author(s) of your mod. You can specify multiple authors separated by commas.
-   - `MOD_DESCRIPTION`: A description of your mod. Displayed in Mod Menu, etc.
+   - `MOD_DESCRIPTION`: A description of your mod. Displayed in Mod menu, etc.
 4. Move the package structure in `src/main/java/` to match `MOD_GROUP_ID`.
 5. Rename `ExampleMod.java` to match `MOD_ID`.
 6. Rename and edit `examplemod.mixins.json` (both filename and contents) to match `MOD_ID`.
