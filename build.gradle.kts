@@ -28,7 +28,7 @@ object ModConfig {
     const val MOD_CREDITS = ""
 }
 
-version = ModConfig.MOD_VERSION
+version = "v${ModConfig.MOD_VERSION}"
 group = ModConfig.MOD_GROUP_ID
 
 sourceSets.main.get().resources {
