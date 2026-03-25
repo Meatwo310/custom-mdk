@@ -45,7 +45,11 @@ base {
     archivesName = "${ModConfig.MOD_ID}-${ModConfig.MINECRAFT_VERSION}-neo"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+java.toolchain {
+    languageVersion = JavaLanguageVersion.of(25)
+    @Suppress("UnstableApiUsage")
+    vendor = JvmVendorSpec.JETBRAINS
+}
 
 neoForge {
     version = ModConfig.NEO_VERSION
