@@ -51,6 +51,22 @@ java.toolchain {
     vendor = JvmVendorSpec.JETBRAINS
 }
 
+with(System.getProperties()) {
+    val version = get("java.version")
+    val vmVersion = get("java.vm.version")
+    val vendor = get("java.vendor")
+    val arch = get("os.arch")
+    println("Configuring with Java: $version, JVM: $vmVersion ($vendor), Arch: $arch")
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    doFirst {
+        with(javaCompiler.get().metadata) {
+            println("Compiling with Java: $javaRuntimeVersion, JVM: $jvmVersion ($vendor)")
+        }
+    }
+}
+
 neoForge {
     version = ModConfig.NEO_VERSION
 
