@@ -34,6 +34,8 @@ Latest version: https://github.com/Meatwo310/custom-mdk/
    - `MOD_GROUP_ID`: The group ID of your mod. Recommended format is `io.github.<GitHub-username>.<MOD_ID>`. If you own a domain, you can also use the reverse of that (e.g., meatwo310.net + examplemod → `net.meatwo310.examplemod`).
    - `MOD_AUTHORS`: The author(s) of your mod. You can specify multiple authors separated by commas.
    - `MOD_DESCRIPTION`: A description of your mod. Displayed in Mod menu, etc.
+   - `MOD_DISPLAY_URL`: The homepage of your mod. Recommended to set to your GitHub repository URL.
+   - `MOD_CREDITS`: The credits for your mod. Displayed in Mod menu, etc.
 4. Move the package structure in `src/main/java/` to match `MOD_GROUP_ID`.
 5. Rename `ExampleMod.java` to match `MOD_ID`.
 6. Rename and edit `examplemod.mixins.json` (both filename and contents) to match `MOD_ID`.
@@ -47,7 +49,7 @@ Latest version: https://github.com/Meatwo310/custom-mdk/
 ./gradlew build
 
 # Output will be in build/libs/
-# Format: {mod_id}-{minecraft_version}-forge-v{mod_version}.jar
+# Format: {mod_id}-{minecraft_version}-{loader}-v{mod_version}.jar
 ```
 > [!TIP]
 > Commits pushed to GitHub are automatically built by GitHub Actions and uploaded as artifacts.
@@ -125,6 +127,8 @@ Issues and pull requests are welcome!
    - `MOD_GROUP_ID`: Mod のグループ ID です。 `io.github.<GitHubユーザー名>.<MOD_ID>` を推奨します。ドメインを所有している場合は、それを逆にしたものから始めることもできます (例: meatwo310.net + examplemod → `net.meatwo310.examplemod`) 。
    - `MOD_AUTHORS`: Mod の作者名です。コンマ区切りで複数人を指定できます。
    - `MOD_DESCRIPTION`: Mod の説明です。 Mod メニュー等で表示されます。
+   - `MOD_DISPLAY_URL`: Mod のホームページです。 GitHub リポジトリ URL の指定を推奨します。
+   - `MOD_CREDITS`: Mod のクレジット欄です。 Mod メニュー等で表示されます。
 4. `src/main/java/` 内のパッケージ構造を `MOD_GROUP_ID` に合わせて移動します。
 5. `ExampleMod.java` を、 `MOD_ID` に合わせてリネームします。
 6. `examplemod.mixins.json` のファイル名・中身を、 `MOD_ID` に合わせてリネーム・編集します。
@@ -138,7 +142,7 @@ Issues and pull requests are welcome!
 ./gradlew build
 
 # 成果物は build/libs/ に生成されます
-# フォーマット:  {mod_id}-{minecraft_version}-forge-v{mod_version}.jar
+# フォーマット:  {mod_id}-{minecraft_version}-{mod_loader}-v{mod_version}.jar
 ```
 > [!TIP]
 > GitHub にプッシュされたコミットは、自動的に GitHub Actions でビルドされ、アーティファクトとしてアップロードされます。
