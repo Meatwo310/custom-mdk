@@ -42,7 +42,7 @@ repositories {
 }
 
 base {
-    archivesName = ModConfig.MOD_ID
+    archivesName = "${ModConfig.MOD_ID}-${ModConfig.MINECRAFT_VERSION}-neo"
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(25)
