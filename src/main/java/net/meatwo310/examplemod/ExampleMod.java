@@ -1,11 +1,9 @@
 package net.meatwo310.examplemod;
 
-import net.meatwo310.examplemod.config.ServerConfig;
 import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.config.ModConfig;
 
 @Mod(ExampleMod.MODID)
 public class ExampleMod {
