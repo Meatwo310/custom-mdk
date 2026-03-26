@@ -15,11 +15,9 @@ public class ExampleMod {
 //        modContainer.registerConfig(ModConfig.Type.SERVER, ServerConfig.SPEC);
     }
 
-    /**
-     * Utility method to create a {@link Identifier} with the namespace of this mod.
-     * @param path Path of the resource. Example: {@code "example_item"}
-     * @return {@link Identifier} with the namespace of this mod and the given path. Example: {@code examplemod:example_item}
-     */
+    /// Utility method to create a [Identifier] with the namespace of this mod.
+    /// @param path Path of the resource. Example: `"example_item"`
+    /// @return [Identifier] with the namespace of this mod and the given path. Example: `examplemod:example_item`
     public static Identifier id(String path) {
         return Identifier.fromNamespaceAndPath(MODID, path);
     }
