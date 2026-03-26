@@ -12,7 +12,7 @@ public class ExampleMod {
     public static final String MODID = "examplemod";
 
     public ExampleMod(IEventBus modEventBus, ModContainer modContainer) {
-        modContainer.registerConfig(ModConfig.Type.SERVER, ServerConfig.SPEC);
+//        modContainer.registerConfig(ModConfig.Type.SERVER, ServerConfig.SPEC);
     }
 
     /**
