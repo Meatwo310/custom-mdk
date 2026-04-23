@@ -52,6 +52,57 @@ jobs:
       - name: Build with Gradle
         run: chmod u+x ./gradlew && ./gradlew ":${{ matrix.submodule }}:build"
 
+      - name: Accept Minecraft EULA
+        run: |
+          mkdir -p "${{ matrix.submodule }}/run"
+          echo "eula=true" > "${{ matrix.submodule }}/run/eula.txt"
+
+      - name: Run server smoke test
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          LOG=/tmp/server.log
+
+          # Named pipe keeps stdin open so the server doesn't receive EOF at startup.
+          # In 26.1 there is a bug where sending "stop" immediately after startup causes
+          # the server to hang; by holding the pipe open and only writing "stop" once the
+          # "Done" line appears in the log we avoid the race entirely.
+          mkfifo /tmp/mc-stdin
+          exec 3>/tmp/mc-stdin
+
+          ./gradlew ":${{ matrix.submodule }}:runServer" </tmp/mc-stdin >"$LOG" 2>&1 &
+          GRADLE_PID=$!
+
+          tail -f "$LOG" &
+          TAIL_PID=$!
+
+          STARTED=false
+          for i in $(seq 1 96); do
+            sleep 5
+            if grep -q 'Done.*! For help' "$LOG" 2>/dev/null; then
+              STARTED=true
+              break
+            fi
+            if ! kill -0 "$GRADLE_PID" 2>/dev/null; then
+              break
+            fi
+          done
+
+          kill "$TAIL_PID" 2>/dev/null || true
+
+          if [ "$STARTED" = false ]; then
+            echo "::error::Server did not start within timeout"
+            kill "$GRADLE_PID" 2>/dev/null || true
+            wait "$GRADLE_PID" 2>/dev/null || true
+            cat "$LOG"
+            exit 1
+          fi
+
+          echo "Server started - sending stop command"
+          echo stop >&3
+          wait "$GRADLE_PID"
+          exec 3>&-
+
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
