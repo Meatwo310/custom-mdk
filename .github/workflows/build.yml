@@ -29,6 +29,7 @@ jobs:
     needs: detect
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         submodule: ${{ fromJson(needs.detect.outputs.matrix) }}
     steps:
