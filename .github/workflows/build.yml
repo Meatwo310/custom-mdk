@@ -68,13 +68,17 @@ jobs:
           # the server to hang; by holding the pipe open and only writing "stop" once the
           # "Done" line appears in the log we avoid the race entirely.
           mkfifo /tmp/mc-stdin
-          exec 3>/tmp/mc-stdin
 
+          # Start server first (background process blocks on opening read end of FIFO)
           ./gradlew ":${{ matrix.submodule }}:runServer" </tmp/mc-stdin >"$LOG" 2>&1 &
           SERVER_PID=$!
 
+          # Open write end after reader is waiting — this unblocks the reader
+          exec 3>/tmp/mc-stdin
+
           tail -f "$LOG" &
-          trap 'kill $! 2>/dev/null; exec 3>&-' EXIT
+          TAIL_PID=$!
+          trap 'kill "$TAIL_PID" 2>/dev/null; exec 3>&-' EXIT
 
           DEADLINE=$((SECONDS + 270))
           until command grep -q 'Done.*! For help' "$LOG" 2>/dev/null; do
