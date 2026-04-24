@@ -68,44 +68,29 @@ jobs:
           # the server to hang; by holding the pipe open and only writing "stop" once the
           # "Done" line appears in the log we avoid the race entirely.
           mkfifo /tmp/mc-stdin
-
-          # Start server first (background process blocks on opening read end of FIFO)
-          ./gradlew ":${{ matrix.submodule }}:runServer" </tmp/mc-stdin >"$LOG" 2>&1 &
-          GRADLE_PID=$!
-
-          # Open write end after reader is waiting — this unblocks the reader
           exec 3>/tmp/mc-stdin
 
+          ./gradlew ":${{ matrix.submodule }}:runServer" </tmp/mc-stdin >"$LOG" 2>&1 &
+          SERVER_PID=$!
+
           tail -f "$LOG" &
-          TAIL_PID=$!
+          trap 'kill $! 2>/dev/null; exec 3>&-' EXIT
 
-          STARTED=false
-          for i in $(seq 1 54); do
+          DEADLINE=$((SECONDS + 270))
+          until command grep -q 'Done.*! For help' "$LOG" 2>/dev/null; do
+            if [ $SECONDS -ge $DEADLINE ] || ! kill -0 "$SERVER_PID" 2>/dev/null; then
+              echo "::error::Server did not start within timeout"
+              kill "$SERVER_PID" 2>/dev/null || true
+              wait "$SERVER_PID" 2>/dev/null || true
+              exit 1
+            fi
             sleep 5
-            if command grep -q 'Done.*! For help' "$LOG" 2>/dev/null; then
-              STARTED=true
-              break
-            fi
-            if ! kill -0 "$GRADLE_PID" 2>/dev/null; then
-              break
-            fi
           done
-
-          if [ "$STARTED" = false ]; then
-            kill "$TAIL_PID" 2>/dev/null || true
-            echo "::error::Server did not start within timeout"
-            kill "$GRADLE_PID" 2>/dev/null || true
-            wait "$GRADLE_PID" 2>/dev/null || true
-            cat "$LOG"
-            exit 1
-          fi
 
           echo "Server started - sending stop command"
           echo stop >&3
           # wait may return 127 if Gradle wrapper already exited (daemon handoff); treat as success
-          wait "$GRADLE_PID" || true
-          kill "$TAIL_PID" 2>/dev/null || true
-          exec 3>&-
+          wait "$SERVER_PID" || true
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
