@@ -58,7 +58,7 @@ jobs:
           echo "eula=true" > "${{ matrix.submodule }}/run/eula.txt"
 
       - name: Run server smoke test
-        timeout-minutes: 10
+        timeout-minutes: 5
         run: |
           set -euo pipefail
           LOG=/tmp/server.log
@@ -80,7 +80,7 @@ jobs:
           TAIL_PID=$!
 
           STARTED=false
-          for i in $(seq 1 96); do
+          for i in $(seq 1 54); do
             sleep 5
             if command grep -q 'Done.*! For help' "$LOG" 2>/dev/null; then
               STARTED=true
