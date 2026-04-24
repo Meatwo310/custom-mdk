@@ -91,9 +91,8 @@ jobs:
             fi
           done
 
-          kill "$TAIL_PID" 2>/dev/null || true
-
           if [ "$STARTED" = false ]; then
+            kill "$TAIL_PID" 2>/dev/null || true
             echo "::error::Server did not start within timeout"
             kill "$GRADLE_PID" 2>/dev/null || true
             wait "$GRADLE_PID" 2>/dev/null || true
@@ -105,6 +104,7 @@ jobs:
           echo stop >&3
           # wait may return 127 if Gradle wrapper already exited (daemon handoff); treat as success
           wait "$GRADLE_PID" || true
+          kill "$TAIL_PID" 2>/dev/null || true
           exec 3>&-
 
       - name: Upload artifact
