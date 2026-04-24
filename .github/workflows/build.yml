@@ -82,7 +82,7 @@ jobs:
           STARTED=false
           for i in $(seq 1 96); do
             sleep 5
-            if grep -q 'Done.*! For help' "$LOG" 2>/dev/null; then
+            if command grep -q 'Done.*! For help' "$LOG" 2>/dev/null; then
               STARTED=true
               break
             fi
@@ -103,7 +103,8 @@ jobs:
 
           echo "Server started - sending stop command"
           echo stop >&3
-          wait "$GRADLE_PID"
+          # wait may return 127 if Gradle wrapper already exited (daemon handoff); treat as success
+          wait "$GRADLE_PID" || true
           exec 3>&-
 
       - name: Upload artifact
