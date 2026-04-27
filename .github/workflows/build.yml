@@ -69,3 +69,119 @@ jobs:
         with:
           path: ${{ matrix.subproject }}/build/libs/
           name: artifact-${{ matrix.subproject }}
+
+  runtime-test:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        subproject: ${{ fromJson(needs.detect.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Detect runtime test settings
+        id: runtime
+        run: |
+          SUBPROJECT="${{ matrix.subproject }}"
+
+          if [[ "$SUBPROJECT" == *-common || "$SUBPROJECT" == "common" ]]; then
+            echo "supported=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          PROPERTIES="$SUBPROJECT/gradle.properties"
+          MC_VERSION=$(grep '^minecraftVersion=' "$PROPERTIES" | cut -d= -f2-)
+          JAVA_VERSION=$(grep '^javaVersion=' "$PROPERTIES" | cut -d= -f2- || true)
+          FABRIC_API=$(grep '^fabricApiVersion=' "$PROPERTIES" | cut -d= -f2- || true)
+
+          LOADER="${SUBPROJECT##*-}"
+          case "$LOADER" in
+            fabric)
+              MODLOADER="fabric"
+              MC_RUNTIME_TEST="fabric"
+              REGEX=".*fabric.*"
+              FABRIC_API="${FABRIC_API%%+*}"
+              ;;
+            forge)
+              MODLOADER="forge"
+              MC_RUNTIME_TEST="lexforge"
+              REGEX=".*forge.*"
+              FABRIC_API="none"
+              ;;
+            neo)
+              MODLOADER="neoforge"
+              MC_RUNTIME_TEST="neoforge"
+              REGEX=".*neoforge.*"
+              FABRIC_API="none"
+              ;;
+            *)
+              echo "Unsupported loader: $LOADER" >&2
+              exit 1
+              ;;
+          esac
+
+          if [[ -z "$JAVA_VERSION" ]]; then
+            case "$MC_VERSION" in
+              26.*) JAVA_VERSION="25" ;;
+              1.21*) JAVA_VERSION="21" ;;
+              *) JAVA_VERSION="17" ;;
+            esac
+          fi
+
+          echo "supported=true" >> "$GITHUB_OUTPUT"
+          echo "mc=$MC_VERSION" >> "$GITHUB_OUTPUT"
+          echo "java=$JAVA_VERSION" >> "$GITHUB_OUTPUT"
+          echo "modloader=$MODLOADER" >> "$GITHUB_OUTPUT"
+          echo "mc_runtime_test=$MC_RUNTIME_TEST" >> "$GITHUB_OUTPUT"
+          echo "regex=$REGEX" >> "$GITHUB_OUTPUT"
+          echo "fabric_api=${FABRIC_API:-none}" >> "$GITHUB_OUTPUT"
+
+      - name: Download artifact
+        if: steps.runtime.outputs.supported == 'true'
+        uses: actions/download-artifact@v7
+        with:
+          name: artifact-${{ matrix.subproject }}
+          path: ${{ matrix.subproject }}/build/libs/
+
+      - name: Setup runtime JDK
+        if: steps.runtime.outputs.supported == 'true'
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ steps.runtime.outputs.java }}
+          distribution: 'jetbrains'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Stage mod for runtime test client
+        if: steps.runtime.outputs.supported == 'true'
+        run: |
+          mkdir -p run/mods
+          mapfile -t MOD_JARS < <(find "${{ matrix.subproject }}/build/libs" -maxdepth 1 -type f -name '*.jar' \
+            ! -name '*-sources.jar' \
+            ! -name '*-javadoc.jar' \
+            ! -name '*-dev.jar' \
+            -print)
+
+          if [[ "${#MOD_JARS[@]}" -eq 0 ]]; then
+            echo "No runtime mod jars found in ${{ matrix.subproject }}/build/libs" >&2
+            exit 1
+          fi
+
+          cp "${MOD_JARS[@]}" run/mods/
+          ls -la run/mods
+
+      - name: Run MC runtime test client
+        if: steps.runtime.outputs.supported == 'true'
+        uses: headlesshq/mc-runtime-test@4.4.0
+        with:
+          mc: ${{ steps.runtime.outputs.mc }}
+          modloader: ${{ steps.runtime.outputs.modloader }}
+          regex: ${{ steps.runtime.outputs.regex }}
+          mc-runtime-test: ${{ steps.runtime.outputs.mc_runtime_test }}
+          java: ${{ steps.runtime.outputs.java }}
+          fabric-api: ${{ steps.runtime.outputs.fabric_api }}
