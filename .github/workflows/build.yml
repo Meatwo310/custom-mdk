@@ -71,7 +71,9 @@ jobs:
           name: artifact-${{ matrix.subproject }}
 
   runtime-test:
-    needs: build
+    needs:
+      - detect
+      - build
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
