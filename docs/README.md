@@ -72,7 +72,7 @@ Build a specific platform:
 
 ## Requirements
 
-- JDK 17+ to configure Gradle (JetBrains Runtime 25 recommended)
+- JDK 17+ to configure Gradle (Temurin 25 recommended)
 - The Java version used to compile and run the game is automatically downloaded per Minecraft version via [Foojay Toolchain Resolver](https://github.com/gradle/foojay-toolchains) — no manual installation needed
 
 ## Template License
