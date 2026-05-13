@@ -4,5 +4,5 @@ plugins {
 
 // Mod Dependencies
 dependencies {
-    api("fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi:21.11.1")
+    compileOnly("fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi:21.11.1")
 }
