@@ -4,4 +4,5 @@ plugins {
 
 // Mod Dependencies
 dependencies {
+    modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:21.1.6")
 }

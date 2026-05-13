@@ -37,6 +37,15 @@ subprojects {
 
         exclusiveContent {
             forRepository {
+                mavenCentral()
+            }
+            filter {
+                includeGroup("com.electronwill.night-config")
+            }
+        }
+
+        exclusiveContent {
+            forRepository {
                 maven {
                     url = uri("https://cursemaven.com")
                 }
@@ -61,6 +70,11 @@ subprojects {
         maven {
             name = "ParchmentMC"
             url = uri("https://maven.parchmentmc.org")
+        }
+
+        maven {
+            name = "Fuzs Mod Resources"
+            url = uri("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
         }
 
 //        maven {
