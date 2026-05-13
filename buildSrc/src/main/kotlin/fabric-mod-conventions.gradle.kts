@@ -24,6 +24,14 @@ val commonProject = ":$minecraftVersion-common"
 val sharedCommonProject = ":common"
 evaluationDependsOn(sharedCommonProject)
 val generatedModMetadataDir = layout.buildDirectory.dir("generated/sources/modMetadata")
+val runtimeModsDir = layout.buildDirectory.dir("runtimeMods")
+
+val runtimeMods by configurations.creating {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+    isTransitive = false
+    description = "Additional mod jars to stage into run/mods for external Fabric runtime tests."
+}
 
 dependencies {
     implementation(project(commonProject))
@@ -79,6 +87,15 @@ java {
 
 tasks.named("sourcesJar") {
     dependsOn(generateModMetadata)
+}
+
+tasks.register<Sync>("collectRuntimeMods") {
+    from(runtimeMods)
+    into(runtimeModsDir)
+}
+
+tasks.named("build") {
+    dependsOn("collectRuntimeMods")
 }
 
 tasks.jar {

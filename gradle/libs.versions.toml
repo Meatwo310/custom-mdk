@@ -1,0 +1,22 @@
+[versions]
+fcap-mc1201 = "8.0.3"
+fcap-mc1211 = "21.1.6"
+fcap-mc1218 = "21.8.2"
+fcap-mc12111 = "21.11.1"
+fcap-mc261 = "26.1.3"
+fcap-mc2612 = "26.1.4"
+
+[libraries]
+fcap-common-mc1201 = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common", version.ref = "fcap-mc1201" }
+fcap-common-mc1211 = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi", version.ref = "fcap-mc1211" }
+fcap-common-mc1218 = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi", version.ref = "fcap-mc1218" }
+fcap-common-mc12111 = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi", version.ref = "fcap-mc12111" }
+fcap-common-mc261 = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi", version.ref = "fcap-mc261" }
+fcap-common-mc2612 = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi", version.ref = "fcap-mc2612" }
+
+fcap-fabric-mc1201 = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric", version.ref = "fcap-mc1201" }
+fcap-fabric-mc1211 = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric", version.ref = "fcap-mc1211" }
+fcap-fabric-mc1218 = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric", version.ref = "fcap-mc1218" }
+fcap-fabric-mc12111 = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric", version.ref = "fcap-mc12111" }
+fcap-fabric-mc261 = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric", version.ref = "fcap-mc261" }
+fcap-fabric-mc2612 = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric", version.ref = "fcap-mc2612" }

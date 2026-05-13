@@ -4,5 +4,6 @@ plugins {
 
 // Mod Dependencies
 dependencies {
-    implementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:26.1.4")
+    implementation(libs.fcap.fabric.mc2612)
+    runtimeMods(libs.fcap.fabric.mc2612)
 }
