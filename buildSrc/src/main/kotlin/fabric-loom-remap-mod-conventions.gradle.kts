@@ -1,11 +1,13 @@
+import org.gradle.api.artifacts.VersionCatalogsExtension
+
 plugins {
     id("fabric-mod-conventions")
     id("net.fabricmc.fabric-loom-remap")
 }
 
+val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 val modId: String by project
 val minecraftVersion: String by project
-val loaderVersion: String by project
 val fabricApiVersion: String by project
 val parchmentMinecraftVersion: String by project
 val parchmentMappingsVersion: String by project
@@ -32,12 +34,12 @@ loom {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:$minecraftVersion")
+    minecraft("${libs.module("minecraft")}:$minecraftVersion")
     @Suppress("UnstableApiUsage")
     mappings(loom.layered {
         officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-$parchmentMinecraftVersion:$parchmentMappingsVersion@zip")
+        parchment("${libs.module("parchment-data")}-$parchmentMinecraftVersion:$parchmentMappingsVersion@zip")
     })
-    modImplementation("net.fabricmc:fabric-loader:$loaderVersion")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:$fabricApiVersion")
+    modImplementation(libs.library("fabric-loader"))
+    modImplementation("${libs.module("fabric-api")}:$fabricApiVersion")
 }

@@ -1,0 +1,16 @@
+[versions]
+fabric-loom = "1.16.1"
+fabric-loader = "0.19.2"
+mixin = "0.8.5"
+neoforged-moddev = "2.0.141"
+slf4j-api = "1.8.0-beta4"
+
+[libraries]
+fabric-api = { module = "net.fabricmc.fabric-api:fabric-api" }
+fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
+fabric-loom = { module = "net.fabricmc:fabric-loom", version.ref = "fabric-loom" }
+minecraft = { module = "com.mojang:minecraft" }
+mixin = { module = "org.spongepowered:mixin" }
+neoforged-moddev-gradle = { module = "net.neoforged:moddev-gradle", version.ref = "neoforged-moddev" }
+parchment-data = { module = "org.parchmentmc.data:parchment" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }

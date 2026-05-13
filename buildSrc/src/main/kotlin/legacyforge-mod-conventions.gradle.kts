@@ -1,9 +1,12 @@
+import org.gradle.api.artifacts.VersionCatalogsExtension
+
 plugins {
     `java-library`
     idea
     id("net.neoforged.moddev.legacyforge")
 }
 
+val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 val modId: String by project
 val modName: String by project
 val modLicense: String by project
@@ -28,7 +31,7 @@ evaluationDependsOn(sharedCommonProject)
 
 dependencies {
     implementation(project(commonProject))
-    annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
+    annotationProcessor("${libs.module("mixin")}:${libs.version("mixin")}:processor")
 }
 
 sourceSets.main.get().resources {

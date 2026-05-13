@@ -1,11 +1,13 @@
+import org.gradle.api.artifacts.VersionCatalogsExtension
+
 plugins {
     id("fabric-mod-conventions")
     id("net.fabricmc.fabric-loom")
 }
 
+val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 val modId: String by project
 val minecraftVersion: String by project
-val loaderVersion: String by project
 val fabricApiVersion: String by project
 
 val commonProject = ":$minecraftVersion-common"
@@ -33,9 +35,9 @@ loom {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:$minecraftVersion")
-    implementation("net.fabricmc:fabric-loader:$loaderVersion")
-    implementation("net.fabricmc.fabric-api:fabric-api:$fabricApiVersion")
+    minecraft("${libs.module("minecraft")}:$minecraftVersion")
+    implementation(libs.library("fabric-loader"))
+    implementation("${libs.module("fabric-api")}:$fabricApiVersion")
 }
 
 fabricApi {

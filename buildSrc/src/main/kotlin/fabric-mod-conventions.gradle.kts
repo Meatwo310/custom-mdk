@@ -1,3 +1,4 @@
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import groovy.json.JsonOutput
 
 plugins {
@@ -5,6 +6,7 @@ plugins {
     idea
 }
 
+val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 val modId: String by project
 val modName: String by project
 val modLicense: String by project
@@ -17,7 +19,6 @@ val modCredits: String by project
 val modFabricEntrypoint: String by project
 val modFabricClientEntrypoint: String by project
 val minecraftVersion: String by project
-val loaderVersion: String by project
 val javaVersion: String by project
 
 val commonProject = ":$minecraftVersion-common"
@@ -38,7 +39,7 @@ sourceSets.main.get().resources.srcDir(generatedModMetadataDir)
 val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata") {
     val replaceProperties = mapOf(
         "minecraft_version" to JsonOutput.toJson("~$minecraftVersion"),
-        "loader_version" to JsonOutput.toJson(">=$loaderVersion"),
+        "loader_version" to JsonOutput.toJson(">=${libs.version("fabric-loader")}"),
         "mod_id" to JsonOutput.toJson(modId),
         "mod_name" to JsonOutput.toJson(modName),
         "mod_license" to JsonOutput.toJson(modLicense),
