@@ -1,12 +1,9 @@
-import org.gradle.api.artifacts.VersionCatalogsExtension
-
 plugins {
     `java-library`
     idea
     id("net.neoforged.moddev.legacyforge")
 }
 
-val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 val modId: String by project
 val modName: String by project
 val modLicense: String by project
@@ -31,7 +28,7 @@ evaluationDependsOn(sharedCommonProject)
 
 dependencies {
     implementation(project(commonProject))
-    annotationProcessor("${libs.module(VersionCatalogLibrary.Mixin)}:${libs.version(VersionCatalogVersion.Mixin)}:processor")
+    annotationProcessor("${versionCatalog.module(VersionCatalogLibrary.Mixin)}:${versionCatalog.version(VersionCatalogVersion.Mixin)}:processor")
 }
 
 sourceSets.main.get().resources {
