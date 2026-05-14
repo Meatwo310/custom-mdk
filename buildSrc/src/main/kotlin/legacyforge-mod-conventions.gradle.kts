@@ -73,9 +73,11 @@ legacyForge {
             systemProperty("forge.enabledGameTestNamespaces", modId)
         }
 
-        create("gameTestServer") {
-            type = "gameTestServer"
-            systemProperty("forge.enabledGameTestNamespaces", modId)
+        if (minecraftVersion.supportsGameTestServer()) {
+            create("gameTestServer") {
+                type = "gameTestServer"
+                systemProperty("forge.enabledGameTestNamespaces", modId)
+            }
         }
 
         create("data") {

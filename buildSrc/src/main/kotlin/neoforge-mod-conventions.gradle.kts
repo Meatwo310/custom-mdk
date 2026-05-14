@@ -74,9 +74,11 @@ neoForge {
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
         }
 
-        create("gameTestServer") {
-            type = "gameTestServer"
-            systemProperty("neoforge.enabledGameTestNamespaces", modId)
+        if (minecraftVersion.supportsGameTestServer()) {
+            create("gameTestServer") {
+                type = "gameTestServer"
+                systemProperty("neoforge.enabledGameTestNamespaces", modId)
+            }
         }
 
         create("data") {

@@ -37,15 +37,17 @@ dependencies {
     implementation("${versionCatalog.module(VersionCatalogLibrary.FabricApi)}:$fabricApiVersion")
 }
 
-fabricApi {
-    val testModId = "$modId-test"
+if (minecraftVersion.supportsGameTestServer()) {
+    fabricApi {
+        val testModId = "$modId-test"
 
-    @Suppress("UnstableApiUsage")
-    configureTests {
-        createSourceSet = true
-        modId = testModId
-        enableGameTests = true
-        enableClientGameTests = true
-        eula = true
+        @Suppress("UnstableApiUsage")
+        configureTests {
+            createSourceSet = true
+            modId = testModId
+            enableGameTests = true
+            enableClientGameTests = true
+            eula = true
+        }
     }
 }

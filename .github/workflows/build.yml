@@ -57,20 +57,6 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
 
-      - name: Build with Gradle
-        run: chmod u+x ./gradlew && ./gradlew ":${{ matrix.subproject }}:build"
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v7
-        if: ${{ !endsWith(matrix.subproject, 'common') }}
-        with:
-          path: ${{ matrix.subproject }}/build/libs/
-          name: artifact-${{ matrix.subproject }}
-
-      - name: Run Game Tests
-        if: "endsWith(matrix.subproject, 'neo') || endsWith(matrix.subproject, 'forge')"
-        run: ./gradlew ":${{ matrix.subproject }}:runGameTestServer"
-
       - name: Detect runtime test settings
         if: ${{ !endsWith(matrix.subproject, 'common') }}
         id: runtime
@@ -84,9 +70,18 @@ jobs:
           javaVersion="${javaVersion:-17}"
           fabricApiVersion="${fabricApiVersion%%+*}"
 
+          IFS='.' read -r mcMajor mcMinor _ <<< "$minecraftVersion"
+          mcMinor="${mcMinor:-0}"
+          if (( mcMajor > 26 || (mcMajor == 26 && mcMinor >= 1) )); then
+            supportsGameTestServer=true
+          else
+            supportsGameTestServer=false
+          fi
+
           echo "mc=$minecraftVersion" >> "$GITHUB_OUTPUT"
           echo "java=$javaVersion" >> "$GITHUB_OUTPUT"
           echo "fabric_api=${fabricApiVersion:-none}" >> "$GITHUB_OUTPUT"
+          echo "supports_game_test_server=$supportsGameTestServer" >> "$GITHUB_OUTPUT"
 
           if [[ "$loader" == "neo" ]]; then
             echo "modloader=neoforge" >> "$GITHUB_OUTPUT"
@@ -97,6 +92,26 @@ jobs:
             echo "mc_runtime_test=${loader/forge/lexforge}" >> "$GITHUB_OUTPUT"
             echo "regex=.*$loader.*" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Build with Gradle
+        run: chmod u+x ./gradlew && ./gradlew ":${{ matrix.subproject }}:build"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        if: ${{ !endsWith(matrix.subproject, 'common') }}
+        with:
+          path: ${{ matrix.subproject }}/build/libs/
+          name: artifact-${{ matrix.subproject }}
+
+      - name: Run Game Tests
+        if: ${{ !endsWith(matrix.subproject, 'common') && steps.runtime.outputs.supports_game_test_server == 'true' && (endsWith(matrix.subproject, 'neo') || endsWith(matrix.subproject, 'forge')) }}
+        timeout-minutes: 10
+        run: ./gradlew ":${{ matrix.subproject }}:runGameTestServer"
+
+      - name: Run Server
+        if: ${{ !endsWith(matrix.subproject, 'common') && steps.runtime.outputs.supports_game_test_server != 'true' }}
+        timeout-minutes: 10
+        run: echo stop | ./gradlew ":${{ matrix.subproject }}:runServer"
 
       - name: Setup runtime JDK
         if: ${{ !endsWith(matrix.subproject, 'common') }}
@@ -121,6 +136,7 @@ jobs:
 
       - name: Run MC runtime test client
         if: ${{ !endsWith(matrix.subproject, 'common') }}
+        timeout-minutes: 10
         uses: headlesshq/mc-runtime-test@4.4.0
         with:
           mc: ${{ steps.runtime.outputs.mc }}
