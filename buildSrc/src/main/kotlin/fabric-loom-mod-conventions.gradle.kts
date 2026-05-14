@@ -35,9 +35,9 @@ loom {
 }
 
 dependencies {
-    minecraft("${libs.module("minecraft")}:$minecraftVersion")
-    implementation(libs.library("fabric-loader"))
-    implementation("${libs.module("fabric-api")}:$fabricApiVersion")
+    minecraft("${libs.module(VersionCatalogLibrary.Minecraft)}:$minecraftVersion")
+    implementation(libs.library(VersionCatalogLibrary.FabricLoader))
+    implementation("${libs.module(VersionCatalogLibrary.FabricApi)}:$fabricApiVersion")
 }
 
 fabricApi {

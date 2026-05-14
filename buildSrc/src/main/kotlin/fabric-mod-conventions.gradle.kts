@@ -39,7 +39,7 @@ sourceSets.main.get().resources.srcDir(generatedModMetadataDir)
 val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata") {
     val replaceProperties = mapOf(
         "minecraft_version" to JsonOutput.toJson("~$minecraftVersion"),
-        "loader_version" to JsonOutput.toJson(">=${libs.version("fabric-loader")}"),
+        "loader_version" to JsonOutput.toJson(">=${libs.version(VersionCatalogVersion.FabricLoader)}"),
         "mod_id" to JsonOutput.toJson(modId),
         "mod_name" to JsonOutput.toJson(modName),
         "mod_license" to JsonOutput.toJson(modLicense),

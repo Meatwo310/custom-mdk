@@ -34,12 +34,12 @@ loom {
 }
 
 dependencies {
-    minecraft("${libs.module("minecraft")}:$minecraftVersion")
+    minecraft("${libs.module(VersionCatalogLibrary.Minecraft)}:$minecraftVersion")
     @Suppress("UnstableApiUsage")
     mappings(loom.layered {
         officialMojangMappings()
-        parchment("${libs.module("parchment-data")}-$parchmentMinecraftVersion:$parchmentMappingsVersion@zip")
+        parchment("${libs.module(VersionCatalogLibrary.ParchmentData)}-$parchmentMinecraftVersion:$parchmentMappingsVersion@zip")
     })
-    modImplementation(libs.library("fabric-loader"))
-    modImplementation("${libs.module("fabric-api")}:$fabricApiVersion")
+    modImplementation(libs.library(VersionCatalogLibrary.FabricLoader))
+    modImplementation("${libs.module(VersionCatalogLibrary.FabricApi)}:$fabricApiVersion")
 }

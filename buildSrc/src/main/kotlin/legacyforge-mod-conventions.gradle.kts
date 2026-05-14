@@ -31,7 +31,7 @@ evaluationDependsOn(sharedCommonProject)
 
 dependencies {
     implementation(project(commonProject))
-    annotationProcessor("${libs.module("mixin")}:${libs.version("mixin")}:processor")
+    annotationProcessor("${libs.module(VersionCatalogLibrary.Mixin)}:${libs.version(VersionCatalogVersion.Mixin)}:processor")
 }
 
 sourceSets.main.get().resources {
