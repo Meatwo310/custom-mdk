@@ -15,7 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.detect.outputs.matrix }}
-      runtime_matrix: ${{ steps.detect.outputs.runtime_matrix }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -28,14 +27,9 @@ jobs:
         run: |
           SUBPROJECTS=$(grep '^include(' settings.gradle.kts | sed 's/include("//;s/")//')
           JSON=$(printf '%s\n' "$SUBPROJECTS" | jq -R . | jq -sc .)
-          RUNTIME_JSON=$(printf '%s\n' "$SUBPROJECTS" | grep -Ev '(^common$|-common$)' | jq -R . | jq -sc .)
           echo "matrix=$JSON" >> "$GITHUB_OUTPUT"
-          echo "runtime_matrix=$RUNTIME_JSON" >> "$GITHUB_OUTPUT"
           echo "::group::Subprojects"
           jq . <<< "$JSON"
-          echo "::endgroup::"
-          echo "::group::Runtime test subprojects"
-          jq . <<< "$RUNTIME_JSON"
           echo "::endgroup::"
 
   build:
@@ -70,30 +64,8 @@ jobs:
         if: "endsWith(matrix.subproject, 'neo') || endsWith(matrix.subproject, 'forge')"
         run: ./gradlew ":${{ matrix.subproject }}:runGameTestServer"
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v7
-        if: "!endsWith(matrix.subproject, 'common')"
-        with:
-          path: ${{ matrix.subproject }}/build/libs/
-          name: artifact-${{ matrix.subproject }}
-
-  runtime-test:
-    needs:
-      - detect
-      - build
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        subproject: ${{ fromJson(needs.detect.outputs.runtime_matrix) }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          fetch-tags: true
-
       - name: Detect runtime test settings
+        if: ${{ !endsWith(matrix.subproject, 'common') }}
         id: runtime
         run: |
           subproject="${{ matrix.subproject }}"
@@ -119,13 +91,8 @@ jobs:
             echo "regex=.*$loader.*" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Download artifact
-        uses: actions/download-artifact@v7
-        with:
-          name: artifact-${{ matrix.subproject }}
-          path: ${{ matrix.subproject }}/build/libs/
-
       - name: Setup runtime JDK
+        if: ${{ !endsWith(matrix.subproject, 'common') }}
         uses: actions/setup-java@v5
         with:
           java-version: ${{ steps.runtime.outputs.java }}
@@ -134,6 +101,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Stage mod for runtime test client
+        if: ${{ !endsWith(matrix.subproject, 'common') }}
         run: |
           mkdir -p run/mods
           find "${{ matrix.subproject }}/build/libs" -maxdepth 1 -type f -name '*.jar' \
@@ -145,6 +113,7 @@ jobs:
           ls -la run/mods
 
       - name: Run MC runtime test client
+        if: ${{ !endsWith(matrix.subproject, 'common') }}
         uses: headlesshq/mc-runtime-test@4.4.0
         with:
           mc: ${{ steps.runtime.outputs.mc }}
@@ -153,3 +122,10 @@ jobs:
           mc-runtime-test: ${{ steps.runtime.outputs.mc_runtime_test }}
           java: ${{ steps.runtime.outputs.java }}
           fabric-api: ${{ steps.runtime.outputs.fabric_api }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        if: ${{ !endsWith(matrix.subproject, 'common') }}
+        with:
+          path: ${{ matrix.subproject }}/build/libs/
+          name: artifact-${{ matrix.subproject }}
