@@ -60,6 +60,13 @@ jobs:
       - name: Build with Gradle
         run: chmod u+x ./gradlew && ./gradlew ":${{ matrix.subproject }}:build"
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        if: ${{ !endsWith(matrix.subproject, 'common') }}
+        with:
+          path: ${{ matrix.subproject }}/build/libs/
+          name: artifact-${{ matrix.subproject }}
+
       - name: Run Game Tests
         if: "endsWith(matrix.subproject, 'neo') || endsWith(matrix.subproject, 'forge')"
         run: ./gradlew ":${{ matrix.subproject }}:runGameTestServer"
@@ -122,10 +129,3 @@ jobs:
           mc-runtime-test: ${{ steps.runtime.outputs.mc_runtime_test }}
           java: ${{ steps.runtime.outputs.java }}
           fabric-api: ${{ steps.runtime.outputs.fabric_api }}
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v7
-        if: ${{ !endsWith(matrix.subproject, 'common') }}
-        with:
-          path: ${{ matrix.subproject }}/build/libs/
-          name: artifact-${{ matrix.subproject }}
