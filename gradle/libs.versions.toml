@@ -4,6 +4,7 @@ fabric-loader = "0.19.2"
 mixin = "0.8.5"
 neoforged-moddev = "2.0.141"
 slf4j-api = "1.8.0-beta4"
+jetbrains-annotations = "26.1.0"
 
 [libraries]
 fabric-api = { module = "net.fabricmc.fabric-api:fabric-api" }
@@ -14,3 +15,4 @@ mixin = { module = "org.spongepowered:mixin" }
 neoforged-moddev-gradle = { module = "net.neoforged:moddev-gradle", version.ref = "neoforged-moddev" }
 parchment-data = { module = "org.parchmentmc.data:parchment" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
+jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotations" }
