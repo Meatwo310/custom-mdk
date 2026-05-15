@@ -67,6 +67,11 @@ subprojects {
 //            name = "ModMaven"
 //            url = uri("https://modmaven.dev/")
 //        }
+
+        maven {
+            name = "Fuzs Mod Resources"
+            url = uri("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
+        }
     }
 
     tasks.withType<JavaCompile>().configureEach {
