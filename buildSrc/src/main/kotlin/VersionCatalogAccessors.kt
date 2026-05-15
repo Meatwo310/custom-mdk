@@ -8,6 +8,9 @@ import org.gradle.kotlin.dsl.getByType
 enum class VersionCatalogLibrary(val alias: String) {
     FabricApi("fabric-api"),
     FabricLoader("fabric-loader"),
+    ForgeConfigApiPortCommon("forge-config-api-port-common"),
+    ForgeConfigApiPortCommonNeoForgeApi("forge-config-api-port-common-neoforge-api"),
+    ForgeConfigApiPortFabric("forge-config-api-port-fabric"),
     Minecraft("minecraft"),
     Mixin("mixin"),
     ParchmentData("parchment-data"),

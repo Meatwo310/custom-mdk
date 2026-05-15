@@ -10,6 +10,9 @@ jetbrains-annotations = "26.1.0"
 fabric-api = { module = "net.fabricmc.fabric-api:fabric-api" }
 fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
 fabric-loom = { module = "net.fabricmc:fabric-loom", version.ref = "fabric-loom" }
+forge-config-api-port-common = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common" }
+forge-config-api-port-common-neoforge-api = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi" }
+forge-config-api-port-fabric = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric" }
 minecraft = { module = "com.mojang:minecraft" }
 mixin = { module = "org.spongepowered:mixin" }
 neoforged-moddev-gradle = { module = "net.neoforged:moddev-gradle", version.ref = "neoforged-moddev" }

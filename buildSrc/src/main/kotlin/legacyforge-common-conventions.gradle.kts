@@ -6,9 +6,13 @@ plugins {
 
 val modId: String by project
 val minecraftVersion: String by project
+val forgeConfigApiPortVersion = project.properties["forgeConfigApiPortVersion"]?.toString()
 
 dependencies {
     api(project(":common"))
+    if (forgeConfigApiPortVersion != null) {
+        compileOnlyApi("${versionCatalog.module(VersionCatalogLibrary.ForgeConfigApiPortCommon)}:$forgeConfigApiPortVersion")
+    }
 }
 
 base {
