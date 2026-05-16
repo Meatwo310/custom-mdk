@@ -4,6 +4,8 @@ import net.meatwo310.mdk.config.ConfigEntries;
 import net.meatwo310.mdk.config.ConfigEntry;
 import net.meatwo310.mdk.config.ConfigEntryBuilder;
 
+import java.util.List;
+
 public class ServerConfig {
     private static final ConfigEntryBuilder BUILDER = new ConfigEntryBuilder();
 
@@ -25,6 +27,17 @@ public class ServerConfig {
     public static final ConfigEntry.BooleanEntry SOME_FLAG =
             BUILDER.comment("Some flag")
                     .define("someFlag", false);
+    public static final ConfigEntry.ListEntry<String> SOME_STRING_LIST =
+            BUILDER.comment("Some string list")
+                    .defineList("someStringList", List.of("alpha", "beta"), () -> "alpha", value -> value instanceof String);
+    public static final ConfigEntry.EnumEntry<Mode> SOME_MODE =
+            BUILDER.comment("Some mode")
+                    .defineEnum("someMode", Mode.FIRST);
 
     public static final ConfigEntries ENTRIES = BUILDER.build();
+
+    public enum Mode {
+        FIRST,
+        SECOND
+    }
 }

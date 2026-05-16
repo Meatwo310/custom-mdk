@@ -50,10 +50,22 @@ public final class VersionedConfigSpec {
                     var value = builder.define(e.key(), e.defaultValue());
                     e.bind(value);
                 }
+                case ConfigEntry.ListEntry<?> e -> bindList(builder, e);
+                case ConfigEntry.EnumEntry<?> e -> bindEnum(builder, e);
                 default -> {
                 }
             }
         }
         return builder.build();
+    }
+
+    private static <T> void bindList(ModConfigSpec.Builder builder, ConfigEntry.ListEntry<T> entry) {
+        var value = builder.defineList(entry.key(), entry.defaultValue(), entry.newElementSupplier(), entry.elementValidator());
+        entry.bind(() -> java.util.List.copyOf(value.get()));
+    }
+
+    private static <E extends Enum<E>> void bindEnum(ModConfigSpec.Builder builder, ConfigEntry.EnumEntry<E> entry) {
+        var value = builder.defineEnum(entry.key(), entry.defaultValue());
+        entry.bind(value);
     }
 }

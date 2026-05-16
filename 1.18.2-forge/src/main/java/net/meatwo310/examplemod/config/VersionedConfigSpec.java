@@ -44,8 +44,22 @@ public final class VersionedConfigSpec {
             } else if (entry instanceof ConfigEntry.StringEntry e) {
                 var value = builder.define(e.key(), e.defaultValue());
                 e.bind(value);
+            } else if (entry instanceof ConfigEntry.ListEntry<?> e) {
+                bindList(builder, e);
+            } else if (entry instanceof ConfigEntry.EnumEntry<?> e) {
+                bindEnum(builder, e);
             }
         }
         return builder.build();
+    }
+
+    private static <T> void bindList(ForgeConfigSpec.Builder builder, ConfigEntry.ListEntry<T> entry) {
+        var value = builder.defineList(entry.key(), entry.defaultValue(), entry.elementValidator());
+        entry.bind(() -> java.util.List.copyOf(value.get()));
+    }
+
+    private static <E extends Enum<E>> void bindEnum(ForgeConfigSpec.Builder builder, ConfigEntry.EnumEntry<E> entry) {
+        var value = builder.defineEnum(entry.key(), entry.defaultValue());
+        entry.bind(value);
     }
 }

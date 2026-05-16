@@ -2,6 +2,8 @@ package net.meatwo310.mdk.config;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class ConfigEntryBuilder {
     private final List<ConfigEntry<?>> entries = new ArrayList<>();
@@ -42,6 +44,17 @@ public class ConfigEntryBuilder {
 
     public ConfigEntry.StringEntry define(String key, String defaultValue) {
         return register(new ConfigEntry.StringEntry(key, pendingComment, defaultValue));
+    }
+
+    public <T> ConfigEntry.ListEntry<T> defineList(
+            String key, List<T> defaultValue, Supplier<T> newElementSupplier, Predicate<Object> elementValidator) {
+        return register(new ConfigEntry.ListEntry<>(
+                key, pendingComment, defaultValue, newElementSupplier, elementValidator));
+    }
+
+    public <E extends Enum<E>> ConfigEntry.EnumEntry<E> defineEnum(String key, E defaultValue) {
+        return register(new ConfigEntry.EnumEntry<>(
+                key, pendingComment, defaultValue, defaultValue.getDeclaringClass()));
     }
 
     public ConfigEntries build() {
