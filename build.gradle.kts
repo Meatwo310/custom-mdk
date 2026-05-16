@@ -46,17 +46,17 @@ subprojects {
             }
         }
 
-//        exclusiveContent {
-//            forRepository {
-//                maven {
-//                    name = "Modrinth"
-//                    url = uri("https://api.modrinth.com/maven")
-//                }
-//            }
-//            filter {
-//                includeGroup("maven.modrinth")
-//            }
-//        }
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = "Modrinth"
+                    url = uri("https://api.modrinth.com/maven")
+                }
+            }
+            filter {
+                includeGroup("maven.modrinth")
+            }
+        }
 
         maven {
             name = "ParchmentMC"

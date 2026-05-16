@@ -38,6 +38,7 @@ dependencies {
     implementation("${versionCatalog.module(VersionCatalogLibrary.FabricApi)}:$fabricApiVersion")
     if (forgeConfigApiPortVersion != null) {
         implementation("${versionCatalog.module(VersionCatalogLibrary.ForgeConfigApiPortFabric)}:$forgeConfigApiPortVersion")
+        add("runtimeMods", "${versionCatalog.module(VersionCatalogLibrary.ForgeConfigApiPortFabric)}:$forgeConfigApiPortVersion")
     }
 }
 

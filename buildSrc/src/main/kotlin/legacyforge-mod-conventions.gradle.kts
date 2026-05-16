@@ -25,6 +25,7 @@ val forgeFullVersion = "$minecraftVersion-$forgeVersion"
 val commonProject = ":$minecraftVersion-common"
 val sharedCommonProject = ":common"
 evaluationDependsOn(sharedCommonProject)
+configureRuntimeMods()
 
 dependencies {
     implementation(project(commonProject))
