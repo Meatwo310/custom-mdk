@@ -24,6 +24,7 @@ val commonProject = ":$minecraftVersion-common"
 val sharedCommonProject = ":common"
 evaluationDependsOn(sharedCommonProject)
 val generatedModMetadataDir = layout.buildDirectory.dir("generated/sources/modMetadata")
+configureRuntimeMods()
 
 dependencies {
     implementation(project(commonProject))

@@ -100,7 +100,9 @@ jobs:
         uses: actions/upload-artifact@v7
         if: ${{ !endsWith(matrix.subproject, 'common') }}
         with:
-          path: ${{ matrix.subproject }}/build/libs/
+          path: |
+            ${{ matrix.subproject }}/build/libs/
+            ${{ matrix.subproject }}/build/runtimeMods/
           name: artifact-${{ matrix.subproject }}
 
       - name: Run Game Tests
@@ -131,6 +133,10 @@ jobs:
             ! -name '*-javadoc.jar' \
             ! -name '*-dev.jar' \
             -exec cp {} run/mods/ \;
+          if [[ -d "${{ matrix.subproject }}/build/runtimeMods" ]]; then
+            find "${{ matrix.subproject }}/build/runtimeMods" -maxdepth 1 -type f -name '*.jar' \
+              -exec cp {} run/mods/ \;
+          fi
           test -n "$(find run/mods -maxdepth 1 -type f -name '*.jar' -print -quit)"
           ls -la run/mods
 
