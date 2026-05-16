@@ -1,10 +1,12 @@
 package net.meatwo310.mdk.config;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
 import java.util.function.LongSupplier;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public abstract class ConfigEntry<T> implements Supplier<T> {
@@ -135,6 +137,43 @@ public abstract class ConfigEntry<T> implements Supplier<T> {
     public static class StringEntry extends ConfigEntry<String> {
         public StringEntry(String key, String comment, String defaultValue) {
             super(key, comment, defaultValue);
+        }
+    }
+
+    public static class ListEntry<T> extends ConfigEntry<List<T>> {
+        private final Supplier<T> newElementSupplier;
+        private final Predicate<Object> elementValidator;
+
+        public ListEntry(
+                String key,
+                String comment,
+                List<T> defaultValue,
+                Supplier<T> newElementSupplier,
+                Predicate<Object> elementValidator) {
+            super(key, comment, List.copyOf(defaultValue));
+            this.newElementSupplier = newElementSupplier;
+            this.elementValidator = elementValidator;
+        }
+
+        public Supplier<T> newElementSupplier() {
+            return newElementSupplier;
+        }
+
+        public Predicate<Object> elementValidator() {
+            return elementValidator;
+        }
+    }
+
+    public static class EnumEntry<E extends Enum<E>> extends ConfigEntry<E> {
+        private final Class<E> enumClass;
+
+        public EnumEntry(String key, String comment, E defaultValue, Class<E> enumClass) {
+            super(key, comment, defaultValue);
+            this.enumClass = enumClass;
+        }
+
+        public Class<E> enumClass() {
+            return enumClass;
         }
     }
 
