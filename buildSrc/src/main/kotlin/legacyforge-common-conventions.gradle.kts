@@ -11,7 +11,7 @@ val forgeConfigApiPortVersion = project.properties["forgeConfigApiPortVersion"]?
 dependencies {
     api(project(":common"))
     if (forgeConfigApiPortVersion != null) {
-        api("${versionCatalog.module(VersionCatalogLibrary.ForgeConfigApiPortCommon)}:$forgeConfigApiPortVersion")
+        compileOnlyApi("${versionCatalog.module(VersionCatalogLibrary.ForgeConfigApiPortCommon)}:$forgeConfigApiPortVersion")
     }
 }
 
