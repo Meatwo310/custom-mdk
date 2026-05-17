@@ -6,28 +6,35 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ConfigEntries implements Iterable<ConfigEntry<?>> {
-    private final List<ConfigEntry<?>> entries;
+public class ConfigEntries {
+    private final List<ConfigElement> elements;
 
-    ConfigEntries(List<ConfigEntry<?>> entries) {
-        this.entries = entries;
+    ConfigEntries(List<? extends ConfigElement> elements) {
+        this.elements = List.copyOf(elements);
     }
 
-    public void bindTo(ConfigEntry.BindingVisitor visitor) {
-        for (var entry : entries) {
-            entry.bindTo(visitor);
+    public static ConfigEntries category(String key, String comment, ConfigEntries children) {
+        var elements = new ArrayList<ConfigElement>(children.elements.size() + 2);
+        elements.add(new ConfigInstruction.Push(key, comment));
+        elements.addAll(children.elements);
+        elements.add(new ConfigInstruction.Pop());
+        return new ConfigEntries(elements);
+    }
+
+    public void bindTo(ConfigVisitor visitor) {
+        for (var element : elements) {
+            element.bindTo(visitor);
         }
     }
 
     public ConfigEntries append(ConfigEntries other) {
-        var mergedEntries = new ArrayList<ConfigEntry<?>>(entries.size() + other.entries.size());
-        mergedEntries.addAll(entries);
-        mergedEntries.addAll(other.entries);
-        return new ConfigEntries(List.copyOf(mergedEntries));
+        var mergedElements = new ArrayList<ConfigElement>(elements.size() + other.elements.size());
+        mergedElements.addAll(elements);
+        mergedElements.addAll(other.elements);
+        return new ConfigEntries(mergedElements);
     }
 
-    @Override
-    public @NotNull Iterator<ConfigEntry<?>> iterator() {
-        return entries.iterator();
+    List<ConfigElement> elements() {
+        return elements;
     }
 }

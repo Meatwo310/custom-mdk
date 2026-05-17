@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public final class ConfigEntryBinder implements ConfigEntry.BindingVisitor {
+public final class ConfigEntryBinder implements ConfigVisitor {
     private final Adapter adapter;
 
     public ConfigEntryBinder(Adapter adapter) {
@@ -61,8 +61,23 @@ public final class ConfigEntryBinder implements ConfigEntry.BindingVisitor {
         entry.bind(adapter.defineEnum(entry.key(), entry.defaultValue()));
     }
 
+    @Override
+    public void push(String key, String comment) {
+        adapter.comment(comment);
+        adapter.push(key);
+    }
+
+    @Override
+    public void pop() {
+        adapter.pop();
+    }
+
     public interface Adapter {
         void comment(String comment);
+
+        void push(String key);
+
+        void pop();
 
         Supplier<Integer> defineInt(String key, int defaultValue);
 

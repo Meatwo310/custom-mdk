@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class ConfigEntryBuilder {
-    private final List<ConfigEntry<?>> entries = new ArrayList<>();
+    private final List<ConfigElement> elements = new ArrayList<>();
     private String pendingComment = "";
 
     public ConfigEntryBuilder comment(String comment) {
@@ -57,12 +57,30 @@ public class ConfigEntryBuilder {
                 key, pendingComment, defaultValue, defaultValue.getDeclaringClass()));
     }
 
+    public ConfigEntries category(String key, ConfigEntries children) {
+        var category = ConfigEntries.category(key, pendingComment, children);
+        elements.addAll(category.elements());
+        pendingComment = "";
+        return category;
+    }
+
+    public ConfigEntryBuilder push(String key) {
+        elements.add(new ConfigInstruction.Push(key, pendingComment));
+        pendingComment = "";
+        return this;
+    }
+
+    public ConfigEntryBuilder pop() {
+        elements.add(new ConfigInstruction.Pop());
+        return this;
+    }
+
     public ConfigEntries build() {
-        return new ConfigEntries(List.copyOf(entries));
+        return new ConfigEntries(elements);
     }
 
     private <T extends ConfigEntry<?>> T register(T entry) {
-        entries.add(entry);
+        elements.add(entry);
         pendingComment = "";
         return entry;
     }

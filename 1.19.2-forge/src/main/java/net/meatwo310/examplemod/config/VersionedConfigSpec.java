@@ -24,6 +24,16 @@ public final class VersionedConfigSpec {
         }
 
         @Override
+        public void push(String key) {
+            builder.push(key);
+        }
+
+        @Override
+        public void pop() {
+            builder.pop();
+        }
+
+        @Override
         public Supplier<Integer> defineInt(String key, int defaultValue) {
             return builder.define(key, defaultValue);
         }
