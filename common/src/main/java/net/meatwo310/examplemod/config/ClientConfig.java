@@ -4,14 +4,14 @@ import net.meatwo310.mdk.config.ConfigEntries;
 import net.meatwo310.mdk.config.ConfigEntry;
 import net.meatwo310.mdk.config.ConfigEntryBuilder;
 
-public final class NeoServerConfig {
+public final class ClientConfig {
     private static final ConfigEntryBuilder BUILDER = new ConfigEntryBuilder();
 
-    public static final ConfigEntry.BooleanEntry ENABLE_NEO_FEATURE =
-            BUILDER.comment("Enable a NeoForge-specific server feature")
-                    .define("enableNeoFeature", true);
+    public static final ConfigEntry.BooleanEntry SHOW_DEBUG_OVERLAY =
+            BUILDER.comment("Show extra debug information on client screens")
+                    .define("showDebugOverlay", false);
 
     public static final ConfigEntries ENTRIES = BUILDER.build();
 
-    private NeoServerConfig() {}
+    private ClientConfig() {}
 }

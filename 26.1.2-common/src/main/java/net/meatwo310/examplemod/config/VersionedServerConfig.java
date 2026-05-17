@@ -11,7 +11,7 @@ public final class VersionedServerConfig {
             BUILDER.comment("Enable a 26.1.2-specific server feature")
                     .define("enable2612Feature", true);
 
-    public static final ConfigEntries ENTRIES = ServerConfig.ENTRIES.append(BUILDER.build());
+    public static final ConfigEntries ENTRIES = BUILDER.build();
 
     private VersionedServerConfig() {}
 }

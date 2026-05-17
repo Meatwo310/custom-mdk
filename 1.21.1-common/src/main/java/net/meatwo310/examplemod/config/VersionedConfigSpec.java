@@ -1,15 +1,38 @@
 package net.meatwo310.examplemod.config;
 
+import net.meatwo310.mdk.config.ConfigDeclaration;
 import net.meatwo310.mdk.config.ConfigEntries;
+import net.meatwo310.mdk.config.ConfigSide;
 import net.meatwo310.mdk.config.ConfigEntryBinder;
+import org.jetbrains.annotations.Nullable;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public final class VersionedConfigSpec {
     private VersionedConfigSpec() {}
+
+    public static BoundConfig bind(ConfigDeclaration declaration) {
+        return new BoundConfig(
+                declaration.side(),
+                bind(declaration.entries()),
+                declaration.fileName());
+    }
+
+    public static List<BoundConfig> bindAll(List<ConfigDeclaration> declarations) {
+        return declarations.stream()
+                .map(VersionedConfigSpec::bind)
+                .toList();
+    }
+
+    public record BoundConfig(ConfigSide side, ModConfigSpec spec, @Nullable String fileName) {
+        public Optional<String> optionalFileName() {
+            return Optional.ofNullable(fileName);
+        }
+    }
 
     public static ModConfigSpec bind(ConfigEntries entries) {
         var builder = new ModConfigSpec.Builder();
@@ -21,6 +44,16 @@ public final class VersionedConfigSpec {
         @Override
         public void comment(String comment) {
             builder.comment(comment);
+        }
+
+        @Override
+        public void push(String key) {
+            builder.push(key);
+        }
+
+        @Override
+        public void pop() {
+            builder.pop();
         }
 
         @Override

@@ -33,8 +33,21 @@ public class ServerConfig {
     public static final ConfigEntry.EnumEntry<Mode> SOME_MODE =
             BUILDER.comment("Some mode")
                     .defineEnum("someMode", Mode.FIRST);
+    public static final ConfigEntries CATEGORY1 =
+            BUILDER.comment("Category 1")
+                    .category("category1", Category1.ENTRIES);
 
     public static final ConfigEntries ENTRIES = BUILDER.build();
+
+    public static class Category1 {
+        private static final ConfigEntryBuilder BUILDER = new ConfigEntryBuilder();
+
+        public static final ConfigEntry.IntEntry KEY1 =
+                BUILDER.comment("Category 1 key 1")
+                        .define("key1", 1);
+
+        public static final ConfigEntries ENTRIES = BUILDER.build();
+    }
 
     public enum Mode {
         FIRST,

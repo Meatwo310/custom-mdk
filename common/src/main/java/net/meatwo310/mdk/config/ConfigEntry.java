@@ -1,5 +1,7 @@
 package net.meatwo310.mdk.config;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
@@ -9,7 +11,7 @@ import java.util.function.LongSupplier;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public abstract class ConfigEntry<T> implements Supplier<T> {
+public abstract class ConfigEntry<T> implements Supplier<T>, ConfigElement {
     private final String key, comment;
     private final T defaultValue;
     private Supplier<T> value;
@@ -41,32 +43,18 @@ public abstract class ConfigEntry<T> implements Supplier<T> {
         return defaultValue;
     }
 
-    public abstract void bindTo(BindingVisitor visitor);
-
-    public interface BindingVisitor {
-        void bind(IntEntry entry);
-
-        void bind(LongEntry entry);
-
-        void bind(DoubleEntry entry);
-
-        void bind(BooleanEntry entry);
-
-        void bind(StringEntry entry);
-
-        <T> void bind(ListEntry<T> entry);
-
-        <E extends Enum<E>> void bind(EnumEntry<E> entry);
-    }
+    @Override
+    public abstract void bindTo(ConfigVisitor visitor);
 
     public abstract static class RangedValueEntry<T extends Comparable<T>> extends ConfigEntry<T> {
+        @Nullable
         private final Range<T> range;
 
         protected RangedValueEntry(String key, String comment, T defaultValue) {
             this(key, comment, defaultValue, null);
         }
 
-        protected RangedValueEntry(String key, String comment, T defaultValue, Range<T> range) {
+        protected RangedValueEntry(String key, String comment, T defaultValue, @Nullable Range<T> range) {
             super(key, comment, defaultValue);
             this.range = range;
         }
@@ -75,9 +63,6 @@ public abstract class ConfigEntry<T> implements Supplier<T> {
             return Optional.ofNullable(range);
         }
 
-        public boolean hasRange() {
-            return range != null;
-        }
     }
 
     public static class IntEntry extends RangedValueEntry<Integer> implements IntSupplier {
@@ -99,7 +84,7 @@ public abstract class ConfigEntry<T> implements Supplier<T> {
         }
 
         @Override
-        public void bindTo(BindingVisitor visitor) {
+        public void bindTo(ConfigVisitor visitor) {
             visitor.bind(this);
         }
     }
@@ -123,7 +108,7 @@ public abstract class ConfigEntry<T> implements Supplier<T> {
         }
 
         @Override
-        public void bindTo(BindingVisitor visitor) {
+        public void bindTo(ConfigVisitor visitor) {
             visitor.bind(this);
         }
     }
@@ -147,7 +132,7 @@ public abstract class ConfigEntry<T> implements Supplier<T> {
         }
 
         @Override
-        public void bindTo(BindingVisitor visitor) {
+        public void bindTo(ConfigVisitor visitor) {
             visitor.bind(this);
         }
     }
@@ -167,7 +152,7 @@ public abstract class ConfigEntry<T> implements Supplier<T> {
         }
 
         @Override
-        public void bindTo(BindingVisitor visitor) {
+        public void bindTo(ConfigVisitor visitor) {
             visitor.bind(this);
         }
     }
@@ -178,7 +163,7 @@ public abstract class ConfigEntry<T> implements Supplier<T> {
         }
 
         @Override
-        public void bindTo(BindingVisitor visitor) {
+        public void bindTo(ConfigVisitor visitor) {
             visitor.bind(this);
         }
     }
@@ -207,7 +192,7 @@ public abstract class ConfigEntry<T> implements Supplier<T> {
         }
 
         @Override
-        public void bindTo(BindingVisitor visitor) {
+        public void bindTo(ConfigVisitor visitor) {
             visitor.bind(this);
         }
     }
@@ -225,7 +210,7 @@ public abstract class ConfigEntry<T> implements Supplier<T> {
         }
 
         @Override
-        public void bindTo(BindingVisitor visitor) {
+        public void bindTo(ConfigVisitor visitor) {
             visitor.bind(this);
         }
     }

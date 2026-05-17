@@ -11,7 +11,7 @@ public final class FabricServerConfig {
             BUILDER.comment("Enable a Fabric-specific server feature")
                     .define("enableFabricFeature", true);
 
-    public static final ConfigEntries ENTRIES = VersionedServerConfig.ENTRIES.append(BUILDER.build());
+    public static final ConfigEntries ENTRIES = BUILDER.build();
 
     private FabricServerConfig() {}
 }
