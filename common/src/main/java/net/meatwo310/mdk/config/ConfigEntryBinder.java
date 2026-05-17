@@ -1,0 +1,88 @@
+package net.meatwo310.mdk.config;
+
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
+public final class ConfigEntryBinder implements ConfigEntry.BindingVisitor {
+    private final Adapter adapter;
+
+    public ConfigEntryBinder(Adapter adapter) {
+        this.adapter = adapter;
+    }
+
+    @Override
+    public void bind(ConfigEntry.IntEntry entry) {
+        adapter.comment(entry.comment());
+        entry.bind(entry.range()
+                .map(range -> adapter.defineIntInRange(entry.key(), entry.defaultValue(), range.min(), range.max()))
+                .orElseGet(() -> adapter.defineInt(entry.key(), entry.defaultValue())));
+    }
+
+    @Override
+    public void bind(ConfigEntry.LongEntry entry) {
+        adapter.comment(entry.comment());
+        entry.bind(entry.range()
+                .map(range -> adapter.defineLongInRange(entry.key(), entry.defaultValue(), range.min(), range.max()))
+                .orElseGet(() -> adapter.defineLong(entry.key(), entry.defaultValue())));
+    }
+
+    @Override
+    public void bind(ConfigEntry.DoubleEntry entry) {
+        adapter.comment(entry.comment());
+        entry.bind(entry.range()
+                .map(range -> adapter.defineDoubleInRange(entry.key(), entry.defaultValue(), range.min(), range.max()))
+                .orElseGet(() -> adapter.defineDouble(entry.key(), entry.defaultValue())));
+    }
+
+    @Override
+    public void bind(ConfigEntry.BooleanEntry entry) {
+        adapter.comment(entry.comment());
+        entry.bind(adapter.defineBoolean(entry.key(), entry.defaultValue()));
+    }
+
+    @Override
+    public void bind(ConfigEntry.StringEntry entry) {
+        adapter.comment(entry.comment());
+        entry.bind(adapter.defineString(entry.key(), entry.defaultValue()));
+    }
+
+    @Override
+    public <T> void bind(ConfigEntry.ListEntry<T> entry) {
+        adapter.comment(entry.comment());
+        var value = adapter.defineList(
+                entry.key(), entry.defaultValue(), entry.newElementSupplier(), entry.elementValidator());
+        entry.bind(() -> List.copyOf(value.get()));
+    }
+
+    @Override
+    public <E extends Enum<E>> void bind(ConfigEntry.EnumEntry<E> entry) {
+        adapter.comment(entry.comment());
+        entry.bind(adapter.defineEnum(entry.key(), entry.defaultValue()));
+    }
+
+    public interface Adapter {
+        void comment(String comment);
+
+        Supplier<Integer> defineInt(String key, int defaultValue);
+
+        Supplier<Integer> defineIntInRange(String key, int defaultValue, int min, int max);
+
+        Supplier<Long> defineLong(String key, long defaultValue);
+
+        Supplier<Long> defineLongInRange(String key, long defaultValue, long min, long max);
+
+        Supplier<Double> defineDouble(String key, double defaultValue);
+
+        Supplier<Double> defineDoubleInRange(String key, double defaultValue, double min, double max);
+
+        Supplier<Boolean> defineBoolean(String key, boolean defaultValue);
+
+        Supplier<String> defineString(String key, String defaultValue);
+
+        <T> Supplier<? extends List<? extends T>> defineList(
+                String key, List<T> defaultValue, Supplier<T> newElementSupplier, Predicate<Object> elementValidator);
+
+        <E extends Enum<E>> Supplier<E> defineEnum(String key, E defaultValue);
+    }
+}

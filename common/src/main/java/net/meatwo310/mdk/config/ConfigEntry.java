@@ -41,6 +41,24 @@ public abstract class ConfigEntry<T> implements Supplier<T> {
         return defaultValue;
     }
 
+    public abstract void bindTo(BindingVisitor visitor);
+
+    public interface BindingVisitor {
+        void bind(IntEntry entry);
+
+        void bind(LongEntry entry);
+
+        void bind(DoubleEntry entry);
+
+        void bind(BooleanEntry entry);
+
+        void bind(StringEntry entry);
+
+        <T> void bind(ListEntry<T> entry);
+
+        <E extends Enum<E>> void bind(EnumEntry<E> entry);
+    }
+
     public abstract static class RangedValueEntry<T extends Comparable<T>> extends ConfigEntry<T> {
         private final Range<T> range;
 
@@ -79,6 +97,11 @@ public abstract class ConfigEntry<T> implements Supplier<T> {
         public void bind(IntSupplier supplier) {
             super.bind(supplier::getAsInt);
         }
+
+        @Override
+        public void bindTo(BindingVisitor visitor) {
+            visitor.bind(this);
+        }
     }
 
     public static class LongEntry extends RangedValueEntry<Long> implements LongSupplier {
@@ -97,6 +120,11 @@ public abstract class ConfigEntry<T> implements Supplier<T> {
 
         public void bind(LongSupplier supplier) {
             super.bind(supplier::getAsLong);
+        }
+
+        @Override
+        public void bindTo(BindingVisitor visitor) {
+            visitor.bind(this);
         }
     }
 
@@ -117,6 +145,11 @@ public abstract class ConfigEntry<T> implements Supplier<T> {
         public void bind(DoubleSupplier supplier) {
             super.bind(supplier::getAsDouble);
         }
+
+        @Override
+        public void bindTo(BindingVisitor visitor) {
+            visitor.bind(this);
+        }
     }
 
     public static class BooleanEntry extends ConfigEntry<Boolean> implements BooleanSupplier {
@@ -132,11 +165,21 @@ public abstract class ConfigEntry<T> implements Supplier<T> {
         public void bind(BooleanSupplier supplier) {
             super.bind(supplier::getAsBoolean);
         }
+
+        @Override
+        public void bindTo(BindingVisitor visitor) {
+            visitor.bind(this);
+        }
     }
 
     public static class StringEntry extends ConfigEntry<String> {
         public StringEntry(String key, String comment, String defaultValue) {
             super(key, comment, defaultValue);
+        }
+
+        @Override
+        public void bindTo(BindingVisitor visitor) {
+            visitor.bind(this);
         }
     }
 
@@ -162,6 +205,11 @@ public abstract class ConfigEntry<T> implements Supplier<T> {
         public Predicate<Object> elementValidator() {
             return elementValidator;
         }
+
+        @Override
+        public void bindTo(BindingVisitor visitor) {
+            visitor.bind(this);
+        }
     }
 
     public static class EnumEntry<E extends Enum<E>> extends ConfigEntry<E> {
@@ -174,6 +222,11 @@ public abstract class ConfigEntry<T> implements Supplier<T> {
 
         public Class<E> enumClass() {
             return enumClass;
+        }
+
+        @Override
+        public void bindTo(BindingVisitor visitor) {
+            visitor.bind(this);
         }
     }
 

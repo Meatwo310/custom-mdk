@@ -12,6 +12,12 @@ public class ConfigEntries implements Iterable<ConfigEntry<?>> {
         this.entries = entries;
     }
 
+    public void bindTo(ConfigEntry.BindingVisitor visitor) {
+        for (var entry : entries) {
+            entry.bindTo(visitor);
+        }
+    }
+
     @Override
     public @NotNull Iterator<ConfigEntry<?>> iterator() {
         return entries.iterator();

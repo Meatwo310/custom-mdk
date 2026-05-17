@@ -1,71 +1,77 @@
 package net.meatwo310.examplemod.config;
 
 import net.meatwo310.mdk.config.ConfigEntries;
-import net.meatwo310.mdk.config.ConfigEntry;
+import net.meatwo310.mdk.config.ConfigEntryBinder;
 import net.neoforged.neoforge.common.ModConfigSpec;
+
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public final class VersionedConfigSpec {
     private VersionedConfigSpec() {}
 
     public static ModConfigSpec bind(ConfigEntries entries) {
         var builder = new ModConfigSpec.Builder();
-        for (var entry : entries) {
-            builder.comment(entry.comment());
-            switch (entry) {
-                case ConfigEntry.IntEntry e -> {
-                    ModConfigSpec.ConfigValue<Integer> value;
-                    if (e.range().isPresent()) {
-                        var range = e.range().get();
-                        value = builder.defineInRange(e.key(), e.defaultValue(), range.min(), range.max());
-                    } else {
-                        value = builder.define(e.key(), e.defaultValue());
-                    }
-                    e.bind(value);
-                }
-                case ConfigEntry.LongEntry e -> {
-                    ModConfigSpec.ConfigValue<Long> value;
-                    if (e.range().isPresent()) {
-                        var range = e.range().get();
-                        value = builder.defineInRange(e.key(), e.defaultValue(), range.min(), range.max());
-                    } else {
-                        value = builder.define(e.key(), e.defaultValue());
-                    }
-                    e.bind(value);
-                }
-                case ConfigEntry.DoubleEntry e -> {
-                    ModConfigSpec.ConfigValue<Double> value;
-                    if (e.range().isPresent()) {
-                        var range = e.range().get();
-                        value = builder.defineInRange(e.key(), e.defaultValue(), range.min(), range.max());
-                    } else {
-                        value = builder.define(e.key(), e.defaultValue());
-                    }
-                    e.bind(value);
-                }
-                case ConfigEntry.BooleanEntry e -> {
-                    var value = builder.define(e.key(), e.defaultValue());
-                    e.bind(value);
-                }
-                case ConfigEntry.StringEntry e -> {
-                    var value = builder.define(e.key(), e.defaultValue());
-                    e.bind(value);
-                }
-                case ConfigEntry.ListEntry<?> e -> bindList(builder, e);
-                case ConfigEntry.EnumEntry<?> e -> bindEnum(builder, e);
-                default -> {
-                }
-            }
-        }
+        entries.bindTo(new ConfigEntryBinder(new NeoForgeAdapter(builder)));
         return builder.build();
     }
 
-    private static <T> void bindList(ModConfigSpec.Builder builder, ConfigEntry.ListEntry<T> entry) {
-        var value = builder.defineList(entry.key(), entry.defaultValue(), entry.newElementSupplier(), entry.elementValidator());
-        entry.bind(() -> java.util.List.copyOf(value.get()));
-    }
+    private record NeoForgeAdapter(ModConfigSpec.Builder builder) implements ConfigEntryBinder.Adapter {
+        @Override
+        public void comment(String comment) {
+            builder.comment(comment);
+        }
 
-    private static <E extends Enum<E>> void bindEnum(ModConfigSpec.Builder builder, ConfigEntry.EnumEntry<E> entry) {
-        var value = builder.defineEnum(entry.key(), entry.defaultValue());
-        entry.bind(value);
+        @Override
+        public Supplier<Integer> defineInt(String key, int defaultValue) {
+            return builder.define(key, defaultValue);
+        }
+
+        @Override
+        public Supplier<Integer> defineIntInRange(String key, int defaultValue, int min, int max) {
+            return builder.defineInRange(key, defaultValue, min, max);
+        }
+
+        @Override
+        public Supplier<Long> defineLong(String key, long defaultValue) {
+            return builder.define(key, defaultValue);
+        }
+
+        @Override
+        public Supplier<Long> defineLongInRange(String key, long defaultValue, long min, long max) {
+            return builder.defineInRange(key, defaultValue, min, max);
+        }
+
+        @Override
+        public Supplier<Double> defineDouble(String key, double defaultValue) {
+            return builder.define(key, defaultValue);
+        }
+
+        @Override
+        public Supplier<Double> defineDoubleInRange(String key, double defaultValue, double min, double max) {
+            return builder.defineInRange(key, defaultValue, min, max);
+        }
+
+        @Override
+        public Supplier<Boolean> defineBoolean(String key, boolean defaultValue) {
+            return builder.define(key, defaultValue);
+        }
+
+        @Override
+        public Supplier<String> defineString(String key, String defaultValue) {
+            return builder.define(key, defaultValue);
+        }
+
+        @Override
+        public <T> Supplier<? extends List<? extends T>> defineList(
+                String key, List<T> defaultValue, Supplier<T> newElementSupplier, Predicate<Object> elementValidator) {
+            return builder.defineList(key, defaultValue, newElementSupplier, elementValidator);
+        }
+
+        @Override
+        public <E extends Enum<E>> Supplier<E> defineEnum(String key, E defaultValue) {
+            return builder.defineEnum(key, defaultValue);
+        }
     }
 }
