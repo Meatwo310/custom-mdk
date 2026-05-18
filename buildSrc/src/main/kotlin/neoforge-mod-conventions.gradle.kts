@@ -25,6 +25,7 @@ val loaderVersionRange = project.properties["loaderVersionRange"]?.toString()
 val parchmentMinecraftVersion = project.properties["parchmentMinecraftVersion"]?.toString()
 val parchmentMappingsVersion = project.properties["parchmentMappingsVersion"]?.toString()
 val neoDataRun = project.properties["neoDataRun"]?.toString() ?: "data"
+configureRuntimeMods()
 
 dependencies {
     implementation(project(commonProject))

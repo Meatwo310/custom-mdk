@@ -18,11 +18,13 @@ val modFabricEntrypoint: String by project
 val modFabricClientEntrypoint: String by project
 val minecraftVersion: String by project
 val javaVersion: String by project
+val forgeConfigApiPortVersion: String by project
 
 val commonProject = ":$minecraftVersion-common"
 val sharedCommonProject = ":common"
 evaluationDependsOn(sharedCommonProject)
 val generatedModMetadataDir = layout.buildDirectory.dir("generated/sources/modMetadata")
+configureRuntimeMods()
 
 dependencies {
     implementation(project(commonProject))
@@ -38,6 +40,7 @@ val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata"
     val replaceProperties = mapOf(
         "minecraft_version" to JsonOutput.toJson("~$minecraftVersion"),
         "loader_version" to JsonOutput.toJson(">=${versionCatalog.version(VersionCatalogVersion.FabricLoader)}"),
+        "forge_config_api_port_version" to JsonOutput.toJson(">=$forgeConfigApiPortVersion"),
         "mod_id" to JsonOutput.toJson(modId),
         "mod_name" to JsonOutput.toJson(modName),
         "mod_license" to JsonOutput.toJson(modLicense),

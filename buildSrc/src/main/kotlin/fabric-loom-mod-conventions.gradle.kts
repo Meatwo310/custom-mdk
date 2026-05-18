@@ -6,6 +6,7 @@ plugins {
 val modId: String by project
 val minecraftVersion: String by project
 val fabricApiVersion: String by project
+val forgeConfigApiPortVersion = project.properties["forgeConfigApiPortVersion"]?.toString()
 
 val commonProject = ":$minecraftVersion-common"
 val sharedCommonProject = ":common"
@@ -35,6 +36,10 @@ dependencies {
     minecraft("${versionCatalog.module(VersionCatalogLibrary.Minecraft)}:$minecraftVersion")
     implementation(versionCatalog.library(VersionCatalogLibrary.FabricLoader))
     implementation("${versionCatalog.module(VersionCatalogLibrary.FabricApi)}:$fabricApiVersion")
+    if (forgeConfigApiPortVersion != null) {
+        implementation("${versionCatalog.module(VersionCatalogLibrary.ForgeConfigApiPortFabric)}:$forgeConfigApiPortVersion")
+        add("runtimeMods", "${versionCatalog.module(VersionCatalogLibrary.ForgeConfigApiPortFabric)}:$forgeConfigApiPortVersion")
+    }
 }
 
 if (minecraftVersion.supportsGameTestServer()) {

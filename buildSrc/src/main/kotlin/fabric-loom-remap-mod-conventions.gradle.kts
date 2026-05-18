@@ -8,6 +8,7 @@ val minecraftVersion: String by project
 val fabricApiVersion: String by project
 val parchmentMinecraftVersion: String by project
 val parchmentMappingsVersion: String by project
+val forgeConfigApiPortVersion = project.properties["forgeConfigApiPortVersion"]?.toString()
 
 val commonProject = ":$minecraftVersion-common"
 val sharedCommonProject = ":common"
@@ -39,4 +40,8 @@ dependencies {
     })
     modImplementation(versionCatalog.library(VersionCatalogLibrary.FabricLoader))
     modImplementation("${versionCatalog.module(VersionCatalogLibrary.FabricApi)}:$fabricApiVersion")
+    if (forgeConfigApiPortVersion != null) {
+        modImplementation("${versionCatalog.module(VersionCatalogLibrary.ForgeConfigApiPortFabric)}:$forgeConfigApiPortVersion")
+        add("runtimeMods", "${versionCatalog.module(VersionCatalogLibrary.ForgeConfigApiPortFabric)}:$forgeConfigApiPortVersion")
+    }
 }

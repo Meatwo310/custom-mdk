@@ -46,17 +46,17 @@ subprojects {
             }
         }
 
-//        exclusiveContent {
-//            forRepository {
-//                maven {
-//                    name = "Modrinth"
-//                    url = uri("https://api.modrinth.com/maven")
-//                }
-//            }
-//            filter {
-//                includeGroup("maven.modrinth")
-//            }
-//        }
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = "Modrinth"
+                    url = uri("https://api.modrinth.com/maven")
+                }
+            }
+            filter {
+                includeGroup("maven.modrinth")
+            }
+        }
 
         maven {
             name = "ParchmentMC"
@@ -67,6 +67,11 @@ subprojects {
 //            name = "ModMaven"
 //            url = uri("https://modmaven.dev/")
 //        }
+
+        maven {
+            name = "Fuzs Mod Resources"
+            url = uri("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
+        }
     }
 
     tasks.withType<JavaCompile>().configureEach {
