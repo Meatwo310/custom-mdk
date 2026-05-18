@@ -17,6 +17,14 @@ public final class VersionedConfigSpec {
         return builder.build();
     }
 
+    public static List<BoundConfig> bindAll(List<ConfigDeclaration> configs) {
+        return configs.stream()
+                .map(config -> new BoundConfig(config.side(), bind(config.entries())))
+                .toList();
+    }
+
+    public record BoundConfig(ConfigSide side, ForgeConfigSpec spec) {}
+
     private record ForgeAdapter(ForgeConfigSpec.Builder builder) implements ConfigEntryBinder.Adapter {
         @Override
         public void comment(String comment) {
