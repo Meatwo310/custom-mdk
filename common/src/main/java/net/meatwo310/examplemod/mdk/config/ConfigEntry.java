@@ -1,9 +1,6 @@
 package net.meatwo310.examplemod.mdk.config;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
@@ -47,29 +44,20 @@ public abstract class ConfigEntry<T> implements Supplier<T>, ConfigElement {
     public abstract void bindTo(ConfigVisitor visitor);
 
     public abstract static class RangedValueEntry<T extends Comparable<T>> extends ConfigEntry<T> {
-        @Nullable
         private final Range<T> range;
 
-        protected RangedValueEntry(String key, String comment, T defaultValue) {
-            this(key, comment, defaultValue, null);
-        }
-
-        protected RangedValueEntry(String key, String comment, T defaultValue, @Nullable Range<T> range) {
+        protected RangedValueEntry(String key, String comment, T defaultValue, Range<T> range) {
             super(key, comment, defaultValue);
             this.range = range;
         }
 
-        public Optional<Range<T>> range() {
-            return Optional.ofNullable(range);
+        public Range<T> range() {
+            return range;
         }
 
     }
 
     public static class IntEntry extends RangedValueEntry<Integer> implements IntSupplier {
-        public IntEntry(String key, String comment, int defaultValue) {
-            super(key, comment, defaultValue);
-        }
-
         public IntEntry(String key, String comment, int defaultValue, int min, int max) {
             super(key, comment, defaultValue, new Range<>(min, max));
         }
@@ -90,10 +78,6 @@ public abstract class ConfigEntry<T> implements Supplier<T>, ConfigElement {
     }
 
     public static class LongEntry extends RangedValueEntry<Long> implements LongSupplier {
-        public LongEntry(String key, String comment, long defaultValue) {
-            super(key, comment, defaultValue);
-        }
-
         public LongEntry(String key, String comment, long defaultValue, long min, long max) {
             super(key, comment, defaultValue, new Range<>(min, max));
         }
@@ -114,10 +98,6 @@ public abstract class ConfigEntry<T> implements Supplier<T>, ConfigElement {
     }
 
     public static class DoubleEntry extends RangedValueEntry<Double> implements DoubleSupplier {
-        public DoubleEntry(String key, String comment, double defaultValue) {
-            super(key, comment, defaultValue);
-        }
-
         public DoubleEntry(String key, String comment, double defaultValue, double min, double max) {
             super(key, comment, defaultValue, new Range<>(min, max));
         }

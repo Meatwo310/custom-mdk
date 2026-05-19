@@ -14,25 +14,22 @@ public final class ConfigEntryBinder implements ConfigVisitor {
     @Override
     public void bind(ConfigEntry.IntEntry entry) {
         adapter.comment(entry.comment());
-        entry.bind(entry.range()
-                .map(range -> adapter.defineIntInRange(entry.key(), entry.defaultValue(), range.min(), range.max()))
-                .orElseGet(() -> adapter.defineInt(entry.key(), entry.defaultValue())));
+        var range = entry.range();
+        entry.bind(adapter.defineIntInRange(entry.key(), entry.defaultValue(), range.min(), range.max()));
     }
 
     @Override
     public void bind(ConfigEntry.LongEntry entry) {
         adapter.comment(entry.comment());
-        entry.bind(entry.range()
-                .map(range -> adapter.defineLongInRange(entry.key(), entry.defaultValue(), range.min(), range.max()))
-                .orElseGet(() -> adapter.defineLong(entry.key(), entry.defaultValue())));
+        var range = entry.range();
+        entry.bind(adapter.defineLongInRange(entry.key(), entry.defaultValue(), range.min(), range.max()));
     }
 
     @Override
     public void bind(ConfigEntry.DoubleEntry entry) {
         adapter.comment(entry.comment());
-        entry.bind(entry.range()
-                .map(range -> adapter.defineDoubleInRange(entry.key(), entry.defaultValue(), range.min(), range.max()))
-                .orElseGet(() -> adapter.defineDouble(entry.key(), entry.defaultValue())));
+        var range = entry.range();
+        entry.bind(adapter.defineDoubleInRange(entry.key(), entry.defaultValue(), range.min(), range.max()));
     }
 
     @Override
@@ -79,15 +76,9 @@ public final class ConfigEntryBinder implements ConfigVisitor {
 
         void pop();
 
-        Supplier<Integer> defineInt(String key, int defaultValue);
-
         Supplier<Integer> defineIntInRange(String key, int defaultValue, int min, int max);
 
-        Supplier<Long> defineLong(String key, long defaultValue);
-
         Supplier<Long> defineLongInRange(String key, long defaultValue, long min, long max);
-
-        Supplier<Double> defineDouble(String key, double defaultValue);
 
         Supplier<Double> defineDoubleInRange(String key, double defaultValue, double min, double max);
 

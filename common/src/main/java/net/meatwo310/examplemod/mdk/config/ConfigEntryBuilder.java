@@ -15,7 +15,7 @@ public class ConfigEntryBuilder {
     }
 
     public ConfigEntry.IntEntry define(String key, int defaultValue) {
-        return register(new ConfigEntry.IntEntry(key, pendingComment, defaultValue));
+        return defineInRange(key, defaultValue, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 
     public ConfigEntry.IntEntry defineInRange(String key, int defaultValue, int min, int max) {
@@ -23,7 +23,7 @@ public class ConfigEntryBuilder {
     }
 
     public ConfigEntry.LongEntry define(String key, long defaultValue) {
-        return register(new ConfigEntry.LongEntry(key, pendingComment, defaultValue));
+        return defineInRange(key, defaultValue, Long.MIN_VALUE, Long.MAX_VALUE);
     }
 
     public ConfigEntry.LongEntry defineInRange(String key, long defaultValue, long min, long max) {
@@ -31,7 +31,7 @@ public class ConfigEntryBuilder {
     }
 
     public ConfigEntry.DoubleEntry define(String key, double defaultValue) {
-        return register(new ConfigEntry.DoubleEntry(key, pendingComment, defaultValue));
+        return defineInRange(key, defaultValue, -Double.MAX_VALUE, Double.MAX_VALUE);
     }
 
     public ConfigEntry.DoubleEntry defineInRange(String key, double defaultValue, double min, double max) {

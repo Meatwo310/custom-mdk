@@ -57,28 +57,13 @@ public final class VersionedConfigSpec {
         }
 
         @Override
-        public Supplier<Integer> defineInt(String key, int defaultValue) {
-            return builder.define(key, defaultValue);
-        }
-
-        @Override
         public Supplier<Integer> defineIntInRange(String key, int defaultValue, int min, int max) {
             return builder.defineInRange(key, defaultValue, min, max);
         }
 
         @Override
-        public Supplier<Long> defineLong(String key, long defaultValue) {
-            return builder.define(key, defaultValue);
-        }
-
-        @Override
         public Supplier<Long> defineLongInRange(String key, long defaultValue, long min, long max) {
             return builder.defineInRange(key, defaultValue, min, max);
-        }
-
-        @Override
-        public Supplier<Double> defineDouble(String key, double defaultValue) {
-            return builder.define(key, defaultValue);
         }
 
         @Override
