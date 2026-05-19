@@ -1,8 +1,8 @@
 package net.meatwo310.examplemod;
 
 import net.meatwo310.examplemod.config.ModConfigs;
-import net.meatwo310.examplemod.config.PlatformConfigRegistrar;
-import net.meatwo310.examplemod.config.VersionedConfigSpec;
+import net.meatwo310.examplemod.mdk.config.PlatformConfigRegistrar;
+import net.meatwo310.examplemod.mdk.config.VersionedConfigSpec;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 

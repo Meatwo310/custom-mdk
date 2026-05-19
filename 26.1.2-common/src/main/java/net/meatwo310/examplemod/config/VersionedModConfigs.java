@@ -1,7 +1,7 @@
 package net.meatwo310.examplemod.config;
 
-import net.meatwo310.mdk.config.ConfigDeclaration;
-import net.meatwo310.mdk.config.ConfigDeclarations;
+import net.meatwo310.examplemod.mdk.config.ConfigDeclaration;
+import net.meatwo310.examplemod.mdk.config.ConfigDeclarations;
 
 import java.util.List;
 
