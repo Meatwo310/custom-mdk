@@ -1,3 +1,5 @@
+import net.meatwo310.mdk.build.*
+
 plugins {
     `java-library`
     idea

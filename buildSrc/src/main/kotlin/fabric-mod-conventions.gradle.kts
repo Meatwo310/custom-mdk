@@ -1,4 +1,5 @@
 import groovy.json.JsonOutput
+import net.meatwo310.mdk.build.*
 
 plugins {
     `java-library`

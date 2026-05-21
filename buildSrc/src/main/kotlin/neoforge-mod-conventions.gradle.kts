@@ -1,3 +1,6 @@
+import net.meatwo310.mdk.build.configureRuntimeMods
+import net.meatwo310.mdk.build.supportsGameTestServer
+
 plugins {
     `java-library`
     idea

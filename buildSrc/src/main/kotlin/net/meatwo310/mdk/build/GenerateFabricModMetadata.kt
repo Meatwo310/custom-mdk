@@ -1,3 +1,5 @@
+package net.meatwo310.mdk.build
+
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.gradle.api.DefaultTask

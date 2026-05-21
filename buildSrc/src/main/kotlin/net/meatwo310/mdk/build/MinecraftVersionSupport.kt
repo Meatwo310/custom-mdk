@@ -1,3 +1,5 @@
+package net.meatwo310.mdk.build
+
 fun String.supportsGameTestServer(): Boolean {
     val parts = split(".").mapNotNull(String::toIntOrNull)
     val major = parts.getOrElse(0) { 0 }
