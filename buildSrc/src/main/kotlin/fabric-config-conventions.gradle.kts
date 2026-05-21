@@ -26,6 +26,9 @@ plugins.withId("java-library") {
 
     addConfigOutputTo(SourceSet.MAIN_SOURCE_SET_NAME, sharedConfig, config)
     addConfigOutputTo("client", sharedConfig, config, configClient)
+
+    dependencies.add("runtimeOnly", files(config.output))
+    dependencies.add("runtimeOnly", files(configClient.output))
 }
 
 plugins.withId("net.fabricmc.fabric-loom") {
