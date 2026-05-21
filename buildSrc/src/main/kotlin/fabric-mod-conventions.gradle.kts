@@ -14,11 +14,12 @@ val modDescription: String by project
 val modDisplayUrl: String by project
 val modIssueTrackerUrl: String by project
 val modCredits: String by project
+val modFabricEnvironment: String by project
 val modFabricEntrypoint: String by project
 val modFabricClientEntrypoint: String by project
 val minecraftVersion: String by project
 val javaVersion: String by project
-val forgeConfigApiPortVersion: String by project
+val forgeConfigApiPortVersion = project.properties["forgeConfigApiPortVersion"]?.toString()
 
 val commonProject = ":$minecraftVersion-common"
 val sharedCommonProject = ":common"
@@ -36,29 +37,43 @@ base {
 
 sourceSets.main.get().resources.srcDir(generatedModMetadataDir)
 
-val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata") {
-    val replaceProperties = mapOf(
-        "minecraft_version" to JsonOutput.toJson("~$minecraftVersion"),
-        "loader_version" to JsonOutput.toJson(">=${versionCatalog.version(VersionCatalogVersion.FabricLoader)}"),
-        "forge_config_api_port_version" to JsonOutput.toJson(">=$forgeConfigApiPortVersion"),
-        "mod_id" to JsonOutput.toJson(modId),
-        "mod_name" to JsonOutput.toJson(modName),
-        "mod_license" to JsonOutput.toJson(modLicense),
-        "mod_version" to JsonOutput.toJson(modVersion),
-        "mod_authors" to JsonOutput.toJson(
-            modAuthors.split(",").map { it.trim() }.filter { it.isNotEmpty() }
-        ),
-        "mod_description" to JsonOutput.toJson(modDescription),
-        "mod_display_url" to JsonOutput.toJson(modDisplayUrl),
-        "mod_issue_tracker_url" to JsonOutput.toJson(modIssueTrackerUrl),
-        "mod_credits" to JsonOutput.toJson(modCredits),
-        "mod_entrypoint" to JsonOutput.toJson(modFabricEntrypoint),
-        "mod_client_entrypoint" to JsonOutput.toJson(modFabricClientEntrypoint),
-    )
-    inputs.properties(replaceProperties)
-    expand(replaceProperties)
-    from("src/main/templates")
-    into(generatedModMetadataDir)
+val fabricDependencies = linkedMapOf<String, Any?>(
+    "fabricloader" to ">=${versionCatalog.version(VersionCatalogVersion.FabricLoader)}",
+    "minecraft" to "~$minecraftVersion",
+    "java" to ">=$javaVersion",
+    "fabric-api" to "*",
+).apply {
+    forgeConfigApiPortVersion?.let { put("forgeconfigapiport", ">=$it") }
+}
+
+val defaultModMetadata = linkedMapOf<String, Any?>(
+    "schemaVersion" to 1,
+    "id" to modId,
+    "version" to modVersion,
+    "name" to modName,
+    "description" to modDescription,
+    "authors" to modAuthors.split(",").map { it.trim() }.filter { it.isNotEmpty() },
+    "contact" to linkedMapOf(
+        "homepage" to modDisplayUrl,
+        "issues" to modIssueTrackerUrl,
+        "sources" to modDisplayUrl,
+    ),
+    "license" to modLicense,
+    "custom" to linkedMapOf(
+        "credits" to modCredits,
+    ),
+    "environment" to modFabricEnvironment,
+    "entrypoints" to linkedMapOf(
+        "main" to listOf(modFabricEntrypoint),
+        "client" to listOf(modFabricClientEntrypoint),
+    ),
+    "depends" to fabricDependencies,
+)
+
+val generateModMetadata = tasks.register<GenerateFabricModMetadata>("generateModMetadata") {
+    templateFile.set(layout.projectDirectory.file("src/main/templates/fabric.mod.json"))
+    outputFile.set(generatedModMetadataDir.map { it.file("fabric.mod.json") })
+    defaultModMetadataJson.set(JsonOutput.toJson(defaultModMetadata))
 }
 
 tasks.processResources {
