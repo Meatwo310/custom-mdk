@@ -1,14 +1,31 @@
-import net.meatwo310.mdk.build.FabricModMetadataExtension
-import net.meatwo310.mdk.build.VersionCatalogLibrary
-import net.meatwo310.mdk.build.module
-import net.meatwo310.mdk.build.versionCatalog
+import net.meatwo310.mdk.build.*
 
+val minecraftVersion: String by project
 val forgeConfigApiPortVersion: String by project
 
 plugins.withId("fabric-mod-conventions") {
     extensions.configure<FabricModMetadataExtension>("fabricModMetadata") {
         depend("forgeconfigapiport", ">=$forgeConfigApiPortVersion")
     }
+}
+
+plugins.withId("java-library") {
+    val config = configureConfigSourceSet()
+    val configClient = configureConfigSourceSet(CONFIG_CLIENT_SOURCE_SET_NAME)
+    val sourceSets = extensions.getByType<SourceSetContainer>()
+    val sharedConfig = sharedConfigSourceSets(minecraftVersion, "fabric-config-conventions")
+    val client = sourceSets.findByName("client")
+
+    config.addConfigClasspath(sharedConfig)
+    configClient.addConfigClasspath(sharedConfig, config)
+    if (client != null) {
+        configClient.addCompileRuntimeClasspathFrom(client)
+    }
+
+    includeConfigOutput(sharedConfig, config, configClient)
+
+    addConfigOutputTo(SourceSet.MAIN_SOURCE_SET_NAME, sharedConfig, config)
+    addConfigOutputTo("client", sharedConfig, config, configClient)
 }
 
 plugins.withId("net.fabricmc.fabric-loom") {
