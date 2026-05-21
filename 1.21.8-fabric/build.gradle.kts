@@ -1,5 +1,6 @@
 plugins {
     id("fabric-loom-remap-mod-conventions")
+    id("fabric-config-conventions")
 }
 
 val modmenuVersion: String by project

@@ -1,7 +1,3 @@
-import net.meatwo310.mdk.build.VersionCatalogLibrary
-import net.meatwo310.mdk.build.module
-import net.meatwo310.mdk.build.versionCatalog
-
 plugins {
     `java-library`
     idea
@@ -10,13 +6,9 @@ plugins {
 
 val modId: String by project
 val minecraftVersion: String by project
-val forgeConfigApiPortVersion = project.properties["forgeConfigApiPortVersion"]?.toString()
 
 dependencies {
     api(project(":common"))
-    if (forgeConfigApiPortVersion != null) {
-        compileOnlyApi("${versionCatalog.module(VersionCatalogLibrary.ForgeConfigApiPortCommon)}:$forgeConfigApiPortVersion")
-    }
 }
 
 base {

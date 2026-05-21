@@ -20,12 +20,12 @@ val modFabricEntrypoint: String by project
 val modFabricClientEntrypoint: String by project
 val minecraftVersion: String by project
 val javaVersion: String by project
-val forgeConfigApiPortVersion = project.properties["forgeConfigApiPortVersion"]?.toString()
 
 val commonProject = ":$minecraftVersion-common"
 val sharedCommonProject = ":common"
 evaluationDependsOn(sharedCommonProject)
 val generatedModMetadataDir = layout.buildDirectory.dir("generated/sources/modMetadata")
+val fabricModMetadata = extensions.create<FabricModMetadataExtension>("fabricModMetadata")
 configureRuntimeMods()
 
 dependencies {
@@ -38,16 +38,14 @@ base {
 
 sourceSets.main.get().resources.srcDir(generatedModMetadataDir)
 
-val fabricDependencies = linkedMapOf<String, Any?>(
+fabricModMetadata.depends.putAll(linkedMapOf(
     "fabricloader" to ">=${versionCatalog.version(VersionCatalogVersion.FabricLoader)}",
     "minecraft" to "~$minecraftVersion",
     "java" to ">=$javaVersion",
     "fabric-api" to "*",
-).apply {
-    forgeConfigApiPortVersion?.let { put("forgeconfigapiport", ">=$it") }
-}
+))
 
-val defaultModMetadata = linkedMapOf<String, Any?>(
+fun defaultModMetadata(fabricDependencies: Map<String, String>) = linkedMapOf<String, Any?>(
     "schemaVersion" to 1,
     "id" to modId,
     "version" to modVersion,
@@ -74,7 +72,7 @@ val defaultModMetadata = linkedMapOf<String, Any?>(
 val generateModMetadata = tasks.register<GenerateFabricModMetadata>("generateModMetadata") {
     templateFile.set(layout.projectDirectory.file("src/main/templates/fabric.mod.json"))
     outputFile.set(generatedModMetadataDir.map { it.file("fabric.mod.json") })
-    defaultModMetadataJson.set(JsonOutput.toJson(defaultModMetadata))
+    defaultModMetadataJson.set(fabricModMetadata.depends.map { JsonOutput.toJson(defaultModMetadata(it)) })
 }
 
 tasks.processResources {
