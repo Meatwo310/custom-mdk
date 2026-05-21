@@ -51,3 +51,9 @@ include("26.1-neo")
 include("26.1.2-common")
 include("26.1.2-fabric")
 include("26.1.2-neo")
+
+val ciBuildProjectNames = rootProject.children
+    .map { it.name }
+    .filterNot { it == "common" || it.endsWith("-common") }
+
+gradle.extensions.extraProperties["ciBuildProjectNames"] = ciBuildProjectNames

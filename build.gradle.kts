@@ -1,3 +1,4 @@
+import groovy.json.JsonOutput
 import org.gradle.plugins.ide.idea.model.IdeaModel
 
 plugins {
@@ -9,6 +10,23 @@ plugins {
 
 tasks.named<Wrapper>("wrapper").configure {
     distributionType = Wrapper.DistributionType.BIN
+}
+
+tasks.register("writeCiBuildMatrix") {
+    val outputFile = layout.buildDirectory.file("ci/build-matrix.json")
+    val ciBuildProjects = (gradle.extensions.extraProperties["ciBuildProjectNames"] as List<*>)
+        .map { it.toString() }
+
+    outputs.file(outputFile)
+    inputs.property("ciBuildProjects", ciBuildProjects)
+
+    doLast {
+        val json = JsonOutput.toJson(ciBuildProjects)
+        outputFile.get().asFile.apply {
+            parentFile.mkdirs()
+            writeText(json)
+        }
+    }
 }
 
 with(System.getProperties()) {

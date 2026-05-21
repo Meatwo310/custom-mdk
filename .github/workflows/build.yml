@@ -24,13 +24,25 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Detect subprojects from settings.gradle.kts
+      - name: Setup JDK 25
+        uses: actions/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Detect subprojects with Gradle
         id: detect
         run: |
-          SUBPROJECTS=$(grep '^include(' settings.gradle.kts | sed 's/include("//;s/")//')
-          JSON=$(printf '%s\n' "$SUBPROJECTS" | jq -R . | jq -sc .)
-          echo "matrix=$JSON" >> "$GITHUB_OUTPUT"
-          echo "::group::Subprojects"
+          chmod u+x ./gradlew
+          ./gradlew --configuration-cache --no-daemon writeCiBuildMatrix
+          JSON=$(<build/ci/build-matrix.json)
+          echo "matrix=$(jq -c '.' <<< "$JSON")" >> "$GITHUB_OUTPUT"
+          echo "::group::Platform projects"
           jq . <<< "$JSON"
           echo "::endgroup::"
 
