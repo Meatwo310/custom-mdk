@@ -130,7 +130,10 @@ jobs:
       - name: Run Server
         if: ${{ !endsWith(matrix.subproject, 'common') && steps.runtime.outputs.supports_game_test_server != 'true' }}
         timeout-minutes: 10
-        run: echo stop | ./gradlew ":${{ matrix.subproject }}:runServer"
+        run: |
+          mkdir -p "${{ matrix.subproject }}/run"
+          printf 'eula=true\n' > "${{ matrix.subproject }}/run/eula.txt"
+          echo stop | ./gradlew ":${{ matrix.subproject }}:runServer"
 
       - name: Setup runtime JDK
         if: ${{ !endsWith(matrix.subproject, 'common') }}
