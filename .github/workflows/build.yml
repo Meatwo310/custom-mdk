@@ -17,6 +17,7 @@ jobs:
     timeout-minutes: 30
     outputs:
       matrix: ${{ steps.detect.outputs.matrix }}
+      count: ${{ steps.detect.outputs.count }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -42,18 +43,21 @@ jobs:
           ./gradlew --configuration-cache --no-daemon writeCiBuildMatrix
           JSON=$(<build/ci/build-matrix.json)
           echo "matrix=$(jq -c '.' <<< "$JSON")" >> "$GITHUB_OUTPUT"
+          echo "count=$(jq 'length' <<< "$JSON")" >> "$GITHUB_OUTPUT"
           echo "::group::Platform projects"
           jq . <<< "$JSON"
           echo "::endgroup::"
 
   build:
     needs: detect
+    if: ${{ needs.detect.outputs.count != '0' }}
+    name: build (${{ matrix.subproject }})
     runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
-        subproject: ${{ fromJson(needs.detect.outputs.matrix) }}
+        include: ${{ fromJson(needs.detect.outputs.matrix) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -72,49 +76,11 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
 
-      - name: Detect runtime test settings
-        if: ${{ !endsWith(matrix.subproject, 'common') }}
-        id: runtime
-        run: |
-          subproject="${{ matrix.subproject }}"
-          prop() { sed -n "s/^$1=//p" "$subproject/gradle.properties"; }
-          loader="${subproject##*-}"
-          minecraftVersion="$(prop minecraftVersion)"
-          javaVersion="$(prop javaVersion)"
-          fabricApiVersion="$(prop fabricApiVersion)"
-          javaVersion="${javaVersion:-17}"
-          fabricApiVersion="${fabricApiVersion%%+*}"
-
-          IFS='.' read -r mcMajor mcMinor mcPatch <<< "$minecraftVersion"
-          mcMinor="${mcMinor:-0}"
-          mcPatch="${mcPatch:-0}"
-          if (( mcMajor > 26 || (mcMajor == 26 && mcMinor >= 1) || (mcMajor == 1 && mcMinor == 21 && mcPatch >= 11) )); then
-            supportsGameTestServer=true
-          else
-            supportsGameTestServer=false
-          fi
-
-          echo "mc=$minecraftVersion" >> "$GITHUB_OUTPUT"
-          echo "java=$javaVersion" >> "$GITHUB_OUTPUT"
-          echo "fabric_api=${fabricApiVersion:-none}" >> "$GITHUB_OUTPUT"
-          echo "supports_game_test_server=$supportsGameTestServer" >> "$GITHUB_OUTPUT"
-
-          if [[ "$loader" == "neo" ]]; then
-            echo "modloader=neoforge" >> "$GITHUB_OUTPUT"
-            echo "mc_runtime_test=neoforge" >> "$GITHUB_OUTPUT"
-            echo "regex=.*neoforge.*" >> "$GITHUB_OUTPUT"
-          else
-            echo "modloader=$loader" >> "$GITHUB_OUTPUT"
-            echo "mc_runtime_test=${loader/forge/lexforge}" >> "$GITHUB_OUTPUT"
-            echo "regex=.*$loader.*" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Build with Gradle
         run: chmod u+x ./gradlew && ./gradlew ":${{ matrix.subproject }}:build"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
-        if: ${{ !endsWith(matrix.subproject, 'common') }}
         with:
           path: |
             ${{ matrix.subproject }}/build/libs/
@@ -123,12 +89,12 @@ jobs:
 
       # Fabric Game Tests are run implicitly by the build task.
       - name: Run NeoForge/Forge Game Tests
-        if: ${{ !endsWith(matrix.subproject, 'common') && steps.runtime.outputs.supports_game_test_server == 'true' && (endsWith(matrix.subproject, 'neo') || endsWith(matrix.subproject, 'forge')) }}
+        if: ${{ matrix.run_game_test_server }}
         timeout-minutes: 10
         run: ./gradlew ":${{ matrix.subproject }}:runGameTestServer"
 
       - name: Run Server
-        if: ${{ !endsWith(matrix.subproject, 'common') && steps.runtime.outputs.supports_game_test_server != 'true' }}
+        if: ${{ matrix.run_server }}
         timeout-minutes: 10
         run: |
           mkdir -p "${{ matrix.subproject }}/run"
@@ -136,16 +102,14 @@ jobs:
           echo stop | ./gradlew ":${{ matrix.subproject }}:runServer"
 
       - name: Setup runtime JDK
-        if: ${{ !endsWith(matrix.subproject, 'common') }}
         uses: actions/setup-java@v5
         with:
-          java-version: ${{ steps.runtime.outputs.java }}
+          java-version: ${{ matrix.java }}
           distribution: 'temurin'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Stage mod for runtime test client
-        if: ${{ !endsWith(matrix.subproject, 'common') }}
         run: |
           mkdir -p run/mods
           find "${{ matrix.subproject }}/build/libs" -maxdepth 1 -type f -name '*.jar' \
@@ -161,13 +125,12 @@ jobs:
           ls -la run/mods
 
       - name: Run MC runtime test client
-        if: ${{ !endsWith(matrix.subproject, 'common') }}
         timeout-minutes: 10
         uses: headlesshq/mc-runtime-test@4.4.0
         with:
-          mc: ${{ steps.runtime.outputs.mc }}
-          modloader: ${{ steps.runtime.outputs.modloader }}
-          regex: ${{ steps.runtime.outputs.regex }}
-          mc-runtime-test: ${{ steps.runtime.outputs.mc_runtime_test }}
-          java: ${{ steps.runtime.outputs.java }}
-          fabric-api: ${{ steps.runtime.outputs.fabric_api }}
+          mc: ${{ matrix.minecraft }}
+          modloader: ${{ matrix.modloader }}
+          regex: ${{ matrix.artifact_regex }}
+          mc-runtime-test: ${{ matrix.mc_runtime_test }}
+          java: ${{ matrix.java }}
+          fabric-api: ${{ matrix.fabric_api }}
