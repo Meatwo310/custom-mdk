@@ -31,6 +31,7 @@ Only the subprojects included in `settings.gradle.kts` are configured. Remove un
 - `src/configClient`: client-only config screen helpers for loaders that expose a config UI.
 - `buildSrc`: convention plugins that define loader-specific Gradle behavior.
 - `gradle.properties`: mod metadata shared by generated `mods.toml`, `neoforge.mods.toml`, and `fabric.mod.json` files.
+- `version.txt`: the mod version used for project versions, artifact names, and generated metadata.
 
 ## Setup
 
@@ -38,13 +39,13 @@ Only the subprojects included in `settings.gradle.kts` are configured. Remove un
 2. If you want to keep receiving template updates, initialize upstream tracking
    before regular development. See [Receiving Upstream Updates](#receiving-upstream-updates).
 3. Edit `settings.gradle.kts` and remove unused subprojects to reduce Gradle configuration time and cache usage.
-4. Edit `gradle.properties` for your mod id, name, version, group, license, authors, URLs, and Fabric entry points.
+4. Edit `gradle.properties` for your mod id, name, group, license, authors, URLs, and Fabric entry points, and edit `version.txt` for your mod version.
 5. Update Java package names, `Constants`, entry points, mixin config names, and language assets from `examplemod` to your mod id.
 6. Create a root `README.md` and `LICENSE` for your mod. Keep `docs/*.md` unchanged if you want future template updates to merge cleanly.
 
 ## Generated Metadata
 
-Fabric `fabric.mod.json` files are generated from shared values in `gradle.properties` and the Fabric convention plugin. The convention provides common fields such as the mod id, version, authors, contact URLs, environment, entry points, Java requirement, Minecraft requirement, Fabric API dependency, and optional Forge Config API Port dependency.
+Fabric `fabric.mod.json` files are generated from shared values in `gradle.properties`, `version.txt`, and the Fabric convention plugin. The convention provides common fields such as the mod id, version, authors, contact URLs, environment, entry points, Java requirement, Minecraft requirement, Fabric API dependency, and optional Forge Config API Port dependency.
 
 Each `<minecraft>-fabric/src/main/templates/fabric.mod.json` file is a small override JSON. Values written there are merged over the generated defaults, so use it for target-specific metadata or extra dependencies without duplicating the common metadata. Nested objects such as `depends` are merged recursively.
 

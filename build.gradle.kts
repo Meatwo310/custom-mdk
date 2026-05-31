@@ -97,10 +97,15 @@ with(System.getProperties()) {
     println("Configuring with Java: $version, JVM: $vmVersion ($vendor), Arch: $arch")
 }
 
+val modVersion = providers.fileContents(layout.projectDirectory.file("version.txt"))
+    .asText
+    .map { it.trim() }
+    .get()
+
 subprojects {
-    val modVersion: String by project
     val modGroupId: String by project
 
+    extensions.extraProperties["modVersion"] = modVersion
     version = modVersion
     group = modGroupId
 
