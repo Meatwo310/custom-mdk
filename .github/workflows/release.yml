@@ -2,6 +2,17 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      bump:
+        description: Version bump type
+        required: true
+        type: choice
+        options:
+          - auto
+          - none
+          - patch
+          - minor
+          - major
 
 permissions:
   contents: write
@@ -20,6 +31,68 @@ jobs:
         with:
           fetch-depth: 0
           fetch-tags: true
+
+      - name: Bump release version
+        env:
+          BUMP: ${{ inputs.bump }}
+        run: |
+          case "$BUMP" in
+            auto)
+              LEVEL=patch
+              PREVIOUS_TAG=$(git tag --list 'v[0-9]*' --sort=-version:refname | head -n 1)
+              RANGE=${PREVIOUS_TAG:+"$PREVIOUS_TAG.."}HEAD
+              CONVENTIONAL_COMMIT_REGEX='^([[:alnum:]_-]+)(\([^)]*\))?(!)?:'
+
+              while IFS= read -r COMMIT; do
+                SUBJECT=$(git show --no-patch --format=%s "$COMMIT")
+                if [[ ! "$SUBJECT" =~ $CONVENTIONAL_COMMIT_REGEX ]]; then
+                  continue
+                fi
+
+                TYPE=${BASH_REMATCH[1]}
+                BREAKING_MARKER=${BASH_REMATCH[3]}
+                if [[ "$TYPE" == mdk ]]; then
+                  continue
+                fi
+
+                BODY=$(git show --no-patch --format=%B "$COMMIT")
+                if [[ -n "$BREAKING_MARKER" ]] || grep -Eq '^BREAKING[ -]CHANGE:' <<< "$BODY"; then
+                  LEVEL=major
+                  break
+                fi
+                if [[ "$TYPE" == feat ]]; then
+                  LEVEL=minor
+                fi
+              done < <(git rev-list "$RANGE")
+
+              echo "Automatically selected $LEVEL bump."
+              ;;
+            none)
+              echo "Skipping version bump."
+              exit 0
+              ;;
+            patch) LEVEL=patch ;;
+            minor) LEVEL=minor ;;
+            major) LEVEL=major ;;
+            *)
+              echo "::error::Unsupported bump type: $BUMP"
+              exit 1
+              ;;
+          esac
+
+          RELEASE_VERSION=$(npx --yes semver@7.8.1 "$(tr -d '[:space:]' < version.txt)" --increment "$LEVEL")
+          RELEASE_TAG=v$RELEASE_VERSION
+          if git rev-parse --verify --quiet "refs/tags/$RELEASE_TAG"; then
+            echo "::error::Release tag $RELEASE_TAG already exists."
+            exit 1
+          fi
+          echo "$RELEASE_VERSION" > version.txt
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add version.txt
+          git commit -m "release: $RELEASE_VERSION"
+          git push origin "HEAD:$GITHUB_REF_NAME"
 
       - name: Read release version
         run: |
@@ -105,7 +178,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag "$RELEASE_TAG" "$GITHUB_SHA"
+          git tag "$RELEASE_TAG" HEAD
           git push origin "$RELEASE_TAG"
 
       - name: Create GitHub Release
