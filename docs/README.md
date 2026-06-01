@@ -200,6 +200,35 @@ PlatformConfigRegistrar.registerAll(modContainer, VersionedConfigSpec.bindAll(co
 
 The build workflow detects subprojects from `settings.gradle.kts`, builds each one independently, uploads loader artifacts, runs the available server or game-test smoke checks, and then launches a headless client runtime test with the produced jars. Note: Fabric Game Tests are configured through Fabric Loom and run as part of the Fabric `build` task.
 
+### Release CI
+
+The Release workflow builds every included platform project, collects the
+distribution jars, generates release notes from the commits since the latest
+`v*` tag, creates a new tag, and publishes a GitHub Release with the jars
+attached.
+
+To publish a release:
+
+1. Open **Actions** > **Release** > **Run workflow** on GitHub.
+2. Select the branch to release.
+3. Choose a version bump type and run the workflow.
+
+The available bump types are:
+
+| Type | Behavior |
+|------|----------|
+| `auto` | Select `major` for a breaking change (`!` or `BREAKING CHANGE:`), `minor` for `feat`, or `patch` otherwise. Commits with the `mdk` type are ignored. |
+| `none` | Publish the version already stored in `version.txt` without changing it. Commit and push the intended version before running the workflow. |
+| `patch` | Increment the patch version. |
+| `minor` | Increment the minor version. |
+| `major` | Increment the major version. |
+
+For any bump type except `none`, the workflow updates `version.txt`, commits the
+new version as `release: <version>`, and pushes the commit to the selected
+branch before building the release. Release notes include breaking changes,
+`feat`, `fix`, and `perf` commits. Template maintenance commits with the `mdk`
+type and other commit types are omitted.
+
 ## Receiving Upstream Updates
 
 Repositories created with GitHub's **Use this template** button do not share Git
