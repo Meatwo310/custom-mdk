@@ -41,7 +41,7 @@ sourceSets.main.get().resources {
 }
 
 base {
-    archivesName = "$modId-$minecraftVersion-neo"
+    archivesName = "$modId-$minecraftVersion-neoforge"
 }
 
 java.toolchain {
