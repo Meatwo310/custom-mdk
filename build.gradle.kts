@@ -58,10 +58,6 @@ tasks.register("writeCiBuildMatrix") {
         if (!javaVersion.matches(Regex("\\d+"))) {
             throw GradleException("Project '$projectName' has invalid javaVersion '$javaVersion'")
         }
-        if (loader == "fabric" && fabricApiVersion == "none") {
-            throw GradleException("Fabric project '$projectName' must define fabricApiVersion")
-        }
-
         mapOf(
             "subproject" to projectName,
             "loader" to loader,

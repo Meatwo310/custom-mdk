@@ -7,7 +7,6 @@ plugins {
 
 val modId: String by project
 val minecraftVersion: String by project
-val fabricApiVersion: String by project
 
 val commonProject = ":$minecraftVersion-common"
 val sharedCommonProject = ":common"
@@ -36,20 +35,4 @@ loom {
 dependencies {
     minecraft("${versionCatalog.module(VersionCatalogLibrary.Minecraft)}:$minecraftVersion")
     implementation(versionCatalog.library(VersionCatalogLibrary.FabricLoader))
-    implementation("${versionCatalog.module(VersionCatalogLibrary.FabricApi)}:$fabricApiVersion")
-}
-
-if (minecraftVersion.supportsGameTestServer()) {
-    fabricApi {
-        val testModId = "$modId-test"
-
-        @Suppress("UnstableApiUsage")
-        configureTests {
-            createSourceSet = true
-            modId = testModId
-            enableGameTests = true
-            enableClientGameTests = true
-            eula = true
-        }
-    }
 }

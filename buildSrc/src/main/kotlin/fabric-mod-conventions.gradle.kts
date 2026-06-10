@@ -42,7 +42,6 @@ fabricModMetadata.depends.putAll(linkedMapOf(
     "fabricloader" to ">=${versionCatalog.version(VersionCatalogVersion.FabricLoader)}",
     "minecraft" to "~$minecraftVersion",
     "java" to ">=$javaVersion",
-    "fabric-api" to "*",
 ))
 
 fun defaultModMetadata(fabricDependencies: Map<String, String>) = linkedMapOf<String, Any?>(
