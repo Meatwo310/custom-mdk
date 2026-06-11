@@ -20,6 +20,8 @@ A Minecraft mod template for multi-version and multi-loader development, powered
 
 Only the subprojects included in `settings.gradle.kts` are configured. Remove unused `include(...)` lines when you do not need a version or loader.
 
+LLM agents and automation should also read [MDK Agent Notes](mdk/README.md) before editing this template.
+
 ## Project Layout
 
 - `common`: shared Java code used by every supported target.
@@ -34,6 +36,8 @@ Only the subprojects included in `settings.gradle.kts` are configured. Remove un
 - `version.txt`: the mod version used for project versions, artifact names, and generated metadata.
 
 ## Setup
+
+Before opening or importing the project in IntelliJ IDEA or Gradle, trim `settings.gradle.kts`: each included project adds Gradle configuration and IDE import load time. Comment out or remove any unused `include(...)` lines first.
 
 1. Click **Use this template** on GitHub to create your repository from this template.
 2. If you want to keep receiving template updates, initialize upstream tracking
@@ -76,7 +80,7 @@ Build a specific platform:
 
 ```sh
 ./gradlew :26.1.2-fabric:build
-./gradlew :26.1.2-forge:build
+./gradlew :26.1.2-neo:build
 ```
 
 Artifacts are written to `<subproject>/build/libs/`. Additional runtime-only mod jars declared through `runtimeMods` are collected in `<subproject>/build/runtimeMods/` for CI.
