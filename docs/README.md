@@ -262,15 +262,35 @@ base work on your repository, and save any local changes first.
 <details>
 <summary>If downstream development has already started</summary>
 
-If you do not want to rewrite history, merge the template history instead:
+If downstream work already exists, replay those commits on top of the template
+history instead:
 
 ```sh
-git merge --allow-unrelated-histories upstream/main
+git switch main
+git branch downstream-before-template-sync
+git switch -c template-sync upstream/main
+template_snapshot=$(git rev-list --max-parents=0 downstream-before-template-sync)
+git cherry-pick --empty=drop "$template_snapshot"..downstream-before-template-sync
 ```
 
-This keeps your existing commits and creates a merge commit that connects the
-two histories. You may need to resolve conflicts when both repositories changed
-the same files.
+This creates a branch with the template history as its base, then applies your
+existing commits in their original order. The initial template snapshot commit
+is excluded because it usually duplicates files that already exist in
+`upstream/main`. If Git reports conflicts, resolve them, run `git add` for the
+resolved files, then continue with `git cherry-pick --continue`. Empty commits
+are dropped when they duplicate the template contents.
+
+After checking that the result is correct, replace `main` with the replayed
+history:
+
+```sh
+git switch main
+git reset --hard template-sync
+git push --force-with-lease origin main
+```
+
+Keep `downstream-before-template-sync` until you have confirmed that the pushed
+branch contains all of your downstream changes.
 
 </details>
 
