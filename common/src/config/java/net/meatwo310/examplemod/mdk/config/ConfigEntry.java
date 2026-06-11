@@ -6,13 +6,13 @@ import java.util.function.*;
 public abstract class ConfigEntry<T> implements Supplier<T>, ConfigElement {
     private final String key, comment;
     private final T defaultValue;
-    private Supplier<T> value;
+    private ConfigEntryBinding<T> value;
 
     protected ConfigEntry(String key, String comment, T defaultValue) {
         this.key = key;
         this.comment = comment;
         this.defaultValue = defaultValue;
-        this.value = () -> defaultValue;
+        this.value = ConfigEntryBinding.unbound(defaultValue);
     }
 
     public String key() {
@@ -27,8 +27,20 @@ public abstract class ConfigEntry<T> implements Supplier<T>, ConfigElement {
         return value.get();
     }
 
-    public void bind(Supplier<T> supplier) {
-        this.value = supplier;
+    public void set(T value) {
+        this.value.set(value);
+    }
+
+    public void flush() {
+        value.flush();
+    }
+
+    public void setAndFlush(T value) {
+        this.value.setAndFlush(value);
+    }
+
+    public void bind(ConfigEntryBinding<T> binding) {
+        this.value = binding;
     }
 
     public T defaultValue() {
@@ -63,7 +75,7 @@ public abstract class ConfigEntry<T> implements Supplier<T>, ConfigElement {
         }
 
         public void bind(IntSupplier supplier) {
-            super.bind(supplier::getAsInt);
+            super.bind(ConfigEntryBinding.readOnly(supplier::getAsInt));
         }
 
         @Override
@@ -83,7 +95,7 @@ public abstract class ConfigEntry<T> implements Supplier<T>, ConfigElement {
         }
 
         public void bind(LongSupplier supplier) {
-            super.bind(supplier::getAsLong);
+            super.bind(ConfigEntryBinding.readOnly(supplier::getAsLong));
         }
 
         @Override
@@ -103,7 +115,7 @@ public abstract class ConfigEntry<T> implements Supplier<T>, ConfigElement {
         }
 
         public void bind(DoubleSupplier supplier) {
-            super.bind(supplier::getAsDouble);
+            super.bind(ConfigEntryBinding.readOnly(supplier::getAsDouble));
         }
 
         @Override
@@ -123,7 +135,7 @@ public abstract class ConfigEntry<T> implements Supplier<T>, ConfigElement {
         }
 
         public void bind(BooleanSupplier supplier) {
-            super.bind(supplier::getAsBoolean);
+            super.bind(ConfigEntryBinding.readOnly(supplier::getAsBoolean));
         }
 
         @Override

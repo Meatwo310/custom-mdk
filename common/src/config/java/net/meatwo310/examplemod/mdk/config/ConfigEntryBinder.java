@@ -49,7 +49,7 @@ public final class ConfigEntryBinder implements ConfigVisitor {
         adapter.comment(entry.comment());
         var value = adapter.defineList(
                 entry.key(), entry.defaultValue(), entry.newElementSupplier(), entry.elementValidator());
-        entry.bind(() -> List.copyOf(value.get()));
+        entry.bind(value);
     }
 
     @Override
@@ -76,19 +76,19 @@ public final class ConfigEntryBinder implements ConfigVisitor {
 
         void pop();
 
-        Supplier<Integer> defineIntInRange(String key, int defaultValue, int min, int max);
+        ConfigEntryBinding<Integer> defineIntInRange(String key, int defaultValue, int min, int max);
 
-        Supplier<Long> defineLongInRange(String key, long defaultValue, long min, long max);
+        ConfigEntryBinding<Long> defineLongInRange(String key, long defaultValue, long min, long max);
 
-        Supplier<Double> defineDoubleInRange(String key, double defaultValue, double min, double max);
+        ConfigEntryBinding<Double> defineDoubleInRange(String key, double defaultValue, double min, double max);
 
-        Supplier<Boolean> defineBoolean(String key, boolean defaultValue);
+        ConfigEntryBinding<Boolean> defineBoolean(String key, boolean defaultValue);
 
-        Supplier<String> defineString(String key, String defaultValue);
+        ConfigEntryBinding<String> defineString(String key, String defaultValue);
 
-        <T> Supplier<? extends List<? extends T>> defineList(
+        <T> ConfigEntryBinding<List<T>> defineList(
                 String key, List<T> defaultValue, Supplier<T> newElementSupplier, Predicate<Object> elementValidator);
 
-        <E extends Enum<E>> Supplier<E> defineEnum(String key, E defaultValue);
+        <E extends Enum<E>> ConfigEntryBinding<E> defineEnum(String key, E defaultValue);
     }
 }

@@ -53,39 +53,50 @@ public final class VersionedConfigSpec {
         }
 
         @Override
-        public Supplier<Integer> defineIntInRange(String key, int defaultValue, int min, int max) {
-            return builder.defineInRange(key, defaultValue, min, max);
+        public ConfigEntryBinding<Integer> defineIntInRange(String key, int defaultValue, int min, int max) {
+            return bindValue(builder.defineInRange(key, defaultValue, min, max));
         }
 
         @Override
-        public Supplier<Long> defineLongInRange(String key, long defaultValue, long min, long max) {
-            return builder.defineInRange(key, defaultValue, min, max);
+        public ConfigEntryBinding<Long> defineLongInRange(String key, long defaultValue, long min, long max) {
+            return bindValue(builder.defineInRange(key, defaultValue, min, max));
         }
 
         @Override
-        public Supplier<Double> defineDoubleInRange(String key, double defaultValue, double min, double max) {
-            return builder.defineInRange(key, defaultValue, min, max);
+        public ConfigEntryBinding<Double> defineDoubleInRange(String key, double defaultValue, double min, double max) {
+            return bindValue(builder.defineInRange(key, defaultValue, min, max));
         }
 
         @Override
-        public Supplier<Boolean> defineBoolean(String key, boolean defaultValue) {
-            return builder.define(key, defaultValue);
+        public ConfigEntryBinding<Boolean> defineBoolean(String key, boolean defaultValue) {
+            return bindValue(builder.define(key, defaultValue));
         }
 
         @Override
-        public Supplier<String> defineString(String key, String defaultValue) {
-            return builder.define(key, defaultValue);
+        public ConfigEntryBinding<String> defineString(String key, String defaultValue) {
+            return bindValue(builder.define(key, defaultValue));
         }
 
         @Override
-        public <T> Supplier<? extends List<? extends T>> defineList(
+        public <T> ConfigEntryBinding<List<T>> defineList(
                 String key, List<T> defaultValue, Supplier<T> newElementSupplier, Predicate<Object> elementValidator) {
-            return builder.defineList(key, defaultValue, newElementSupplier, elementValidator);
+            return bindListValue(builder.defineList(key, defaultValue, newElementSupplier, elementValidator));
         }
 
         @Override
-        public <E extends Enum<E>> Supplier<E> defineEnum(String key, E defaultValue) {
-            return builder.defineEnum(key, defaultValue);
+        public <E extends Enum<E>> ConfigEntryBinding<E> defineEnum(String key, E defaultValue) {
+            return bindValue(builder.defineEnum(key, defaultValue));
+        }
+
+        private static <T> ConfigEntryBinding<T> bindValue(ModConfigSpec.ConfigValue<T> value) {
+            return ConfigEntryBinding.of(value::get, value::set, value::save);
+        }
+
+        private static <T> ConfigEntryBinding<List<T>> bindListValue(ModConfigSpec.ConfigValue<List<? extends T>> value) {
+            return ConfigEntryBinding.of(
+                    () -> List.copyOf(value.get()),
+                    nextValue -> value.set(List.copyOf(nextValue)),
+                    value::save);
         }
     }
 }
