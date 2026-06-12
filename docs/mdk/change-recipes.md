@@ -104,9 +104,9 @@ request explicitly asks for a broad update.
 - Use subproject `gradle.properties` for per-version dependency versions.
 - Add runtime-only mod dependencies in the affected loader project's
   `build.gradle.kts`.
-- For external runtime-test-only jars, use the existing `runtimeMods`
+- For external runtime-test-only jars, use the existing `ciRuntimeMods`
   configuration where appropriate.
-- Build the affected project and confirm `build/runtimeMods` when runtime mods
+- Build the affected project and confirm `build/ciRuntimeMods` when runtime mods
   are expected.
 
 ## Change buildSrc Conventions

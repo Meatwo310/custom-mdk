@@ -1,4 +1,4 @@
-import net.meatwo310.mdk.build.configureRuntimeMods
+import net.meatwo310.mdk.build.configureCiRuntimeMods
 import net.meatwo310.mdk.build.supportsGameTestServer
 
 plugins {
@@ -28,7 +28,7 @@ val loaderVersionRange = project.properties["loaderVersionRange"]?.toString()
 val parchmentMinecraftVersion = project.properties["parchmentMinecraftVersion"]?.toString()
 val parchmentMappingsVersion = project.properties["parchmentMappingsVersion"]?.toString()
 val neoDataRun = project.properties["neoDataRun"]?.toString() ?: "data"
-configureRuntimeMods()
+configureCiRuntimeMods()
 
 dependencies {
     implementation(project(commonProject))

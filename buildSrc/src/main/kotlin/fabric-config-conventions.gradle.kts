@@ -34,11 +34,11 @@ plugins.withId("java-library") {
 plugins.withId("net.fabricmc.fabric-loom") {
     val dependency = "${versionCatalog.module(VersionCatalogLibrary.ForgeConfigApiPortFabric)}:$forgeConfigApiPortVersion"
     dependencies.add("implementation", dependency)
-    dependencies.add("runtimeMods", dependency)
+    dependencies.add("ciRuntimeMods", dependency)
 }
 
 plugins.withId("net.fabricmc.fabric-loom-remap") {
     val dependency = "${versionCatalog.module(VersionCatalogLibrary.ForgeConfigApiPortFabric)}:$forgeConfigApiPortVersion"
     dependencies.add("modImplementation", dependency)
-    dependencies.add("runtimeMods", dependency)
+    dependencies.add("ciRuntimeMods", dependency)
 }

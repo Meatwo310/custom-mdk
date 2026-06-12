@@ -72,7 +72,7 @@ The `Build` workflow ignores docs-only changes. For code changes, it:
 
 - runs `./gradlew --configuration-cache --no-daemon writeCiBuildMatrix`;
 - builds every loader project detected from `settings.gradle.kts`;
-- uploads each loader project's `build/libs` and `build/runtimeMods`;
+- uploads each loader project's `build/libs` and `build/ciRuntimeMods`;
 - runs Forge/NeoForge game tests when supported;
 - otherwise starts a server smoke test;
 - runs `headlesshq/mc-runtime-test` against the built jars.

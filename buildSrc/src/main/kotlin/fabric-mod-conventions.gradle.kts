@@ -26,7 +26,7 @@ val sharedCommonProject = ":common"
 evaluationDependsOn(sharedCommonProject)
 val generatedModMetadataDir = layout.buildDirectory.dir("generated/sources/modMetadata")
 val fabricModMetadata = extensions.create<FabricModMetadataExtension>("fabricModMetadata")
-configureRuntimeMods()
+configureCiRuntimeMods()
 
 dependencies {
     implementation(project(commonProject))

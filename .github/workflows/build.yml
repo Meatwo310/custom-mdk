@@ -84,7 +84,7 @@ jobs:
         with:
           path: |
             ${{ matrix.subproject }}/build/libs/
-            ${{ matrix.subproject }}/build/runtimeMods/
+            ${{ matrix.subproject }}/build/ciRuntimeMods/
           name: artifact-${{ matrix.subproject }}
 
       # Fabric Game Tests are run implicitly by the build task.
@@ -117,8 +117,8 @@ jobs:
             ! -name '*-javadoc.jar' \
             ! -name '*-dev.jar' \
             -exec cp {} run/mods/ \;
-          if [[ -d "${{ matrix.subproject }}/build/runtimeMods" ]]; then
-            find "${{ matrix.subproject }}/build/runtimeMods" -maxdepth 1 -type f -name '*.jar' \
+          if [[ -d "${{ matrix.subproject }}/build/ciRuntimeMods" ]]; then
+            find "${{ matrix.subproject }}/build/ciRuntimeMods" -maxdepth 1 -type f -name '*.jar' \
               -exec cp {} run/mods/ \;
           fi
           test -n "$(find run/mods -maxdepth 1 -type f -name '*.jar' -print -quit)"

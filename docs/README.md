@@ -83,7 +83,7 @@ Build a specific platform:
 ./gradlew :26.1.2-neo:build
 ```
 
-Artifacts are written to `<subproject>/build/libs/`. Additional runtime-only mod jars declared through `runtimeMods` are collected in `<subproject>/build/runtimeMods/` for CI.
+Artifacts are written to `<subproject>/build/libs/`. Additional runtime-only mod jars declared through `ciRuntimeMods` are collected in `<subproject>/build/ciRuntimeMods/` for CI.
 
 ## Running
 
@@ -118,7 +118,7 @@ Apply the matching config convention plugin in addition to the normal loader con
 | Fabric loader project | `fabric-config-conventions` |
 | NeoForge loader project | `neoforge-config-conventions` |
 
-These conventions wire the `config` and `configClient` outputs into the jar and into the appropriate compile/runtime classpaths. Fabric config projects also add Forge Config API Port to `implementation`/`modImplementation`, `runtimeMods`, and generated `fabric.mod.json` dependencies.
+These conventions wire the `config` and `configClient` outputs into the jar and into the appropriate compile/runtime classpaths. Fabric config projects also add Forge Config API Port to `implementation`/`modImplementation`, `ciRuntimeMods`, and generated `fabric.mod.json` dependencies.
 
 ```java
 public final class ServerConfig {

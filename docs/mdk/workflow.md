@@ -116,7 +116,7 @@ must have:
 - a matching `<minecraftVersion>-common` project;
 - a numeric `javaVersion` when set;
 - buildable jars under `<project>/build/libs`;
-- optional runtime jars staged by `collectRuntimeMods`.
+- optional runtime jars staged by `collectCiRuntimeMods`.
 
 Run `writeCiBuildMatrix` whenever those assumptions might have changed.
 
