@@ -55,7 +55,9 @@ Keep edits small and paired:
 - If metadata structure changes, update the relevant template and convention
   plugin inputs together.
 - If adding dependencies, update the relevant subproject `build.gradle.kts` and
-  version property or `libs.versions.toml` entry.
+  version property or `libs.versions.toml` entry. Use the dependency table in
+  `docs/README.md` to choose between compile, local runtime, CI runtime staging,
+  and production metadata changes.
 - If adding a project, update `settings.gradle.kts` and make sure the project
   name follows `<mc>-<loader>` or `<mc>-common`.
 

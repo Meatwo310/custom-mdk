@@ -101,6 +101,41 @@ Run a server:
 ./gradlew :26.1.2-neo:runServer
 ```
 
+## Dependencies
+
+Use `gradle/libs.versions.toml` for shared dependency aliases, and keep target
+versions in the affected subproject's `gradle.properties`.
+
+Use `req(version)` for normal version requests and `pin(version)` only when
+Gradle must reject any other selected version:
+
+```kotlin
+import net.meatwo310.mdk.build.req
+
+val modmenuVersion: String by project
+
+dependencies {
+    modRuntimeOnly(libs.modmenu, req(modmenuVersion))
+    // Exactly the same as:
+    //   modRuntimeOnly(libs.modmenu) { version { require(modmenuVersion) } }
+}
+```
+
+Choose the dependency configuration by what needs the dependency:
+
+| Need | Fabric 1.21.11 and older | Fabric 26.1 and newer | Legacy Forge | NeoForge |
+|------|---------------------------|------------------------|--------------|----------|
+| Code imports dependency classes | `modImplementation(...)` | `implementation(...)` | `implementation(...)` | `implementation(...)` |
+| Local `runClient` / `runServer` only | `modRuntimeOnly(...)` | `runtimeOnly(...)` | `modRuntimeOnly(...)` | `runtimeOnly(...)` |
+| GitHub Actions runtime test must install the jar | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` |
+| Code imports it and CI must install it | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` |
+
+`ciRuntimeMods` does not affect local `runClient` / `runServer` classpaths. It only stages direct jar
+files into `<subproject>/build/ciRuntimeMods` for the GitHub Actions runtime
+test. Production loader metadata is also separate: add Fabric `depends`,
+Legacy Forge `mods.toml` dependencies, or NeoForge `neoforge.mods.toml`
+dependencies only when users must install the dependency with the released mod.
+
 ## Configuration System
 
 Shared config entries live in `common/src/config/java/.../config`. Define entries with `ConfigEntryBuilder`, collect them as `ConfigEntries`, and expose each file through a `ConfigDeclaration` in `ModConfigs`.

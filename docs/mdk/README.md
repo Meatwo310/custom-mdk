@@ -51,6 +51,8 @@ Projects included by default in this template:
 - `gradle/libs.versions.toml` stores shared plugin and dependency aliases.
 - `settings.gradle.kts` controls which projects exist in the current repository
   and which loader projects are included in the CI build matrix.
+- `docs/README.md` contains the dependency configuration table. Keep LLM-facing
+  dependency notes aligned with that section when dependency rules change.
 
 ## Generated Metadata
 

@@ -100,12 +100,15 @@ request explicitly asks for a broad update.
 
 ## Change Dependencies
 
+- Read the `Dependencies` section in `docs/README.md` first.
 - Use `gradle/libs.versions.toml` for shared aliases.
 - Use subproject `gradle.properties` for per-version dependency versions.
-- Add runtime-only mod dependencies in the affected loader project's
-  `build.gradle.kts`.
-- For external runtime-test-only jars, use the existing `ciRuntimeMods`
-  configuration where appropriate.
+- Add local `runClient` / `runServer` dependencies in the affected loader
+  project's `build.gradle.kts`.
+- Use `ciRuntimeMods` for jars that GitHub Actions runtime tests must copy into
+  `run/mods`; do not use it as a local run dependency.
+- If code references dependency classes, add a compile dependency as well as any
+  runtime or CI staging dependency that target needs.
 - Build the affected project and confirm `build/ciRuntimeMods` when runtime mods
   are expected.
 
