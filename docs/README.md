@@ -299,7 +299,7 @@ PlatformConfigRegistrar.registerAll(modContainer, VersionedConfigSpec.bindAll(co
 
 ## GitHub Actions
 
-The build workflow detects subprojects from `settings.gradle.kts`, builds each one independently, uploads loader artifacts, runs the available server or game-test smoke checks, and then launches a headless client runtime test with the produced jars. Note: Fabric Game Tests are configured through Fabric Loom and run as part of the Fabric `build` task.
+The build workflow detects subprojects from `settings.gradle.kts`, builds each one independently, uploads loader artifacts, runs the available server or game-test smoke checks, verifies the `runServer` shutdown log when that smoke test is used, and then launches a headless client runtime test with the produced jars. Note: Fabric Game Tests are configured through Fabric Loom and run as part of the Fabric `build` task.
 
 ### Release CI
 

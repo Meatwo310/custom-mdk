@@ -104,7 +104,8 @@ test:
 ```bash
 mkdir -p <project>/run
 printf 'eula=true\n' > <project>/run/eula.txt
-echo stop | ./gradlew :<project>:runServer
+printf 'stop\n' | ./gradlew :<project>:runServer 2>&1 | tee runServer.log
+grep -E '\[Server thread/INFO\].*Stopping server$' runServer.log
 ```
 
 ## 6. Match CI Expectations

@@ -79,7 +79,7 @@ The `Build` workflow ignores docs-only changes. For code changes, it:
 - builds every loader project detected from `settings.gradle.kts`;
 - uploads each loader project's `build/libs` and `build/ciRuntimeMods`;
 - runs Forge/NeoForge game tests when supported;
-- otherwise starts a server smoke test;
+- otherwise starts a server smoke test and verifies the shutdown log;
 - runs `headlesshq/mc-runtime-test` against the built jars.
 
 The `Release` workflow is manual. It can bump `version.txt`, build all platform
