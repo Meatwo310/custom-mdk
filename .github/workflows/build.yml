@@ -97,9 +97,12 @@ jobs:
         if: ${{ matrix.run_server }}
         timeout-minutes: 10
         run: |
+          set -o pipefail
           mkdir -p "${{ matrix.subproject }}/run"
           printf 'eula=true\n' > "${{ matrix.subproject }}/run/eula.txt"
-          echo stop | ./gradlew ":${{ matrix.subproject }}:runServer"
+          server_log="${RUNNER_TEMP}/runServer-${{ matrix.subproject }}.log"
+          printf 'stop\n' | ./gradlew ":${{ matrix.subproject }}:runServer" 2>&1 | tee "$server_log"
+          grep -E '\[Server thread/INFO\].*Stopping server$' "$server_log"
 
       - name: Setup runtime JDK
         uses: actions/setup-java@v5
