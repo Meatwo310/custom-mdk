@@ -49,6 +49,7 @@ fun Project.addConfigOutputTo(sourceSetName: String, vararg configSourceSets: So
         for (configSourceSet in configSourceSets) {
             target.compileClasspath += configSourceSet.output
             target.runtimeClasspath += configSourceSet.output
+            target.output.dir(configSourceSet.output)
         }
     }
 }
