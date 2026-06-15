@@ -82,9 +82,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          path: |
-            ${{ matrix.subproject }}/build/libs/
-            ${{ matrix.subproject }}/build/ciRuntimeMods/
+          path: ${{ matrix.subproject }}/build/libs/
           name: artifact-${{ matrix.subproject }}
 
       # Fabric Game Tests are run implicitly by the build task.
