@@ -139,6 +139,16 @@ val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata"
     into(layout.buildDirectory.dir("generated/sources/modMetadata"))
 }
 
+sourceSets.main.get().resources.srcDir(generateModMetadata)
+
+// ForgeGradle 7 scans each SourceSet output directory as a mod root.
+// Keep generated metadata and compiled @Mod classes in the same root for dev runs.
+val mainClassesDir = layout.buildDirectory.dir("classes/java/main")
+sourceSets.main.get().output.setResourcesDir(mainClassesDir.get().asFile)
+tasks.named<ProcessResources>("processResources") {
+    destinationDir = mainClassesDir.get().asFile
+}
+
 tasks.jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from(generateModMetadata)
