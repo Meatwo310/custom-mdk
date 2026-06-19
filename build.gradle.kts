@@ -37,6 +37,10 @@ tasks.register("writeCiBuildMatrix") {
             ?.toString()
             ?.substringBefore("+")
             ?: "none"
+        val runMcRuntimeTest = targetProject.findProperty("ciMcRuntimeTest")
+            ?.toString()
+            ?.toBooleanStrictOrNull()
+            ?: true
         val modloader = if (loader == "neo") "neoforge" else loader
         val mcRuntimeTest = when (loader) {
             "forge" -> "lexforge"
@@ -67,6 +71,7 @@ tasks.register("writeCiBuildMatrix") {
             "supports_game_test_server" to supportsGameTestServer,
             "run_game_test_server" to (supportsGameTestServer && loader in setOf("forge", "neo")),
             "run_server" to !supportsGameTestServer,
+            "run_mc_runtime_test" to runMcRuntimeTest,
             "modloader" to modloader,
             "mc_runtime_test" to mcRuntimeTest,
             "artifact_regex" to ".*$loader.*",

@@ -103,6 +103,7 @@ jobs:
           grep -E '\[Server thread/INFO\].*Stopping server$' "$server_log"
 
       - name: Setup runtime JDK
+        if: ${{ matrix.run_mc_runtime_test }}
         uses: actions/setup-java@v5
         with:
           java-version: ${{ matrix.java }}
@@ -111,6 +112,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Stage mod for runtime test client
+        if: ${{ matrix.run_mc_runtime_test }}
         run: |
           mkdir -p run/mods
           find "${{ matrix.subproject }}/build/libs" -maxdepth 1 -type f -name '*.jar' \
@@ -126,6 +128,7 @@ jobs:
           ls -la run/mods
 
       - name: Run MC runtime test client
+        if: ${{ matrix.run_mc_runtime_test }}
         timeout-minutes: 10
         uses: headlesshq/mc-runtime-test@4.4.0
         with:
