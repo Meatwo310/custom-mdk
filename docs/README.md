@@ -4,20 +4,24 @@ A Minecraft mod template for multi-version and multi-loader development, powered
 
 ## Supported Platforms
 
-| Minecraft | Fabric | Legacy Forge | NeoForge | Quilt |
-|-----------|:------:|:------------:|:--------:|:-----:|
+| Minecraft | Fabric | Forge | NeoForge | Quilt |
+|-----------|:------:|:-----:|:--------:|:-----:|
 | <1.18.2   |   🚫   |      🚫      |    -     |  🚫   |
 | 1.18.2    |   ⏳    |      ✅       |    -     |  🚫   |
 | 1.19.2    |   ⏳    |      ✅       |    -     |  🚫   |
 | 1.20.1    |   ✅    |      ✅       |    🚫    |  🚫   |
-| 1.21.1    |   ✅    |      ⏳       |    ✅     |  🚫   |
-| 1.21.8    |   ✅    |      ⏳       |    ❌     |  🚫   |
-| 1.21.11   |   ✅    |      ⏳       |    ❌     |  🚫   |
+| 1.21.1    |   ✅    |      ✅       |    ✅     |  🚫   |
+| 1.21.8    |   ✅    |      ✅       |    ❌     |  🚫   |
+| 1.21.11   |   ✅    |      ✅       |    ❌     |  🚫   |
 | 26.1      |   ✅    |      ❌       |    ✅     |  🚫   |
 | 26.1.2    |   🌟   |      ❌       |    🌟    |  🚫   |
 | 26.2      |   ✅   |      🚫       |    ✅    |  🚫   |
 
 🌟Primary support | ✅ Supported | 🚧 Partial support | ⏳ Planned | ❌ Not supported yet | 🚫 Unsupported
+
+`<minecraft>-forge` is Legacy Forge on 1.20.1 and earlier, and ForgeGradle 7
+on 1.21.x and newer. The build matrix still treats it as one Forge family, but
+the convention plugins differ.
 
 Only the subprojects included in `settings.gradle.kts` are configured. Remove unused `include(...)` lines when you do not need a version or loader.
 
@@ -28,7 +32,8 @@ LLM agents and automation should also read [MDK Agent Notes](mdk/README.md) befo
 - `common`: shared Java code used by every supported target.
 - `<minecraft>-common`: version-specific shared code. Older versions use the Legacy Forge toolchain; 1.21+ and 26.x use NeoForm through NeoForge ModDev.
 - `<minecraft>-fabric`: Fabric loader project.
-- `<minecraft>-forge`: Legacy Forge loader project.
+- `<minecraft>-forge`: Forge loader project. Use `legacyforge-mod-conventions`
+  on 1.20.1 and earlier, and `forge-mod-conventions` on 1.21.x and newer.
 - `<minecraft>-neo`: NeoForge loader project.
 - `src/config`: config-related common code that is packaged into the jar but kept out of the default main source set.
 - `src/configClient`: client-only config screen helpers for loaders that expose a config UI.
@@ -38,7 +43,7 @@ LLM agents and automation should also read [MDK Agent Notes](mdk/README.md) befo
 
 ## Setup
 
-Before opening or importing the project in IntelliJ IDEA or Gradle, trim `settings.gradle.kts`: each included project adds Gradle configuration and IDE import load time. Comment out or remove any unused `include(...)` lines first.
+Before opening or importing the project in IntelliJ IDEA or Gradle, trim `settings.gradle.kts`: each included project adds Gradle configuration and IDE import load time, and the CI matrix is derived from those same `include(...)` lines. Comment out or remove any unused entries first.
 
 1. Click **Use this template** on GitHub to create your repository from this template.
 2. If you want to keep receiving template updates, initialize upstream tracking
@@ -124,17 +129,17 @@ dependencies {
 
 Choose the dependency configuration by what needs the dependency:
 
-| Need | Fabric 1.21.11 and older | Fabric 26.1 and newer | Legacy Forge | NeoForge |
-|------|---------------------------|------------------------|--------------|----------|
-| Code imports dependency classes | `modImplementation(...)` | `implementation(...)` | `implementation(...)` | `implementation(...)` |
-| Local `runClient` / `runServer` only | `modRuntimeOnly(...)` | `runtimeOnly(...)` | `modRuntimeOnly(...)` | `runtimeOnly(...)` |
-| GitHub Actions runtime test must install the jar | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` |
-| Code imports it and CI must install it | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` |
+| Need | Fabric 1.21.11 and older | Fabric 26.1 and newer | Legacy Forge | ForgeGradle 7 Forge | NeoForge |
+|------|---------------------------|------------------------|--------------|---------------------|----------|
+| Code imports dependency classes | `modImplementation(...)` | `implementation(...)` | `implementation(...)` | `implementation(...)` | `implementation(...)` |
+| Local `runClient` / `runServer` only | `modRuntimeOnly(...)` | `runtimeOnly(...)` | `modRuntimeOnly(...)` | `runtimeOnly(...)` | `runtimeOnly(...)` |
+| GitHub Actions runtime test must install the jar | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` |
+| Code imports it and CI must install it | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` |
 
 `ciRuntimeMods` does not affect local `runClient` / `runServer` classpaths. It only stages direct jar
 files into `<subproject>/build/ciRuntimeMods` for the GitHub Actions runtime
 test. Production loader metadata is also separate: add Fabric `depends`,
-Legacy Forge `mods.toml` dependencies, or NeoForge `neoforge.mods.toml`
+Forge `mods.toml` dependencies, or NeoForge `neoforge.mods.toml`
 dependencies only when users must install the dependency with the released mod.
 
 ## Configuration System
@@ -151,6 +156,7 @@ Apply the matching config convention plugin in addition to the normal loader con
 | Legacy Forge version common | `legacyforge-common-config-conventions` |
 | NeoForge version common | `neoforge-common-config-conventions` |
 | Legacy Forge loader project | `legacyforge-config-conventions` |
+| ForgeGradle 7 Forge loader project | `forge-config-conventions` |
 | Fabric loader project | `fabric-config-conventions` |
 | NeoForge loader project | `neoforge-config-conventions` |
 
@@ -265,7 +271,7 @@ The common config declarations are loader-neutral. Each platform provides the de
 | Target                 | Required config dependency                            | Registration                                     | Optional config screen dependency                                                                                                                        |
 |------------------------|-------------------------------------------------------|--------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
 | NeoForge platforms     | NeoForge config API from the loader                   | `ModContainer#registerConfig`                    | none; the config screen is provided by NeoForge directly                                                                                                 |
-| Legacy Forge platforms | Forge config API from the loader                      | `ModLoadingContext` / `FMLJavaModLoadingContext` | [Configured](https://www.curseforge.com/minecraft/mc-mods/configured) or [Forge Config Screens](https://modrinth.com/mod/forge-config-screens)           |
+| Forge platforms        | Forge config API from the loader                      | `ModLoadingContext` / `FMLJavaModLoadingContext` | [Configured](https://www.curseforge.com/minecraft/mc-mods/configured) or [Forge Config Screens](https://modrinth.com/mod/forge-config-screens)           |
 | Fabric platforms       | Forge Config API Port, declared per Minecraft version | Forge Config API Port registry                   | [ModMenu](https://modrinth.com/mod/modmenu/) for the mod list entry; [Forge Config Screens](https://modrinth.com/mod/forge-config-screens) on <=mc1.20.1 |
 
 Because of this, the same `ConfigDeclaration` list can be shared from `common`, extended by a version-specific common project, and then bound by each platform to the dependency it actually runs with.
@@ -300,7 +306,13 @@ PlatformConfigRegistrar.registerAll(modContainer, VersionedConfigSpec.bindAll(co
 
 ## GitHub Actions
 
-The build workflow detects subprojects from `settings.gradle.kts`, builds each one independently, uploads loader artifacts, runs the available server or game-test smoke checks, verifies the `runServer` shutdown log when that smoke test is used, and then launches a headless client runtime test with the produced jars. Note: Fabric Game Tests are configured through Fabric Loom and run as part of the Fabric `build` task.
+The build workflow derives its matrix from the `include(...)` entries in
+`settings.gradle.kts`, builds each one independently, uploads loader
+artifacts, runs the available server or game-test smoke checks, verifies the
+`runServer` shutdown log when that smoke test is used, and then launches a
+headless client runtime test with the produced jars. Note: Fabric Game Tests
+are configured through Fabric Loom and run as part of the Fabric `build`
+task.
 
 ### Release CI
 
@@ -406,9 +418,10 @@ files:
 
 - Replace any newly introduced `net.meatwo310.examplemod` package names with
   your mod's namespace.
-- Newly added subprojects are enabled by default when their `include(...)` lines
-  are merged into `settings.gradle.kts`. Remove or comment out projects you do
-  not need before importing, building, or running CI.
+- Newly added subprojects are enabled by default when their `include(...)`
+  lines are merged into `settings.gradle.kts`, and the build matrix picks them
+  up automatically. Remove or comment out projects you do not need before
+  importing, building, or running CI.
 
 ## Template License
 
