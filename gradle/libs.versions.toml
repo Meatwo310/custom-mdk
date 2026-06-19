@@ -3,6 +3,7 @@ fabric-loom = "1.17.11"
 fabric-loader = "0.19.2"
 mixin = "0.8.7"
 neoforged-moddev = "2.0.141"
+forgegradle = "7.0.28"
 slf4j-api = "1.8.0-beta4"
 jspecify = "1.0.0"
 
@@ -16,6 +17,7 @@ forge-config-api-port-fabric = { module = "fuzs.forgeconfigapiport:forgeconfigap
 minecraft = { module = "com.mojang:minecraft" }
 mixin = { module = "org.spongepowered:mixin" }
 neoforged-moddev-gradle = { module = "net.neoforged:moddev-gradle", version.ref = "neoforged-moddev" }
+forgegradle-plugin = { module = "net.minecraftforge.gradle:net.minecraftforge.gradle.gradle.plugin", version.ref = "forgegradle" }
 parchment-data = { module = "org.parchmentmc.data:parchment" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
 jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }

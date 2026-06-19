@@ -22,7 +22,9 @@ The Gradle build is split by Minecraft version and loader:
 - `common` contains cross-version shared code.
 - `<mc>-common` contains code shared by loaders for one Minecraft version.
 - `<mc>-fabric` contains Fabric loader code and metadata for one version.
-- `<mc>-forge` contains Legacy Forge loader code and metadata for one version.
+- `<mc>-forge` contains Forge loader code and metadata for one version.
+- Targets on 1.20.1 and earlier use Legacy Forge conventions, while 1.21.x
+  targets use ForgeGradle 7 conventions.
 - `<mc>-neo` contains NeoForge loader code and metadata for one version.
 - `buildSrc` owns reusable Gradle convention plugins and helper tasks.
 
@@ -36,9 +38,9 @@ Projects included by default in this template:
 - `1.18.2-common`, `1.18.2-forge`
 - `1.19.2-common`, `1.19.2-forge`
 - `1.20.1-common`, `1.20.1-forge`, `1.20.1-fabric`
-- `1.21.1-common`, `1.21.1-neo`, `1.21.1-fabric`
-- `1.21.8-common`, `1.21.8-fabric`
-- `1.21.11-common`, `1.21.11-fabric`
+- `1.21.1-common`, `1.21.1-neo`, `1.21.1-fabric`, `1.21.1-forge`
+- `1.21.8-common`, `1.21.8-fabric`, `1.21.8-forge`
+- `1.21.11-common`, `1.21.11-fabric`, `1.21.11-forge`
 - `26.1-common`, `26.1-fabric`, `26.1-neo`
 - `26.1.2-common`, `26.1.2-fabric`, `26.1.2-neo`
 - `26.2-common`, `26.2-fabric`, `26.2-neo`
@@ -52,7 +54,7 @@ Projects included by default in this template:
   loader versions, Java version, mappings, and runtime dependency versions.
 - `gradle/libs.versions.toml` stores shared plugin and dependency aliases.
 - `settings.gradle.kts` controls which projects exist in the current repository
-  and which loader projects are included in the CI build matrix.
+  and which loader projects are auto-detected into the CI build matrix.
 - `docs/README.md` contains the dependency configuration table. Keep LLM-facing
   dependency notes aligned with that section when dependency rules change.
 - `docs/README.md` contains the user-facing config overview. Keep
@@ -64,7 +66,7 @@ Loader metadata is generated during Gradle resource processing:
 
 - Fabric reads `src/main/templates/fabric.mod.json` and writes generated
   metadata with default dependencies from `fabric-mod-conventions`.
-- Legacy Forge reads `src/main/templates/META-INF/mods.toml`.
+- Forge reads `src/main/templates/META-INF/mods.toml`.
 - NeoForge reads `src/main/templates/META-INF/neoforge.mods.toml`.
 - Forge and NeoForge also include generated resources from
   `src/generated/resources`.
@@ -77,7 +79,8 @@ changing values.
 The `Build` workflow ignores docs-only changes. For code changes, it:
 
 - runs `./gradlew --configuration-cache --no-daemon writeCiBuildMatrix`;
-- builds every loader project detected from `settings.gradle.kts`;
+- builds every loader project detected from the `include(...)` entries in
+  `settings.gradle.kts`;
 - uploads each loader project's `build/libs`;
 - runs Forge/NeoForge game tests when supported;
 - otherwise starts a server smoke test and verifies the shutdown log;

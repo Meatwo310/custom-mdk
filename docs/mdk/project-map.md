@@ -7,7 +7,8 @@ This file maps repository locations to responsibilities.
 `settings.gradle.kts`
 
 - Includes every Gradle subproject that is enabled in this repository.
-- Defines `ciBuildProjectNames` as all children except `common` and `*-common`.
+- Defines `ciBuildProjectNames` from the included subprojects, excluding
+  `common` and `*-common`.
 - Controls which loader projects enter the build and release matrices.
 
 `build.gradle.kts`
@@ -60,9 +61,11 @@ This file maps repository locations to responsibilities.
 
 `<mc>-forge`
 
-- Legacy Forge entrypoint, resources, mixin config, templates, and runtime deps.
-- Uses `legacyforge-mod-conventions`.
-- Applies `legacyforge-config-conventions` when config code is included.
+- Forge entrypoint, resources, mixin config, templates, and runtime deps.
+- Uses `legacyforge-mod-conventions` on 1.20.1 and earlier targets, and
+  `forge-mod-conventions` on 1.21.x ForgeGradle 7 targets.
+- Applies `legacyforge-config-conventions` or `forge-config-conventions`
+  when config code is included.
 
 `<mc>-neo`
 
@@ -97,7 +100,7 @@ This file maps repository locations to responsibilities.
 
 - Loader metadata templates.
 - Fabric: `fabric.mod.json`.
-- Legacy Forge: `META-INF/mods.toml`.
+- Forge: `META-INF/mods.toml`.
 - NeoForge: `META-INF/neoforge.mods.toml`.
 
 `src/generated/resources`
@@ -118,10 +121,10 @@ This file maps repository locations to responsibilities.
 
 - Configure one-version common projects for Legacy Forge or NeoForge tooling.
 
-`legacyforge-mod-conventions`, `neoforge-mod-conventions`
+`legacyforge-mod-conventions`, `forge-mod-conventions`, `neoforge-mod-conventions`
 
 - Configure runs, metadata generation, Java toolchain, archives, and jar
-  contents for Forge and NeoForge.
+  contents for the Forge family and NeoForge.
 
 `fabric-mod-conventions`
 
@@ -160,7 +163,8 @@ This file maps repository locations to responsibilities.
 
 `.github/workflows/build.yml`
 
-- Detects platform projects with `writeCiBuildMatrix`.
+- Detects platform projects from `settings.gradle.kts` via
+  `writeCiBuildMatrix`.
 - Uploads jars and runtime mod jars, then runs game/server/runtime tests.
 
 `.github/workflows/release.yml`
