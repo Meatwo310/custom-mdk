@@ -26,10 +26,10 @@ LLM agents and automation should also read [MDK Agent Notes](mdk/README.md) befo
 ## Project Layout
 
 - `common`: shared Java code used by every supported target.
-- `<minecraft>-common`: version-specific shared code. Older versions use the Legacy Forge toolchain; 1.21+ and 26.x use NeoForm through NeoForge ModDev.
-- `<minecraft>-fabric`: Fabric loader project.
-- `<minecraft>-forge`: Legacy Forge loader project.
-- `<minecraft>-neo`: NeoForge loader project.
+- `<minecraft>/common`: version-specific shared code. Older versions use the Legacy Forge toolchain; 1.21+ and 26.x use NeoForm through NeoForge ModDev.
+- `<minecraft>/fabric`: Fabric loader project.
+- `<minecraft>/forge`: Legacy Forge loader project.
+- `<minecraft>/neo`: NeoForge loader project.
 - `src/config`: config-related common code that is packaged into the jar but kept out of the default main source set.
 - `src/configClient`: client-only config screen helpers for loaders that expose a config UI.
 - `buildSrc`: convention plugins that define loader-specific Gradle behavior.
@@ -52,7 +52,7 @@ Before opening or importing the project in IntelliJ IDEA or Gradle, trim `settin
 
 Fabric `fabric.mod.json` files are generated from shared values in `gradle.properties`, `version.txt`, and the Fabric convention plugin. The convention provides common fields such as the mod id, version, authors, contact URLs, environment, entry points, Java requirement, Minecraft requirement, Fabric API dependency, and optional Forge Config API Port dependency.
 
-Each `<minecraft>-fabric/src/main/templates/fabric.mod.json` file is a small override JSON. Values written there are merged over the generated defaults, so use it for target-specific metadata or extra dependencies without duplicating the common metadata. Nested objects such as `depends` are merged recursively.
+Each `<minecraft>/fabric/src/main/templates/fabric.mod.json` file is a small override JSON. Values written there are merged over the generated defaults, so use it for target-specific metadata or extra dependencies without duplicating the common metadata. Nested objects such as `depends` are merged recursively.
 
 ## Requirements
 
@@ -84,7 +84,7 @@ Build a specific platform:
 ./gradlew :26.1.2-neo:build
 ```
 
-Artifacts are written to `<subproject>/build/libs/`. Additional runtime-only mod jars declared through `ciRuntimeMods` are collected in `<subproject>/build/ciRuntimeMods/` for CI.
+Artifacts are written under each configured project directory, such as `26.1.2/fabric/build/libs/`. Additional runtime-only mod jars declared through `ciRuntimeMods` are collected under that project directory's `build/ciRuntimeMods/` for CI.
 
 ## Running
 
@@ -132,7 +132,7 @@ Choose the dependency configuration by what needs the dependency:
 | Code imports it and CI must install it | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` |
 
 `ciRuntimeMods` does not affect local `runClient` / `runServer` classpaths. It only stages direct jar
-files into `<subproject>/build/ciRuntimeMods` for the GitHub Actions runtime
+files into each configured project directory's `build/ciRuntimeMods` for the GitHub Actions runtime
 test. Production loader metadata is also separate: add Fabric `depends`,
 Legacy Forge `mods.toml` dependencies, or NeoForge `neoforge.mods.toml`
 dependencies only when users must install the dependency with the released mod.
@@ -141,7 +141,7 @@ dependencies only when users must install the dependency with the released mod.
 
 Shared config entries live in `common/src/config/java/.../config`. Define entries with `ConfigEntryBuilder`, collect them as `ConfigEntries`, and expose each file through a `ConfigDeclaration` in `ModConfigs`.
 
-Config support is split into dedicated source sets so projects that do not opt into the config conventions can avoid resolving the extra config dependencies. Shared config declarations belong in `common/src/config`, version-specific config code belongs in `<minecraft>-common/src/config`, loader bindings belong in `<minecraft>-<loader>/src/config`, and client-only config screen helpers belong in `<minecraft>-<loader>/src/configClient`.
+Config support is split into dedicated source sets so projects that do not opt into the config conventions can avoid resolving the extra config dependencies. Shared config declarations belong in `common/src/config`, version-specific config code belongs in `<minecraft>/common/src/config`, loader bindings belong in `<minecraft>/<loader>/src/config`, and client-only config screen helpers belong in `<minecraft>/<loader>/src/configClient`.
 
 Apply the matching config convention plugin in addition to the normal loader convention when a project needs config support:
 
@@ -282,7 +282,7 @@ Fabric uses the same flow, but passes the mod id instead of the `ModContainer`:
 PlatformConfigRegistrar.registerAll(Constants.MODID, VersionedConfigSpec.bindAll(ModConfigs.ALL));
 ```
 
-When a version-specific common project such as `26.1.2-common` needs extra entries, append them before a platform binds the declarations:
+When a version-specific common project such as `26.1.2-common` in `26.1.2/common` needs extra entries, append them before a platform binds the declarations:
 
 ```java
 public final class VersionedModConfigs {
@@ -291,7 +291,7 @@ public final class VersionedModConfigs {
 }
 ```
 
-When a platform such as `26.1.2-fabric` or `26.1.2-neo` needs its own entries, append them in the entry point before calling `PlatformConfigRegistrar`:
+When a platform such as `26.1.2-fabric` or `26.1.2-neo` in `26.1.2/fabric` or `26.1.2/neo` needs its own entries, append them in the entry point before calling `PlatformConfigRegistrar`:
 
 ```java
 var configs = ConfigDeclarations.append(VersionedModConfigs.ALL, ModConfigs.SERVER, NeoServerConfig.ENTRIES);

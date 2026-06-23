@@ -22,10 +22,10 @@ Use the narrowest correct location:
 
 - Put cross-version shared Java in `common/src/main`.
 - Put cross-version shared config declarations in `common/src/config`.
-- Put one-version shared Java in `<mc>-common/src/main`.
-- Put one-version shared config helpers in `<mc>-common/src/config`.
-- Put loader startup code in `<mc>-fabric`, `<mc>-forge`, or `<mc>-neo`.
-- Put Fabric client-only code in `<mc>-fabric/src/client`.
+- Put one-version shared Java in `<mc>/common/src/main`.
+- Put one-version shared config helpers in `<mc>/common/src/config`.
+- Put loader startup code in `<mc>/fabric`, `<mc>/forge`, or `<mc>/neo`.
+- Put Fabric client-only code in `<mc>/fabric/src/client`.
 - Put loader client config UI code in `src/configClient` where that project has
   the source set.
 - Put generated metadata shape in `src/main/templates`.
@@ -38,7 +38,7 @@ Search before changing:
 
 ```bash
 rg "symbol_or_property_name"
-rg --files '<mc>-fabric' '<mc>-forge' '<mc>-neo' '<mc>-common' common
+rg --files '<mc>/fabric' '<mc>/forge' '<mc>/neo' '<mc>/common' common
 ```
 
 For repeated version/loader files, inspect at least one older Forge project, one
@@ -59,7 +59,8 @@ Keep edits small and paired:
   `docs/README.md` to choose between compile, local runtime, CI runtime staging,
   and production metadata changes.
 - If adding a project, update `settings.gradle.kts` and make sure the project
-  name follows `<mc>-<loader>` or `<mc>-common`.
+  name follows `<mc>-<loader>` or `<mc>-common`, with its directory under
+  `<mc>/<loader>` or `<mc>/common`.
 
 Do not edit generated build outputs.
 
@@ -118,7 +119,7 @@ must have:
 - a loader suffix of `fabric`, `forge`, or `neo`;
 - a matching `<minecraftVersion>-common` project;
 - a numeric `javaVersion` when set;
-- buildable jars under `<project>/build/libs`;
+- buildable jars under the configured project directory's `build/libs`;
 - optional runtime jars staged by `collectCiRuntimeMods`.
 
 Run `writeCiBuildMatrix` whenever those assumptions might have changed.

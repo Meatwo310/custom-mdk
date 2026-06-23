@@ -6,7 +6,7 @@ request explicitly asks for a broad update.
 ## Add Shared Mod Code
 
 - Decide whether the code is cross-version (`common/src/main`) or tied to one
-  Minecraft version (`<mc>-common/src/main`).
+  Minecraft version (`<mc>/common/src/main`).
 - Keep package names aligned with existing `net.meatwo310.examplemod` classes.
 - If the shared API changes, update every loader project that calls it.
 - Build representative downstream projects:
@@ -17,8 +17,8 @@ request explicitly asks for a broad update.
 
 ## Add Loader-Specific Code
 
-- Put Fabric code under `<mc>-fabric`, Legacy Forge code under `<mc>-forge`, and
-  NeoForge code under `<mc>-neo`.
+- Put Fabric code under `<mc>/fabric`, Legacy Forge code under `<mc>/forge`, and
+  NeoForge code under `<mc>/neo`.
 - Keep entrypoint names consistent with `gradle.properties` and metadata
   templates.
 - For Fabric client code, use `src/client/java`.
@@ -33,9 +33,9 @@ request explicitly asks for a broad update.
 ## Add Or Change Config
 
 - Put shared declarations in `common/src/config`.
-- Put version-specific config helpers in `<mc>-common/src/config`.
-- Put loader config registrar code in `<mc>-<loader>/src/config`.
-- Put client config UI code in `<mc>-<loader>/src/configClient` when that loader
+- Put version-specific config helpers in `<mc>/common/src/config`.
+- Put loader config registrar code in `<mc>/<loader>/src/config`.
+- Put client config UI code in `<mc>/<loader>/src/configClient` when that loader
   convention supports it.
 - Confirm the affected project applies the right `*-config-conventions` plugin.
 - For Fabric config dependencies, check Forge Config API Port and any runtime UI
@@ -44,8 +44,8 @@ request explicitly asks for a broad update.
 
 ## Add A New Minecraft Version
 
-- Add `<mc>-common`.
-- Add one or more loader projects: `<mc>-fabric`, `<mc>-forge`, `<mc>-neo`.
+- Add `<mc>/common`.
+- Add one or more loader project directories: `<mc>/fabric`, `<mc>/forge`, `<mc>/neo`.
 - Add `include(...)` entries in `settings.gradle.kts`.
 - Add each subproject `build.gradle.kts`.
 - Add each subproject `gradle.properties` with `minecraftVersion` and required
@@ -62,8 +62,8 @@ request explicitly asks for a broad update.
 
 ## Add A New Loader Project For An Existing Version
 
-- Confirm `<mc>-common` exists and is included.
-- Add `<mc>-fabric`, `<mc>-forge`, or `<mc>-neo`.
+- Confirm `<mc>/common` exists and is included.
+- Add `<mc>/fabric`, `<mc>/forge`, or `<mc>/neo`.
 - Add the project to `settings.gradle.kts`.
 - Use the matching convention plugins:
   - Fabric: `fabric-loom-mod-conventions` or `fabric-loom-remap-mod-conventions`

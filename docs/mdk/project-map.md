@@ -40,31 +40,31 @@ This file maps repository locations to responsibilities.
 
 - Cross-version config model and declaration code.
 
-`<mc>-common/src/main`
+`<mc>/common/src/main`
 
 - Java shared by all loaders for one Minecraft version.
 - Use this for API differences tied to a Minecraft version.
 
-`<mc>-common/src/config`
+`<mc>/common/src/config`
 
 - Version-specific config support.
 
 ## Loader Projects
 
-`<mc>-fabric`
+`<mc>/fabric`
 
 - Fabric loader entrypoint and Fabric-specific integration.
 - Uses either `fabric-loom-mod-conventions` or
   `fabric-loom-remap-mod-conventions`.
 - Usually applies `fabric-api-conventions` and `fabric-config-conventions`.
 
-`<mc>-forge`
+`<mc>/forge`
 
 - Legacy Forge entrypoint, resources, mixin config, templates, and runtime deps.
 - Uses `legacyforge-mod-conventions`.
 - Applies `legacyforge-config-conventions` when config code is included.
 
-`<mc>-neo`
+`<mc>/neo`
 
 - NeoForge entrypoint, resources, templates, and runtime deps.
 - Uses `neoforge-mod-conventions`.
@@ -154,7 +154,7 @@ This file maps repository locations to responsibilities.
 `CiRuntimeModsConvention.kt`
 
 - Creates non-transitive `ciRuntimeMods` and `collectCiRuntimeMods`.
-- Stages direct CI runtime-test jars under `<project>/build/ciRuntimeMods`.
+- Stages direct CI runtime-test jars under each configured project directory's `build/ciRuntimeMods`.
 
 ## CI And Release
 

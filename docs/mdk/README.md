@@ -20,10 +20,10 @@ commands change.
 The Gradle build is split by Minecraft version and loader:
 
 - `common` contains cross-version shared code.
-- `<mc>-common` contains code shared by loaders for one Minecraft version.
-- `<mc>-fabric` contains Fabric loader code and metadata for one version.
-- `<mc>-forge` contains Legacy Forge loader code and metadata for one version.
-- `<mc>-neo` contains NeoForge loader code and metadata for one version.
+- `<mc>/common` contains code shared by loaders for one Minecraft version.
+- `<mc>/fabric` contains Fabric loader code and metadata for one version.
+- `<mc>/forge` contains Legacy Forge loader code and metadata for one version.
+- `<mc>/neo` contains NeoForge loader code and metadata for one version.
 - `buildSrc` owns reusable Gradle convention plugins and helper tasks.
 
 The project list for the repository you are editing is defined in
@@ -33,15 +33,15 @@ alone; check that repository's `include(...)` entries.
 Projects included by default in this template:
 
 - `common`
-- `1.18.2-common`, `1.18.2-forge`
-- `1.19.2-common`, `1.19.2-forge`
-- `1.20.1-common`, `1.20.1-forge`, `1.20.1-fabric`
-- `1.21.1-common`, `1.21.1-neo`, `1.21.1-fabric`
-- `1.21.8-common`, `1.21.8-fabric`
-- `1.21.11-common`, `1.21.11-fabric`
-- `26.1-common`, `26.1-fabric`, `26.1-neo`
-- `26.1.2-common`, `26.1.2-fabric`, `26.1.2-neo`
-- `26.2-common`, `26.2-fabric`, `26.2-neo`
+- `1.18.2/common`, `1.18.2/forge`
+- `1.19.2/common`, `1.19.2/forge`
+- `1.20.1/common`, `1.20.1/forge`, `1.20.1/fabric`
+- `1.21.1/common`, `1.21.1/neo`, `1.21.1/fabric`
+- `1.21.8/common`, `1.21.8/fabric`
+- `1.21.11/common`, `1.21.11/fabric`
+- `26.1/common`, `26.1/fabric`, `26.1/neo`
+- `26.1.2/common`, `26.1.2/fabric`, `26.1.2/neo`
+- `26.2/common`, `26.2/fabric`, `26.2/neo`
 
 ## Key Build Inputs
 
@@ -78,7 +78,7 @@ The `Build` workflow ignores docs-only changes. For code changes, it:
 
 - runs `./gradlew --configuration-cache --no-daemon writeCiBuildMatrix`;
 - builds every loader project detected from `settings.gradle.kts`;
-- uploads each loader project's `build/libs`;
+- uploads each loader project's `build/libs` from its configured project directory;
 - runs Forge/NeoForge game tests when supported;
 - otherwise starts a server smoke test and verifies the shutdown log;
 - runs `headlesshq/mc-runtime-test` against the built jars.

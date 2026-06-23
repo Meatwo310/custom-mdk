@@ -64,6 +64,7 @@ tasks.register("writeCiBuildMatrix") {
         }
         mapOf(
             "subproject" to projectName,
+            "project_dir" to targetProject.projectDir.relativeTo(rootProject.projectDir).invariantSeparatorsPath,
             "loader" to loader,
             "minecraft" to minecraftVersion,
             "java" to javaVersion,

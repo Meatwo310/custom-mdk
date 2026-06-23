@@ -54,7 +54,7 @@ Run:
 If `ciRuntimeMods` was changed, confirm staging:
 
 ```bash
-find <mc>-<loader>/build/ciRuntimeMods -maxdepth 1 -type f -name '*.jar'
+find <mc>/<loader>/build/ciRuntimeMods -maxdepth 1 -type f -name '*.jar'
 ```
 
 If project inclusion or CI matrix assumptions changed, run:
