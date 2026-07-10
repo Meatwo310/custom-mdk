@@ -22,7 +22,9 @@ The Gradle build is split by Minecraft version and loader:
 - `common` contains cross-version shared code.
 - `<mc>/common` contains code shared by loaders for one Minecraft version.
 - `<mc>/fabric` contains Fabric loader code and metadata for one version.
-- `<mc>/forge` contains Legacy Forge loader code and metadata for one version.
+- `<mc>/forge` contains Forge loader code and metadata for one version.
+- Targets through 1.20.1 use Legacy Forge conventions, while 1.21.x targets
+  use ForgeGradle 7 conventions.
 - `<mc>/neo` contains NeoForge loader code and metadata for one version.
 - `buildSrc` owns reusable Gradle convention plugins and helper tasks.
 
@@ -33,12 +35,12 @@ alone; check that repository's `include(...)` entries.
 Projects included by default in this template:
 
 - `common`
-- `1.18.2/common`, `1.18.2/forge`
-- `1.19.2/common`, `1.19.2/forge`
+- `1.18.2/common`, `1.18.2/forge`, `1.18.2/fabric`
+- `1.19.2/common`, `1.19.2/forge`, `1.19.2/fabric`
 - `1.20.1/common`, `1.20.1/forge`, `1.20.1/fabric`
-- `1.21.1/common`, `1.21.1/neo`, `1.21.1/fabric`
-- `1.21.8/common`, `1.21.8/fabric`
-- `1.21.11/common`, `1.21.11/fabric`
+- `1.21.1/common`, `1.21.1/forge`, `1.21.1/neo`, `1.21.1/fabric`
+- `1.21.8/common`, `1.21.8/forge`, `1.21.8/neo`, `1.21.8/fabric`
+- `1.21.11/common`, `1.21.11/forge`, `1.21.11/neo`, `1.21.11/fabric`
 - `26.1/common`, `26.1/fabric`, `26.1/neo`
 - `26.1.2/common`, `26.1.2/fabric`, `26.1.2/neo`
 - `26.2/common`, `26.2/fabric`, `26.2/neo`
@@ -64,7 +66,7 @@ Loader metadata is generated during Gradle resource processing:
 
 - Fabric reads `src/main/templates/fabric.mod.json` and writes generated
   metadata with default dependencies from `fabric-mod-conventions`.
-- Legacy Forge reads `src/main/templates/META-INF/mods.toml`.
+- Forge reads `src/main/templates/META-INF/mods.toml`.
 - NeoForge reads `src/main/templates/META-INF/neoforge.mods.toml`.
 - Forge and NeoForge also include generated resources from
   `src/generated/resources`.

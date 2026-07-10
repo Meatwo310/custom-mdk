@@ -25,10 +25,12 @@ fun includeMc(minecraftVersion: String, kind: String) {
 /// 1.18.2 ///
 includeMc("1.18.2", "common")
 includeMc("1.18.2", "forge")
+includeMc("1.18.2", "fabric")
 
 /// 1.19.2 ///
 includeMc("1.19.2", "common")
 includeMc("1.19.2", "forge")
+includeMc("1.19.2", "fabric")
 
 /// 1.20.1 ///
 includeMc("1.20.1", "common")
@@ -37,15 +39,20 @@ includeMc("1.20.1", "fabric")
 
 /// 1.21.1 ///
 includeMc("1.21.1", "common")
+includeMc("1.21.1", "forge")
 includeMc("1.21.1", "neo")
 includeMc("1.21.1", "fabric")
 
 /// 1.21.8 ///
 includeMc("1.21.8", "common")
+includeMc("1.21.8", "forge")
+includeMc("1.21.8", "neo")
 includeMc("1.21.8", "fabric")
 
 /// 1.21.11 ///
 includeMc("1.21.11", "common")
+includeMc("1.21.11", "forge")
+includeMc("1.21.11", "neo")
 includeMc("1.21.11", "fabric")
 
 /// 26.1 ///

@@ -60,9 +60,10 @@ This file maps repository locations to responsibilities.
 
 `<mc>/forge`
 
-- Legacy Forge entrypoint, resources, mixin config, templates, and runtime deps.
-- Uses `legacyforge-mod-conventions`.
-- Applies `legacyforge-config-conventions` when config code is included.
+- Forge entrypoint, resources, mixin config, templates, and runtime deps.
+- Uses `legacyforge-mod-conventions` on targets through 1.20.1, and
+  `forge-mod-conventions` on 1.21.x ForgeGradle 7 targets.
+- Applies `legacyforge-config-conventions` when Legacy Forge config code is included.
 
 `<mc>/neo`
 
@@ -97,7 +98,7 @@ This file maps repository locations to responsibilities.
 
 - Loader metadata templates.
 - Fabric: `fabric.mod.json`.
-- Legacy Forge: `META-INF/mods.toml`.
+- Forge: `META-INF/mods.toml`.
 - NeoForge: `META-INF/neoforge.mods.toml`.
 
 `src/generated/resources`
@@ -118,10 +119,10 @@ This file maps repository locations to responsibilities.
 
 - Configure one-version common projects for Legacy Forge or NeoForge tooling.
 
-`legacyforge-mod-conventions`, `neoforge-mod-conventions`
+`legacyforge-mod-conventions`, `forge-mod-conventions`, `neoforge-mod-conventions`
 
 - Configure runs, metadata generation, Java toolchain, archives, and jar
-  contents for Forge and NeoForge.
+  contents for the Forge family and NeoForge.
 
 `fabric-mod-conventions`
 

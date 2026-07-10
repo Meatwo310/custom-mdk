@@ -1,6 +1,7 @@
 [versions]
 fabric-loom = "1.17.11"
 fabric-loader = "0.19.2"
+forgegradle = "7.0.31"
 mixin = "0.8.7"
 neoforged-moddev = "2.0.141"
 slf4j-api = "1.8.0-beta4"
@@ -10,6 +11,7 @@ jspecify = "1.0.0"
 fabric-api = { module = "net.fabricmc.fabric-api:fabric-api" }
 fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
 fabric-loom = { module = "net.fabricmc:fabric-loom", version.ref = "fabric-loom" }
+forgegradle-plugin = { module = "net.minecraftforge.gradle:net.minecraftforge.gradle.gradle.plugin", version.ref = "forgegradle" }
 forge-config-api-port-common = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common" }
 forge-config-api-port-common-neoforge-api = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi" }
 forge-config-api-port-fabric = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric" }

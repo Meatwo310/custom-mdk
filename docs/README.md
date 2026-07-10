@@ -4,20 +4,23 @@ A Minecraft mod template for multi-version and multi-loader development, powered
 
 ## Supported Platforms
 
-| Minecraft | Fabric | Legacy Forge | NeoForge | Quilt |
-|-----------|:------:|:------------:|:--------:|:-----:|
+| Minecraft | Fabric | Forge | NeoForge | Quilt |
+|-----------|:------:|:-----:|:--------:|:-----:|
 | <1.18.2   |   🚫   |      🚫      |    -     |  🚫   |
-| 1.18.2    |   ⏳    |      ✅       |    -     |  🚫   |
-| 1.19.2    |   ⏳    |      ✅       |    -     |  🚫   |
+| 1.18.2    |   ✅    |      ✅       |    -     |  🚫   |
+| 1.19.2    |   ✅    |      ✅       |    -     |  🚫   |
 | 1.20.1    |   ✅    |      ✅       |    🚫    |  🚫   |
-| 1.21.1    |   ✅    |      ⏳       |    ✅     |  🚫   |
-| 1.21.8    |   ✅    |      ⏳       |    ❌     |  🚫   |
-| 1.21.11   |   ✅    |      ⏳       |    ❌     |  🚫   |
+| 1.21.1    |   ✅    |      ✅       |    ✅     |  🚫   |
+| 1.21.8    |   ✅    |      ✅       |    ✅     |  🚫   |
+| 1.21.11   |   ✅    |      ✅       |    ✅     |  🚫   |
 | 26.1      |   ✅    |      ❌       |    ✅     |  🚫   |
 | 26.1.2    |   🌟   |      ❌       |    🌟    |  🚫   |
 | 26.2      |   ✅   |      🚫       |    ✅    |  🚫   |
 
 🌟Primary support | ✅ Supported | 🚧 Partial support | ⏳ Planned | ❌ Not supported yet | 🚫 Unsupported
+
+`<minecraft>/forge` uses Legacy Forge conventions on 1.20.1 and earlier, and
+ForgeGradle 7 conventions on 1.21.x.
 
 Only the subprojects included in `settings.gradle.kts` are configured. Remove unused `include(...)` lines when you do not need a version or loader.
 
@@ -28,7 +31,8 @@ LLM agents and automation should also read [MDK Agent Notes](mdk/README.md) befo
 - `common`: shared Java code used by every supported target.
 - `<minecraft>/common`: version-specific shared code. Older versions use the Legacy Forge toolchain; 1.21+ and 26.x use NeoForm through NeoForge ModDev.
 - `<minecraft>/fabric`: Fabric loader project.
-- `<minecraft>/forge`: Legacy Forge loader project.
+- `<minecraft>/forge`: Forge loader project. Targets through 1.20.1 use
+  `legacyforge-mod-conventions`; 1.21.x targets use `forge-mod-conventions`.
 - `<minecraft>/neo`: NeoForge loader project.
 - `src/config`: config-related common code that is packaged into the jar but kept out of the default main source set.
 - `src/configClient`: client-only config screen helpers for loaders that expose a config UI.
@@ -124,17 +128,17 @@ dependencies {
 
 Choose the dependency configuration by what needs the dependency:
 
-| Need | Fabric 1.21.11 and older | Fabric 26.1 and newer | Legacy Forge | NeoForge |
-|------|---------------------------|------------------------|--------------|----------|
-| Code imports dependency classes | `modImplementation(...)` | `implementation(...)` | `implementation(...)` | `implementation(...)` |
-| Local `runClient` / `runServer` only | `modRuntimeOnly(...)` | `runtimeOnly(...)` | `modRuntimeOnly(...)` | `runtimeOnly(...)` |
-| GitHub Actions runtime test must install the jar | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` |
-| Code imports it and CI must install it | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` |
+| Need | Fabric 1.21.11 and older | Fabric 26.1 and newer | Legacy Forge | ForgeGradle 7 Forge | NeoForge |
+|------|---------------------------|------------------------|--------------|---------------------|----------|
+| Code imports dependency classes | `modImplementation(...)` | `implementation(...)` | `implementation(...)` | `implementation(...)` | `implementation(...)` |
+| Local `runClient` / `runServer` only | `modRuntimeOnly(...)` | `runtimeOnly(...)` | `modRuntimeOnly(...)` | `runtimeOnly(...)` | `runtimeOnly(...)` |
+| GitHub Actions runtime test must install the jar | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` |
+| Code imports it and CI must install it | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` |
 
 `ciRuntimeMods` does not affect local `runClient` / `runServer` classpaths. It only stages direct jar
 files into each configured project directory's `build/ciRuntimeMods` for the GitHub Actions runtime
 test. Production loader metadata is also separate: add Fabric `depends`,
-Legacy Forge `mods.toml` dependencies, or NeoForge `neoforge.mods.toml`
+Forge `mods.toml` dependencies, or NeoForge `neoforge.mods.toml`
 dependencies only when users must install the dependency with the released mod.
 
 ## Configuration System
