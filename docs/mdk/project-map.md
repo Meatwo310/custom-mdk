@@ -63,7 +63,9 @@ This file maps repository locations to responsibilities.
 - Forge entrypoint, resources, mixin config, templates, and runtime deps.
 - Uses `legacyforge-mod-conventions` on targets through 1.20.1, and
   `forge-mod-conventions` on 1.21.x ForgeGradle 7 targets.
-- Applies `legacyforge-config-conventions` when Legacy Forge config code is included.
+- Applies `legacyforge-config-conventions` for Legacy Forge config code or
+  `forge-config-conventions` for the Forge Config API Port bridge on
+  ForgeGradle 7 targets.
 
 `<mc>/neo`
 
@@ -141,6 +143,8 @@ This file maps repository locations to responsibilities.
 `*-config-conventions`
 
 - Wire `src/config` and `src/configClient` into classpaths and jars.
+- `forge-config-conventions` and `fabric-config-conventions` also install and
+  stage their Forge Config API Port loader artifact.
 
 `net/meatwo310/mdk/build`
 

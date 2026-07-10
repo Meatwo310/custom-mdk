@@ -29,3 +29,10 @@ mandatory=true
 versionRange="${minecraft_version_range}"
 ordering="NONE"
 side="BOTH"
+
+[[dependencies."${mod_id}"]]
+modId="forgeconfigapiport"
+mandatory=true
+versionRange="[${forge_config_api_port_version},)"
+ordering="NONE"
+side="BOTH"

@@ -38,8 +38,9 @@ request explicitly asks for a broad update.
 - Put client config UI code in `<mc>/<loader>/src/configClient` when that loader
   convention supports it.
 - Confirm the affected project applies the right `*-config-conventions` plugin.
-- For Fabric config dependencies, check Forge Config API Port and any runtime UI
-  mods such as Mod Menu or Forge Config Screens.
+- For Fabric and ForgeGradle 7 Forge config dependencies, check the matching
+  Forge Config API Port artifact and metadata. Also check any runtime UI mods
+  such as Mod Menu or Forge Config Screens.
 - Build one affected project per loader family.
 
 ## Add A New Minecraft Version
@@ -71,6 +72,8 @@ request explicitly asks for a broad update.
   - Fabric config: `fabric-config-conventions`
   - Legacy Forge: `legacyforge-mod-conventions`
   - Legacy Forge config: `legacyforge-config-conventions`
+  - ForgeGradle 7 Forge: `forge-mod-conventions`
+  - ForgeGradle 7 Forge config: `forge-config-conventions`
   - NeoForge: `neoforge-mod-conventions`
   - NeoForge config: `neoforge-config-conventions`
 - Add loader metadata templates and runtime dependencies.

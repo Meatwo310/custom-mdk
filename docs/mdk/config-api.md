@@ -164,6 +164,10 @@ Fabric passes the mod id instead of a loader container:
 PlatformConfigRegistrar.registerAll(Constants.MODID, VersionedConfigSpec.bindAll(ModConfigs.ALL));
 ```
 
+ForgeGradle 7 Forge targets pass their Forge `ModContainer`; their registrar
+uses Forge Config API Port's `NeoForgeConfigRegistry` bridge because the
+versioned common spec is built against the NeoForge config API.
+
 Older Legacy Forge targets may expose `registerAll(List<BoundConfig>)` or
 `registerAll(FMLJavaModLoadingContext, List<BoundConfig>)`; check the target
 project's `PlatformConfigRegistrar`.

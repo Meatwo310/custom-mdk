@@ -155,10 +155,11 @@ Apply the matching config convention plugin in addition to the normal loader con
 | Legacy Forge version common | `legacyforge-common-config-conventions` |
 | NeoForge version common | `neoforge-common-config-conventions` |
 | Legacy Forge loader project | `legacyforge-config-conventions` |
+| ForgeGradle 7 Forge loader project | `forge-config-conventions` |
 | Fabric loader project | `fabric-config-conventions` |
 | NeoForge loader project | `neoforge-config-conventions` |
 
-These conventions wire the `config` and `configClient` outputs into the jar and into the appropriate compile/runtime classpaths. Fabric config projects also add Forge Config API Port to `implementation`/`modImplementation`, `ciRuntimeMods`, and generated `fabric.mod.json` dependencies.
+These conventions wire the `config` and `configClient` outputs into the jar and into the appropriate compile/runtime classpaths. Fabric and ForgeGradle 7 Forge config projects also add the matching Forge Config API Port artifact to the compile/runtime classpath, `ciRuntimeMods`, and generated loader metadata.
 
 The builder supports primitive values, ranged numbers, strings, lists, enums, and nested sections. Prefer `category(...)` plus nested classes for hierarchical config; keep `push(...)` and `pop()` for low-level adapter work or unusual migration cases.
 
@@ -270,6 +271,7 @@ The common config declarations are loader-neutral. Each platform provides the de
 |------------------------|-------------------------------------------------------|--------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
 | NeoForge platforms     | NeoForge config API from the loader                   | `ModContainer#registerConfig`                    | none; the config screen is provided by NeoForge directly                                                                                                 |
 | Legacy Forge platforms | Forge config API from the loader                      | `ModLoadingContext` / `FMLJavaModLoadingContext` | [Configured](https://www.curseforge.com/minecraft/mc-mods/configured) or [Forge Config Screens](https://modrinth.com/mod/forge-config-screens)           |
+| ForgeGradle 7 Forge platforms | Forge Config API Port's NeoForge API bridge      | `NeoForgeConfigRegistry`                         | a compatible third-party Forge config screen                                                                                                             |
 | Fabric platforms       | Forge Config API Port, declared per Minecraft version | Forge Config API Port registry                   | [ModMenu](https://modrinth.com/mod/modmenu/) for the mod list entry; [Forge Config Screens](https://modrinth.com/mod/forge-config-screens) on <=mc1.20.1 |
 
 Because of this, the same `ConfigDeclaration` list can be shared from `common`, extended by a version-specific common project, and then bound by each platform to the dependency it actually runs with.

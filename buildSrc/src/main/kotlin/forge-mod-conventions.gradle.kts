@@ -31,6 +31,9 @@ val commonProject = ":$minecraftVersion-common"
 val sharedCommonProject = ":common"
 evaluationDependsOn(commonProject)
 evaluationDependsOn(sharedCommonProject)
+val forgeConfigApiPortVersion = project(commonProject)
+    .property("forgeConfigApiPortVersion")
+    .toString()
 configureCiRuntimeMods()
 
 val minecraft = extensions.getByType(MinecraftExtensionForProject::class.java)
@@ -122,6 +125,7 @@ val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata"
         "minecraft_version_range" to minecraftVersionRange,
         "forge_version" to forgeVersion,
         "forge_version_range" to forgeVersionRange,
+        "forge_config_api_port_version" to forgeConfigApiPortVersion,
         "loader_version_range" to loaderVersionRange,
         "mod_id" to modId,
         "mod_name" to modName,
