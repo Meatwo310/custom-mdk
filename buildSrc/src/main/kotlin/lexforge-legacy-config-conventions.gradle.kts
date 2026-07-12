@@ -4,7 +4,7 @@ val minecraftVersion: String by project
 
 plugins.withId("java-library") {
     val config = configureConfigSourceSet()
-    val sharedConfig = sharedConfigSourceSetsWithOptionalVersion(minecraftVersion, "legacyforge-config-conventions")
+    val sharedConfig = sharedConfigSourceSetsWithOptionalVersion(minecraftVersion, "lexforge-legacy-config-conventions")
 
     config.addConfigClasspath(sharedConfig)
 

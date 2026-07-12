@@ -1,8 +1,8 @@
 import net.meatwo310.mdk.build.req
 
 plugins {
-    id("legacyforge-mod-conventions")
-    id("legacyforge-config-conventions")
+    id("lexforge-legacy-mod-conventions")
+    id("lexforge-legacy-config-conventions")
 }
 
 val configuredVersion: String by project

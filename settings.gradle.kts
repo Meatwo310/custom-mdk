@@ -37,15 +37,18 @@ includeMc("1.20.1", "fabric")
 
 /// 1.21.1 ///
 includeMc("1.21.1", "common")
+includeMc("1.21.1", "forge")
 includeMc("1.21.1", "neo")
 includeMc("1.21.1", "fabric")
 
 /// 1.21.8 ///
 includeMc("1.21.8", "common")
+includeMc("1.21.8", "forge")
 includeMc("1.21.8", "fabric")
 
 /// 1.21.11 ///
 includeMc("1.21.11", "common")
+includeMc("1.21.11", "forge")
 includeMc("1.21.11", "fabric")
 
 /// 26.1 ///

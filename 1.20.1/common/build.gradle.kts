@@ -1,4 +1,4 @@
 plugins {
-    id("legacyforge-common-conventions")
-    id("legacyforge-common-config-conventions")
+    id("lexforge-legacy-common-conventions")
+    id("lexforge-legacy-common-config-conventions")
 }

@@ -1,3 +1,3 @@
 plugins {
-    id("legacyforge-common-conventions")
+    id("lexforge-legacy-common-conventions")
 }

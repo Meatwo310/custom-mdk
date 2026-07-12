@@ -6,7 +6,7 @@ import net.meatwo310.mdk.build.versionCatalog
 val forgeConfigApiPortVersion: String by project
 
 plugins.withId("java-library") {
-    val config = configureVersionCommonConfigSourceSet("legacyforge-common-config-conventions")
+    val config = configureVersionCommonConfigSourceSet("lexforge-legacy-common-config-conventions")
 
     dependencies.add(
         config.compileOnlyConfigurationName,

@@ -21,7 +21,7 @@ java.toolchain {
     vendor = JvmVendorSpec.JETBRAINS
 }
 
-// Use a separate variable to avoid shadowing by LegacyForgeExtension.getMinecraftVersion()
+// Use a separate variable to avoid shadowing by ModDevGradle's LegacyForgeExtension.
 val mcpVer = minecraftVersion
 legacyForge {
     mcpVersion = mcpVer
