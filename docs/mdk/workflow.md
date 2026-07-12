@@ -7,7 +7,7 @@ Use this flow for normal code, build, and template changes.
 Before editing, answer these questions from the repository:
 
 - Which Minecraft versions are affected?
-- Which loaders are affected: Fabric, Legacy Forge, NeoForge, or all?
+- Which loaders are affected: Fabric, LexForge, NeoForge, or all?
 - Is the change shared across all versions, one Minecraft version, or one
   loader project?
 - Does it touch only runtime code, or also config, metadata, build logic, CI, or

@@ -17,7 +17,7 @@ request explicitly asks for a broad update.
 
 ## Add Loader-Specific Code
 
-- Put Fabric code under `<mc>/fabric`, Legacy Forge code under `<mc>/forge`, and
+- Put Fabric code under `<mc>/fabric`, LexForge code under `<mc>/forge`, and
   NeoForge code under `<mc>/neo`.
 - Keep entrypoint names consistent with `gradle.properties` and metadata
   templates.
@@ -69,8 +69,10 @@ request explicitly asks for a broad update.
   - Fabric: `fabric-loom-mod-conventions` or `fabric-loom-remap-mod-conventions`
   - Fabric API: `fabric-api-conventions`
   - Fabric config: `fabric-config-conventions`
-  - Legacy Forge: `legacyforge-mod-conventions`
-  - Legacy Forge config: `legacyforge-config-conventions`
+  - LexForge Legacy: `lexforge-legacy-mod-conventions`
+  - LexForge Legacy config: `lexforge-legacy-config-conventions`
+  - LexForge (ForgeGradle 7+): `lexforge-mod-conventions`
+  - LexForge config: `lexforge-config-conventions`
   - NeoForge: `neoforge-mod-conventions`
   - NeoForge config: `neoforge-config-conventions`
 - Add loader metadata templates and runtime dependencies.
@@ -89,8 +91,8 @@ request explicitly asks for a broad update.
 
 - Fabric: edit `src/main/templates/fabric.mod.json` and check
   `fabric-mod-conventions`.
-- Legacy Forge: edit `src/main/templates/META-INF/mods.toml` and check
-  `legacyforge-mod-conventions`.
+- LexForge: edit `src/main/templates/META-INF/mods.toml` and check
+  `lexforge-mod-conventions` or `lexforge-legacy-mod-conventions`, according to the ForgeGradle generation.
 - NeoForge: edit `src/main/templates/META-INF/neoforge.mods.toml` and check
   `neoforge-mod-conventions`.
 - If a new placeholder is introduced, add it to the matching `replaceProperties`

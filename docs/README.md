@@ -4,18 +4,18 @@ A Minecraft mod template for multi-version and multi-loader development, powered
 
 ## Supported Platforms
 
-| Minecraft | Fabric | Legacy Forge | NeoForge | Quilt |
-|-----------|:------:|:------------:|:--------:|:-----:|
-| <1.18.2   |   🚫   |      🚫      |    -     |  🚫   |
-| 1.18.2    |   ⏳    |      ✅       |    -     |  🚫   |
-| 1.19.2    |   ⏳    |      ✅       |    -     |  🚫   |
-| 1.20.1    |   ✅    |      ✅       |    🚫    |  🚫   |
-| 1.21.1    |   ✅    |      ⏳       |    ✅     |  🚫   |
-| 1.21.8    |   ✅    |      ⏳       |    ❌     |  🚫   |
-| 1.21.11   |   ✅    |      ⏳       |    ❌     |  🚫   |
-| 26.1      |   ✅    |      ❌       |    ✅     |  🚫   |
-| 26.1.2    |   🌟   |      ❌       |    🌟    |  🚫   |
-| 26.2      |   ✅   |      🚫       |    ✅    |  🚫   |
+| Minecraft | Fabric | LexForge Legacy | LexForge | NeoForge | Quilt |
+|-----------|:------:|:---------------:|:--------:|:--------:|:-----:|
+| <1.18.2   |   🚫   |       🚫        |    -     |    -     |  🚫   |
+| 1.18.2    |   ⏳    |       ✅        |    -     |    -     |  🚫   |
+| 1.19.2    |   ⏳    |       ✅        |    -     |    -     |  🚫   |
+| 1.20.1    |   ✅    |       ✅        |    -     |    🚫    |  🚫   |
+| 1.21.1    |   ✅    |       -         |    ✅    |    ✅    |  🚫   |
+| 1.21.8    |   ✅    |       -         |    ✅    |    ❌    |  🚫   |
+| 1.21.11   |   ✅    |       -         |    ✅    |    ❌    |  🚫   |
+| 26.1      |   ✅    |       -         |    ❌    |    ✅    |  🚫   |
+| 26.1.2    |   🌟    |       -         |    ❌    |    🌟    |  🚫   |
+| 26.2      |   ✅    |       -         |    🚫    |    ✅    |  🚫   |
 
 🌟Primary support | ✅ Supported | 🚧 Partial support | ⏳ Planned | ❌ Not supported yet | 🚫 Unsupported
 
@@ -26,9 +26,9 @@ LLM agents and automation should also read [MDK Agent Notes](mdk/README.md) befo
 ## Project Layout
 
 - `common`: shared Java code used by every supported target.
-- `<minecraft>/common`: version-specific shared code. Older versions use the Legacy Forge toolchain; 1.21+ and 26.x use NeoForm through NeoForge ModDev.
+- `<minecraft>/common`: version-specific shared code. Older versions use the LexForge Legacy toolchain; 1.21+ and 26.x use NeoForm through NeoForge ModDev.
 - `<minecraft>/fabric`: Fabric loader project.
-- `<minecraft>/forge`: Legacy Forge loader project.
+- `<minecraft>/forge`: LexForge loader project. ForgeGradle 7+ targets use `lexforge-*` conventions; older targets use `lexforge-legacy-*` conventions.
 - `<minecraft>/neo`: NeoForge loader project.
 - `src/config`: config-related common code that is packaged into the jar but kept out of the default main source set.
 - `src/configClient`: client-only config screen helpers for loaders that expose a config UI.
@@ -124,17 +124,17 @@ dependencies {
 
 Choose the dependency configuration by what needs the dependency:
 
-| Need | Fabric 1.21.11 and older | Fabric 26.1 and newer | Legacy Forge | NeoForge |
-|------|---------------------------|------------------------|--------------|----------|
-| Code imports dependency classes | `modImplementation(...)` | `implementation(...)` | `implementation(...)` | `implementation(...)` |
-| Local `runClient` / `runServer` only | `modRuntimeOnly(...)` | `runtimeOnly(...)` | `modRuntimeOnly(...)` | `runtimeOnly(...)` |
-| GitHub Actions runtime test must install the jar | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` |
-| Code imports it and CI must install it | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` |
+| Need | Fabric 1.21.11 and older | Fabric 26.1 and newer | LexForge Legacy | LexForge | NeoForge |
+|------|---------------------------|------------------------|-----------------|----------|----------|
+| Code imports dependency classes | `modImplementation(...)` | `implementation(...)` | `implementation(...)` | `implementation(...)` | `implementation(...)` |
+| Local `runClient` / `runServer` only | `modRuntimeOnly(...)` | `runtimeOnly(...)` | `modRuntimeOnly(...)` | `runtimeOnly(...)` | `runtimeOnly(...)` |
+| GitHub Actions runtime test must install the jar | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` |
+| Code imports it and CI must install it | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` |
 
 `ciRuntimeMods` does not affect local `runClient` / `runServer` classpaths. It only stages direct jar
 files into each configured project directory's `build/ciRuntimeMods` for the GitHub Actions runtime
 test. Production loader metadata is also separate: add Fabric `depends`,
-Legacy Forge `mods.toml` dependencies, or NeoForge `neoforge.mods.toml`
+LexForge `mods.toml` dependencies, or NeoForge `neoforge.mods.toml`
 dependencies only when users must install the dependency with the released mod.
 
 ## Configuration System
@@ -148,13 +148,14 @@ Apply the matching config convention plugin in addition to the normal loader con
 | Project type | Config convention |
 |--------------|-------------------|
 | `common` | `common-config-conventions` |
-| Legacy Forge version common | `legacyforge-common-config-conventions` |
+| LexForge Legacy version common | `lexforge-legacy-common-config-conventions` |
 | NeoForge version common | `neoforge-common-config-conventions` |
-| Legacy Forge loader project | `legacyforge-config-conventions` |
+| LexForge Legacy loader project | `lexforge-legacy-config-conventions` |
+| LexForge loader project | `lexforge-config-conventions` |
 | Fabric loader project | `fabric-config-conventions` |
 | NeoForge loader project | `neoforge-config-conventions` |
 
-These conventions wire the `config` and `configClient` outputs into the jar and into the appropriate compile/runtime classpaths. Fabric config projects also add Forge Config API Port to `implementation`/`modImplementation`, `ciRuntimeMods`, and generated `fabric.mod.json` dependencies.
+These conventions wire the `config` and `configClient` outputs into the jar and into the appropriate compile/runtime classpaths. Fabric and LexForge config projects also add Forge Config API Port to their compile classpath, `ciRuntimeMods`, and generated loader metadata. Removing the loader's config convention disconnects that integration from the base loader convention.
 
 The builder supports primitive values, ranged numbers, strings, lists, enums, and nested sections. Prefer `category(...)` plus nested classes for hierarchical config; keep `push(...)` and `pop()` for low-level adapter work or unusual migration cases.
 
@@ -265,7 +266,8 @@ The common config declarations are loader-neutral. Each platform provides the de
 | Target                 | Required config dependency                            | Registration                                     | Optional config screen dependency                                                                                                                        |
 |------------------------|-------------------------------------------------------|--------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
 | NeoForge platforms     | NeoForge config API from the loader                   | `ModContainer#registerConfig`                    | none; the config screen is provided by NeoForge directly                                                                                                 |
-| Legacy Forge platforms | Forge config API from the loader                      | `ModLoadingContext` / `FMLJavaModLoadingContext` | [Configured](https://www.curseforge.com/minecraft/mc-mods/configured) or [Forge Config Screens](https://modrinth.com/mod/forge-config-screens)           |
+| LexForge Legacy platforms | Forge config API from the loader                   | `ModLoadingContext` / `FMLJavaModLoadingContext` | [Configured](https://www.curseforge.com/minecraft/mc-mods/configured) or [Forge Config Screens](https://modrinth.com/mod/forge-config-screens)           |
+| LexForge platforms     | Forge Config API Port                                | Forge Config API Port registry                   | none bundled                                                                                                                                            |
 | Fabric platforms       | Forge Config API Port, declared per Minecraft version | Forge Config API Port registry                   | [ModMenu](https://modrinth.com/mod/modmenu/) for the mod list entry; [Forge Config Screens](https://modrinth.com/mod/forge-config-screens) on <=mc1.20.1 |
 
 Because of this, the same `ConfigDeclaration` list can be shared from `common`, extended by a version-specific common project, and then bound by each platform to the dependency it actually runs with.

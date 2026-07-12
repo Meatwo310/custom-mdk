@@ -60,9 +60,9 @@ This file maps repository locations to responsibilities.
 
 `<mc>/forge`
 
-- Legacy Forge entrypoint, resources, mixin config, templates, and runtime deps.
-- Uses `legacyforge-mod-conventions`.
-- Applies `legacyforge-config-conventions` when config code is included.
+- LexForge entrypoint, resources, mixin config, templates, and runtime deps.
+- Uses `lexforge-mod-conventions` for ForgeGradle 7+ or `lexforge-legacy-mod-conventions` for older versions.
+- Applies the matching `lexforge-config-conventions` or `lexforge-legacy-config-conventions` when config code is included.
 
 `<mc>/neo`
 
@@ -97,7 +97,7 @@ This file maps repository locations to responsibilities.
 
 - Loader metadata templates.
 - Fabric: `fabric.mod.json`.
-- Legacy Forge: `META-INF/mods.toml`.
+- LexForge and LexForge Legacy: `META-INF/mods.toml`.
 - NeoForge: `META-INF/neoforge.mods.toml`.
 
 `src/generated/resources`
@@ -114,11 +114,11 @@ This file maps repository locations to responsibilities.
 
 - Adds `src/config` to `common` and packages its output.
 
-`legacyforge-common-conventions`, `neoforge-common-conventions`
+`lexforge-legacy-common-conventions`, `neoforge-common-conventions`
 
-- Configure one-version common projects for Legacy Forge or NeoForge tooling.
+- Configure one-version common projects for LexForge Legacy or NeoForge tooling.
 
-`legacyforge-mod-conventions`, `neoforge-mod-conventions`
+`lexforge-mod-conventions`, `lexforge-legacy-mod-conventions`, `neoforge-mod-conventions`
 
 - Configure runs, metadata generation, Java toolchain, archives, and jar
   contents for Forge and NeoForge.

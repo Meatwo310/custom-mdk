@@ -120,7 +120,7 @@ if (forgeEventbusValidatorVersion != null) {
     }
 }
 
-val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata") {
+val generateModMetadata = tasks.register<GenerateLexForgeModMetadata>("generateModMetadata") {
     val replaceProperties = mapOf(
         "minecraft_version" to minecraftVersion,
         "minecraft_version_range" to minecraftVersionRange,
@@ -137,13 +137,12 @@ val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata"
         "mod_display_url" to modDisplayUrl,
         "mod_issue_tracker_url" to modIssueTrackerUrl,
     )
-    inputs.properties(replaceProperties)
-    expand(replaceProperties)
-    from("src/main/templates")
-    into(layout.buildDirectory.dir("generated/sources/modMetadata"))
+    properties.set(replaceProperties)
+    templateDirectory.set(layout.projectDirectory.dir("src/main/templates"))
+    outputDirectory.set(layout.buildDirectory.dir("generated/sources/modMetadata"))
 }
 
-sourceSets.main.get().resources.srcDir(generateModMetadata)
+sourceSets.main.get().resources.srcDir(generateModMetadata.flatMap { it.outputDirectory })
 
 // ForgeGradle 7 scans each output directory as a separate mod root. Keep the
 // generated metadata and compiled @Mod class in the same root for dev runs.

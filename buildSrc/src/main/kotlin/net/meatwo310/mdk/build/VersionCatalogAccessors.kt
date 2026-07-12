@@ -13,6 +13,7 @@ enum class VersionCatalogLibrary(val alias: String) {
     ForgeConfigApiPortCommon("forge-config-api-port-common"),
     ForgeConfigApiPortCommonNeoForgeApi("forge-config-api-port-common-neoforge-api"),
     ForgeConfigApiPortFabric("forge-config-api-port-fabric"),
+    ForgeConfigApiPortForge("forge-config-api-port-forge"),
     Minecraft("minecraft"),
     Mixin("mixin"),
     ParchmentData("parchment-data"),

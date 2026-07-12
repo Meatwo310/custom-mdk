@@ -164,7 +164,7 @@ Fabric passes the mod id instead of a loader container:
 PlatformConfigRegistrar.registerAll(Constants.MODID, VersionedConfigSpec.bindAll(ModConfigs.ALL));
 ```
 
-Older Legacy Forge targets may expose `registerAll(List<BoundConfig>)` or
+Older LexForge Legacy targets may expose `registerAll(List<BoundConfig>)` or
 `registerAll(FMLJavaModLoadingContext, List<BoundConfig>)`; check the target
 project's `PlatformConfigRegistrar`.
 
