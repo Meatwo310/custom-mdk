@@ -27,7 +27,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           fetch-tags: true
@@ -80,7 +80,7 @@ jobs:
               ;;
           esac
 
-          RELEASE_VERSION=$(npx --yes semver@7.8.1 "$(tr -d '[:space:]' < version.txt)" --increment "$LEVEL")
+          RELEASE_VERSION=$(npx --yes semver@7.8.5 "$(tr -d '[:space:]' < version.txt)" --increment "$LEVEL")
           RELEASE_TAG=v$RELEASE_VERSION
           if git rev-parse --verify --quiet "refs/tags/$RELEASE_TAG"; then
             echo "::error::Release tag $RELEASE_TAG already exists."
