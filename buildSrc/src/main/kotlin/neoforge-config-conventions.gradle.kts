@@ -1,6 +1,6 @@
 import net.meatwo310.mdk.build.*
 
-val minecraftVersion: String by project
+val minecraftVersion = project.property("minecraftVersion").toString()
 
 plugins.withId("java-library") {
     val config = configureConfigSourceSet()

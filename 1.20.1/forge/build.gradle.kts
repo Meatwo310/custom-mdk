@@ -5,7 +5,7 @@ plugins {
     id("lexforge-legacy-config-conventions")
 }
 
-val configuredVersion: String by project
+val configuredVersion = project.property("configuredVersion").toString()
 
 // Mod Dependencies
 dependencies {

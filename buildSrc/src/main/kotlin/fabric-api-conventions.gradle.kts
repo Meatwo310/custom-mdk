@@ -1,9 +1,9 @@
 import net.fabricmc.loom.api.fabricapi.FabricApiExtension
 import net.meatwo310.mdk.build.*
 
-val modId: String by project
-val minecraftVersion: String by project
-val fabricApiVersion: String by project
+val modId = project.property("modId").toString()
+val minecraftVersion = project.property("minecraftVersion").toString()
+val fabricApiVersion = project.property("fabricApiVersion").toString()
 
 plugins.withId("fabric-mod-conventions") {
     extensions.configure<FabricModMetadataExtension>("fabricModMetadata") {

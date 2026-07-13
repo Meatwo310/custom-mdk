@@ -8,10 +8,10 @@ plugins {
     id("net.fabricmc.fabric-loom-remap")
 }
 
-val modId: String by project
-val minecraftVersion: String by project
-val parchmentMinecraftVersion: String by project
-val parchmentMappingsVersion: String by project
+val modId = project.property("modId").toString()
+val minecraftVersion = project.property("minecraftVersion").toString()
+val parchmentMinecraftVersion = project.property("parchmentMinecraftVersion").toString()
+val parchmentMappingsVersion = project.property("parchmentMappingsVersion").toString()
 
 val commonProject = ":$minecraftVersion-common"
 val sharedCommonProject = ":common"

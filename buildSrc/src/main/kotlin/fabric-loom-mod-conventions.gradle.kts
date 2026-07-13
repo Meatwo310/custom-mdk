@@ -5,8 +5,8 @@ plugins {
     id("net.fabricmc.fabric-loom")
 }
 
-val modId: String by project
-val minecraftVersion: String by project
+val modId = project.property("modId").toString()
+val minecraftVersion = project.property("minecraftVersion").toString()
 
 val commonProject = ":$minecraftVersion-common"
 val sharedCommonProject = ":common"

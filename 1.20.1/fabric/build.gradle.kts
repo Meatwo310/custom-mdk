@@ -6,8 +6,8 @@ plugins {
     id("fabric-config-conventions")
 }
 
-val forgeconfigscreensVersion: String by project
-val modmenuVersion: String by project
+val forgeconfigscreensVersion = project.property("forgeconfigscreensVersion").toString()
+val modmenuVersion = project.property("modmenuVersion").toString()
 
 // Mod Dependencies
 dependencies {

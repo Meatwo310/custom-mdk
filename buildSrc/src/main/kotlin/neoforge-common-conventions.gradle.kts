@@ -4,10 +4,10 @@ plugins {
     id("net.neoforged.moddev")
 }
 
-val modId: String by project
-val minecraftVersion: String by project
-val javaVersion: String by project
-val neoFormVer: String by project
+val modId = project.property("modId").toString()
+val minecraftVersion = project.property("minecraftVersion").toString()
+val javaVersion = project.property("javaVersion").toString()
+val neoFormVer = project.property("neoFormVer").toString()
 
 dependencies {
     api(project(":common"))

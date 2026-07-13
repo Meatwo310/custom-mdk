@@ -9,22 +9,22 @@ plugins {
     id("net.minecraftforge.gradle")
 }
 
-val modId: String by project
-val modName: String by project
-val modLicense: String by project
-val modVersion: String by project
-val modAuthors: String by project
-val modDescription: String by project
-val modDisplayUrl: String by project
-val modIssueTrackerUrl: String by project
-val modCredits: String by project
-val minecraftVersion: String by project
-val minecraftVersionRange: String by project
-val forgeVersion: String by project
-val forgeVersionRange: String by project
-val loaderVersionRange: String by project
-val javaVersion: String by project
-val forgeEventbusValidatorVersion = project.properties["forgeEventbusValidatorVersion"]?.toString()
+val modId = project.property("modId").toString()
+val modName = project.property("modName").toString()
+val modLicense = project.property("modLicense").toString()
+val modVersion = project.property("modVersion").toString()
+val modAuthors = project.property("modAuthors").toString()
+val modDescription = project.property("modDescription").toString()
+val modDisplayUrl = project.property("modDisplayUrl").toString()
+val modIssueTrackerUrl = project.property("modIssueTrackerUrl").toString()
+val modCredits = project.property("modCredits").toString()
+val minecraftVersion = project.property("minecraftVersion").toString()
+val minecraftVersionRange = project.property("minecraftVersionRange").toString()
+val forgeVersion = project.property("forgeVersion").toString()
+val forgeVersionRange = project.property("forgeVersionRange").toString()
+val loaderVersionRange = project.property("loaderVersionRange").toString()
+val javaVersion = project.property("javaVersion").toString()
+val forgeEventbusValidatorVersion = project.findProperty("forgeEventbusValidatorVersion")?.toString()
 
 val forgeFullVersion = "$minecraftVersion-$forgeVersion"
 val commonProject = ":$minecraftVersion-common"
@@ -76,7 +76,7 @@ java {
 }
 
 configurations {
-    val localRuntime by configurations.creating
+    val localRuntime = create("localRuntime")
     runtimeClasspath.get().extendsFrom(localRuntime)
 }
 

@@ -1,7 +1,7 @@
 import net.meatwo310.mdk.build.*
 
-val minecraftVersion: String by project
-val forgeConfigApiPortVersion: String by project
+val minecraftVersion = project.property("minecraftVersion").toString()
+val forgeConfigApiPortVersion = project.property("forgeConfigApiPortVersion").toString()
 
 plugins.withId("fabric-mod-conventions") {
     extensions.configure<FabricModMetadataExtension>("fabricModMetadata") {
