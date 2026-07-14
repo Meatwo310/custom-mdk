@@ -68,7 +68,8 @@ request explicitly asks for a broad update.
 - Use the matching convention plugins:
   - Fabric: `fabric-loom-mod-conventions` or `fabric-loom-remap-mod-conventions`
   - Fabric API: `fabric-api-conventions`
-  - Fabric config: `fabric-config-conventions`
+  - Fabric config (1.20.1+): `fabric-config-conventions`
+  - Fabric Legacy config (1.18.2-1.19.2): `fabric-legacy-config-conventions`
   - LexForge Legacy: `lexforge-legacy-mod-conventions`
   - LexForge Legacy config: `lexforge-legacy-config-conventions`
   - LexForge (ForgeGradle 7+): `lexforge-mod-conventions`

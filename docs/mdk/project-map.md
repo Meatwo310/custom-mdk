@@ -56,7 +56,9 @@ This file maps repository locations to responsibilities.
 - Fabric loader entrypoint and Fabric-specific integration.
 - Uses either `fabric-loom-mod-conventions` or
   `fabric-loom-remap-mod-conventions`.
-- Usually applies `fabric-api-conventions` and `fabric-config-conventions`.
+- Usually applies `fabric-api-conventions` and the matching config convention:
+  `fabric-legacy-config-conventions` for 1.18.2-1.19.2 or
+  `fabric-config-conventions` for 1.20.1 and newer.
 
 `<mc>/forge`
 

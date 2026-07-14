@@ -152,10 +152,13 @@ Apply the matching config convention plugin in addition to the normal loader con
 | NeoForge version common | `neoforge-common-config-conventions` |
 | LexForge Legacy loader project | `lexforge-legacy-config-conventions` |
 | LexForge loader project | `lexforge-config-conventions` |
-| Fabric loader project | `fabric-config-conventions` |
+| Fabric loader project (1.20.1+) | `fabric-config-conventions` |
+| Fabric Legacy loader project (1.18.2-1.19.2) | `fabric-legacy-config-conventions` |
 | NeoForge loader project | `neoforge-config-conventions` |
 
 These conventions wire the `config` and `configClient` outputs into the jar and into the appropriate compile/runtime classpaths. Fabric and LexForge config projects also add Forge Config API Port to their compile classpath, `ciRuntimeMods`, and generated loader metadata. Removing the loader's config convention disconnects that integration from the base loader convention.
+
+Fabric 1.18.2-1.19.2 uses the archived `net.minecraftforge:forgeconfigapiport-fabric` artifact, which has no separate common artifact. Keep `VersionedConfigSpec` and other Forge Config API Port bindings in the Fabric project's `src/config`; `fabric-legacy-config-conventions` consumes the neutral declarations from root `common` and treats `<minecraft>/common/src/config` as optional. Do not apply it together with `fabric-config-conventions`.
 
 The builder supports primitive values, ranged numbers, strings, lists, enums, and nested sections. Prefer `category(...)` plus nested classes for hierarchical config; keep `push(...)` and `pop()` for low-level adapter work or unusual migration cases.
 

@@ -15,9 +15,11 @@ forgegradle-plugin = { module = "net.minecraftforge.gradle:net.minecraftforge.gr
 forge-config-api-port-common = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common" }
 forge-config-api-port-common-neoforge-api = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi" }
 forge-config-api-port-fabric = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric" }
+forge-config-api-port-fabric-legacy = { module = "net.minecraftforge:forgeconfigapiport-fabric" }
 forge-config-api-port-forge = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-forge" }
 minecraft = { module = "com.mojang:minecraft" }
 mixin = { module = "org.spongepowered:mixin" }
+night-config-core-legacy = { module = "com.electronwill.night-config:core", version = "3.6.5" }
 neoforged-moddev-gradle = { module = "net.neoforged:moddev-gradle", version.ref = "neoforged-moddev" }
 parchment-data = { module = "org.parchmentmc.data:parchment" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }

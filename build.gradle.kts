@@ -165,6 +165,7 @@ subprojects {
             }
             filter {
                 includeGroupByRegex("fuzs\\..+")
+                includeModule("net.minecraftforge", "forgeconfigapiport-fabric")
             }
         }
 

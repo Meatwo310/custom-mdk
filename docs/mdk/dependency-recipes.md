@@ -21,8 +21,9 @@ when the external runtime test in CI needs a physical jar next to the built mod.
 
 - `fabric-api-conventions` already adds Fabric API with the correct Fabric
   configuration for the selected Loom plugin.
-- `fabric-config-conventions` already adds Forge Config API Port to compile
-  classpaths, `ciRuntimeMods`, and generated Fabric metadata.
+- `fabric-config-conventions` and `fabric-legacy-config-conventions` already add
+  the matching Forge Config API Port dependency to compile classpaths,
+  `ciRuntimeMods`, and generated Fabric metadata.
 - Existing Fabric Mod Menu dependencies are local runtime UI helpers; they are
   not staged through `ciRuntimeMods`.
 - Existing LexForge Legacy Configured dependencies are local runtime UI helpers.
