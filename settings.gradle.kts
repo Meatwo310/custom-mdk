@@ -25,10 +25,12 @@ fun includeMc(minecraftVersion: String, kind: String) {
 /// 1.18.2 ///
 includeMc("1.18.2", "common")
 includeMc("1.18.2", "forge")
+includeMc("1.18.2", "fabric")
 
 /// 1.19.2 ///
 includeMc("1.19.2", "common")
 includeMc("1.19.2", "forge")
+includeMc("1.19.2", "fabric")
 
 /// 1.20.1 ///
 includeMc("1.20.1", "common")

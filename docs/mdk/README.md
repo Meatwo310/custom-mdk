@@ -33,8 +33,8 @@ alone; check that repository's `include(...)` entries.
 Projects included by default in this template:
 
 - `common`
-- `1.18.2/common`, `1.18.2/forge`
-- `1.19.2/common`, `1.19.2/forge`
+- `1.18.2/common`, `1.18.2/forge`, `1.18.2/fabric`
+- `1.19.2/common`, `1.19.2/forge`, `1.19.2/fabric`
 - `1.20.1/common`, `1.20.1/forge`, `1.20.1/fabric`
 - `1.21.1/common`, `1.21.1/forge`, `1.21.1/neo`, `1.21.1/fabric`
 - `1.21.8/common`, `1.21.8/forge`, `1.21.8/fabric`
