@@ -170,19 +170,19 @@ legacy path used when no version-specific `config` source set exists.
 ```mermaid
 flowchart LR
     subgraph shared[":common"]
-        direction TB
+        direction LR
         sharedMain["main"]
         sharedConfig["config"]
     end
 
     subgraph version[":{minecraft}-common"]
-        direction TB
+        direction LR
         versionMain["main"]
         versionConfig["config<br/>Minecraft 1.20.1+"]
     end
 
     subgraph loader[":{minecraft}-{loader}"]
-        direction TB
+        direction LR
         loaderMain["main"]
         loaderConfig["config"]
         configClient["configClient<br/>Fabric / NeoForge"]
