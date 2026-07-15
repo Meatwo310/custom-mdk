@@ -130,7 +130,7 @@ jobs:
       - name: Run MC runtime test client
         if: ${{ matrix.run_mc_runtime_test }}
         timeout-minutes: 10
-        uses: headlesshq/mc-runtime-test@4.4.0
+        uses: headlesshq/mc-runtime-test@4.5.0
         with:
           mc: ${{ matrix.minecraft }}
           modloader: ${{ matrix.modloader }}
