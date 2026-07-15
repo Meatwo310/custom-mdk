@@ -4,6 +4,13 @@ If you are working in `Meatwo310/custom-mdk` itself, follow
 [MDK Template Changes](#mdk-template-changes). Otherwise, follow
 [Commit Message Convention](#commit-message-convention).
 
+## Formatting
+
+Ensure every added or modified file follows the repository-root
+[`.editorconfig`](../.editorconfig). Enable EditorConfig support in your editor
+and resolve any formatting violations before submitting a change. The
+EditorConfig workflow checks changed files independently from the build.
+
 ## Commit Message Convention
 
 Commits should follow [Conventional Commits](https://www.conventionalcommits.org/):
