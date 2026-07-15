@@ -43,7 +43,7 @@ Before opening or importing the project in IntelliJ IDEA or Gradle, trim `settin
 1. Click **Use this template** on GitHub to create your repository from this template.
 2. If you want to keep receiving template updates, follow
    [Receiving Upstream Updates](#receiving-upstream-updates) before regular development.
-3. Edit `settings.gradle.kts` and comment out unused subprojects to reduce Gradle configuration time and cache usage.
+3. Edit `settings.gradle.kts` and comment out unused `include(...)` lines to reduce Gradle configuration time and cache usage.
 4. Edit `gradle.properties` for your mod id, name, group, license, authors, URLs, and Fabric entry points, and edit `version.txt` for your mod version.
 5. Rename ALL Java package names (including those in the shared configuration system) to avoid conflicts with other mods. Update `Constants`, entry points, mixin config names, and language assets from `examplemod` to your mod id.
 6. Create a root `README.md` and `LICENSE` for your mod. Keep `docs/*.md` unchanged if you want future template updates to merge cleanly.
@@ -452,7 +452,7 @@ files:
 - Replace any newly introduced `net.meatwo310.examplemod` package names with
   your mod's namespace.
 - Newly added subprojects are enabled by default when their `include(...)` lines
-  are merged into `settings.gradle.kts`. Comment out projects you do not need
+  are merged into `settings.gradle.kts`. Comment out the `include(...)` lines for projects you do not need
   before importing, building, or running CI.
 
 ## Template License
