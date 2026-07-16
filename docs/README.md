@@ -42,6 +42,11 @@ Arrows point from shared code to the projects that consume it. The available
 loader projects vary by Minecraft version, as shown in the supported platform
 table above.
 
+<img width="1500" height="528" alt="project dependencies graph" src="https://github.com/user-attachments/assets/6070908f-6609-4159-a517-d6043b90dee4" />
+
+<details>
+<summary>Mermaid src of above image</summary>
+
 ```mermaid
 flowchart LR
     shared[":common<br/>Cross-version shared"]
@@ -56,6 +61,8 @@ flowchart LR
     version --> forge
     version --> neo
 ```
+
+</details>
 
 ## Setup
 
@@ -167,6 +174,11 @@ Config support is split into dedicated source sets so projects that do not opt i
 The source sets follow the same project hierarchy. The dotted edge is the
 legacy path used when no version-specific `config` source set exists.
 
+<img width="2245" height="716" alt="project hiearchy related to the configuration system" src="https://github.com/user-attachments/assets/85196fa9-89b2-4626-828c-11a0ad0c3f2e" />
+
+<details>
+<summary>Mermaid src of above image</summary>
+
 ```mermaid
 flowchart LR
     subgraph shared[":common"]
@@ -178,7 +190,7 @@ flowchart LR
     subgraph version[":{minecraft}-common"]
         direction LR
         versionMain["main"]
-        versionConfig["config<br/>Minecraft 1.20.1+"]
+        versionConfig["config<br/>mc1.20.1+"]
     end
 
     subgraph loader[":{minecraft}-{loader}"]
@@ -192,13 +204,15 @@ flowchart LR
     sharedMain --> versionMain --> loaderMain
 
     sharedConfig --> versionConfig --> loaderConfig
-    sharedConfig -. "Minecraft 1.18.2–1.19.2" .-> loaderConfig
+    sharedConfig -. "mc1.18.2–1.19.2" .-> loaderConfig
 
     loaderConfig --> loaderMain
     loaderConfig --> configClient
     configClient -->|Fabric| loaderClient
     configClient -->|NeoForge| loaderMain
 ```
+
+</details>
 
 For readability, the config edges show the logical layering. The conventions
 add every available upstream `config` output directly to the downstream
