@@ -36,6 +36,34 @@ LLM agents and automation should also read [MDK Agent Notes](mdk/README.md) befo
 - `gradle.properties`: mod metadata shared by generated `mods.toml`, `neoforge.mods.toml`, and `fabric.mod.json` files.
 - `version.txt`: the mod version used for project versions, artifact names, and generated metadata.
 
+### Project Dependencies
+
+Arrows point from shared code to the projects that consume it. The available
+loader projects vary by Minecraft version, as shown in the supported platform
+table above.
+
+<img alt="Project dependency graph" src="assets/project-dependencies.png" />
+
+<details>
+<summary>Mermaid source for the image above</summary>
+
+```mermaid
+flowchart LR
+    shared[":common<br/>Cross-version shared"]
+    version[":{minecraft}-common<br/>Version-specific shared"]
+
+    fabric[":{minecraft}-fabric"]
+    forge[":{minecraft}-forge"]
+    neo[":{minecraft}-neo"]
+
+    shared --> version
+    version --> fabric
+    version --> forge
+    version --> neo
+```
+
+</details>
+
 ## Setup
 
 Before opening or importing the project in IntelliJ IDEA or Gradle, trim `settings.gradle.kts`: each included project adds Gradle configuration and IDE import load time. Comment out any unused `include(...)` lines first.
@@ -142,6 +170,58 @@ dependencies only when users must install the dependency with the released mod.
 Shared config entries live in `common/src/config/java/.../config`. Define entries with `ConfigEntryBuilder`, collect them as `ConfigEntries`, and expose each file through a `ConfigDeclaration` in `ModConfigs`.
 
 Config support is split into dedicated source sets so projects that do not opt into the config conventions can avoid resolving the extra config dependencies. Shared config declarations belong in `common/src/config`, version-specific config code belongs in `<minecraft>/common/src/config`, loader bindings belong in `<minecraft>/<loader>/src/config`, and client-only config screen helpers belong in `<minecraft>/<loader>/src/configClient`.
+
+The source sets follow the same project hierarchy. The dotted edge is the
+legacy path used when no version-specific `config` source set exists.
+
+<img alt="Configuration source-set dependency graph" src="assets/configuration-source-set-dependencies.png" />
+
+<details>
+<summary>Mermaid source for the image above</summary>
+
+```mermaid
+flowchart LR
+    subgraph shared[":common"]
+        direction LR
+        sharedMain["main"]
+        sharedConfig["config"]
+    end
+
+    subgraph version[":{minecraft}-common"]
+        direction LR
+        versionMain["main"]
+        versionConfig["config<br/>Minecraft 1.20.1+"]
+    end
+
+    subgraph loader[":{minecraft}-{loader}"]
+        direction LR
+        loaderMain["main"]
+        loaderConfig["config"]
+        configClient["configClient<br/>Fabric / NeoForge"]
+        loaderClient["client<br/>Fabric only"]
+    end
+
+    sharedMain --> versionMain --> loaderMain
+
+    sharedConfig --> versionConfig --> loaderConfig
+    sharedConfig -. "Minecraft 1.18.2–1.19.2" .-> loaderConfig
+
+    loaderConfig --> loaderMain
+    loaderConfig --> configClient
+    configClient -->|Fabric| loaderClient
+    configClient -->|NeoForge| loaderMain
+```
+
+</details>
+
+For readability, the config edges show the logical layering. The conventions
+add every available upstream `config` output directly to the downstream
+classpath and jar.
+
+Fabric creates `configClient` and wires it into `client`; the source set is
+empty on older targets that do not provide client config helpers. NeoForge
+wires `configClient` into `main`. LexForge does not create either of these
+client-specific source sets.
 
 Apply the matching config convention plugin in addition to the normal loader convention when a project needs config support:
 
