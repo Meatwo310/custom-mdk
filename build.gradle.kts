@@ -38,9 +38,6 @@ tasks.register("writeCiBuildMatrix") {
             ?.toString()
             ?.substringBefore("+")
             ?: "none"
-        val ciFabricApiVersion = targetProject.findProperty("ciFabricApiVersion")
-            ?.toString()
-            ?: fabricApiVersion
         val runMcRuntimeTest = targetProject.findProperty("ciMcRuntimeTest")
             ?.toString()
             ?.toBooleanStrictOrNull()
@@ -72,7 +69,7 @@ tasks.register("writeCiBuildMatrix") {
             "loader" to loader,
             "minecraft" to minecraftVersion,
             "java" to javaVersion,
-            "fabric_api" to ciFabricApiVersion,
+            "fabric_api" to fabricApiVersion,
             "supports_game_test_server" to supportsGameTestServer,
             "run_game_test_server" to (supportsGameTestServer && loader in setOf("forge", "neo")),
             "run_server" to !supportsGameTestServer,
