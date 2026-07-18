@@ -43,13 +43,28 @@ public final class VersionedConfigSpec {
         }
 
         @Override
+        public void translation(String translationKey) {
+            builder.translation(translationKey);
+        }
+
+        @Override
+        public void worldRestart() {
+            builder.worldRestart();
+        }
+
+        @Override
+        public void gameRestart() {
+            builder.gameRestart();
+        }
+
+        @Override
         public void push(String key) {
             builder.push(key);
         }
 
         @Override
-        public void pop() {
-            builder.pop();
+        public void pop(int count) {
+            builder.pop(count);
         }
 
         @Override

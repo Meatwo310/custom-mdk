@@ -47,12 +47,18 @@ classes solely for style. They add noise and do not clarify the config API.
 - `comment(String comment)` stores a comment for the next entry or category.
   Blank comments are treated as absent during binding and must not be forwarded
   to loader-specific config builders.
+- `translation(String translationKey)` assigns the exact translation key to
+  the next entry or category without deriving it from the category path.
+- `worldRestart()` marks the next entry as requiring a world restart.
+- `gameRestart()` marks the next entry as requiring a game restart on
+  NeoForge. Platforms using the Forge Config API ignore it.
 - `define(...)` defines unrestricted primitive, boolean, or string values. Supported overloads are `int`, `long`, `double`, `boolean`, and `String`.
 - `defineInRange(...)` defines ranged numeric values. Supported overloads are `int`, `long`, and `double`.
 - `defineList(...)` defines a list from a default value, a new-element supplier for config screens, and an element validator.
 - `defineEnum(...)` defines an enum value from its default enum constant.
 - `category(String key, ConfigEntries children)` appends a nested section and should be preferred for hierarchy.
-- `push(String key)` and `pop()` manually open and close sections. Treat them as low-level API.
+- `push(String key)`, `pop()`, and `pop(int count)` manually open and close
+  sections. Treat them as low-level API.
 - `build()` returns the immutable `ConfigEntries` for the class or category.
 
 `ConfigEntries` is normally produced by `build()` or `category(...)`:

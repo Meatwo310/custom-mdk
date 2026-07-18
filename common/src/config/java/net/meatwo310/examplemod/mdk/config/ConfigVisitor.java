@@ -1,9 +1,15 @@
 package net.meatwo310.examplemod.mdk.config;
 
 public interface ConfigVisitor {
+    void translation(String translationKey);
+
+    void worldRestart();
+
+    void gameRestart();
+
     void push(String key, String comment);
 
-    void pop();
+    void pop(int count);
 
     void bind(ConfigEntry.IntEntry entry);
 
