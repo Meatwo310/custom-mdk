@@ -80,6 +80,11 @@ public final class ConfigEntryBinder implements ConfigVisitor {
     }
 
     @Override
+    public void pop() {
+        adapter.pop();
+    }
+
+    @Override
     public void pop(int count) {
         adapter.pop(count);
     }
@@ -100,6 +105,8 @@ public final class ConfigEntryBinder implements ConfigVisitor {
         default void gameRestart() {}
 
         void push(String key);
+
+        void pop();
 
         void pop(int count);
 

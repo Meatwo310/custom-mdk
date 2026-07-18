@@ -58,6 +58,11 @@ public final class VersionedConfigSpec {
         }
 
         @Override
+        public void pop() {
+            builder.pop();
+        }
+
+        @Override
         public void pop(int count) {
             builder.pop(count);
         }

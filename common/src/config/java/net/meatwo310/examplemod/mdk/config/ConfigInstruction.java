@@ -52,9 +52,16 @@ public abstract class ConfigInstruction implements ConfigElement {
     }
 
     public static final class Pop extends ConfigInstruction {
+        @Override
+        public void bindTo(ConfigVisitor visitor) {
+            visitor.pop();
+        }
+    }
+
+    public static final class PopCount extends ConfigInstruction {
         private final int count;
 
-        public Pop(int count) {
+        public PopCount(int count) {
             this.count = count;
         }
 

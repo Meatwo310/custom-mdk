@@ -9,6 +9,8 @@ public interface ConfigVisitor {
 
     void push(String key, String comment);
 
+    void pop();
+
     void pop(int count);
 
     void bind(ConfigEntry.IntEntry entry);

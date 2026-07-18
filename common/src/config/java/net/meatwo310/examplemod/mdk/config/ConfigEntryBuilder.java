@@ -103,7 +103,8 @@ public class ConfigEntryBuilder {
     }
 
     public ConfigEntryBuilder pop() {
-        return pop(1);
+        elements.add(new ConfigInstruction.Pop());
+        return this;
     }
 
     /**
@@ -113,7 +114,7 @@ public class ConfigEntryBuilder {
      * @return this builder
      */
     public ConfigEntryBuilder pop(int count) {
-        elements.add(new ConfigInstruction.Pop(count));
+        elements.add(new ConfigInstruction.PopCount(count));
         return this;
     }
 

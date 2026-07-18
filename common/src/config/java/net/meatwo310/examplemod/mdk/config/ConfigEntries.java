@@ -14,7 +14,7 @@ public class ConfigEntries {
         var elements = new ArrayList<ConfigElement>(children.elements.size() + 2);
         elements.add(new ConfigInstruction.Push(key, comment));
         elements.addAll(children.elements);
-        elements.add(new ConfigInstruction.Pop(1));
+        elements.add(new ConfigInstruction.Pop());
         return new ConfigEntries(elements);
     }
 
