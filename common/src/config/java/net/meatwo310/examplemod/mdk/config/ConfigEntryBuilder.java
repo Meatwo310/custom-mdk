@@ -9,8 +9,14 @@ public class ConfigEntryBuilder {
     private final List<ConfigElement> elements = new ArrayList<>();
     private String pendingComment = "";
 
+    /**
+     * Appends a comment for the next entry or category. Consecutive comments are joined with newlines.
+     *
+     * @param comment the comment to append
+     * @return this builder
+     */
     public ConfigEntryBuilder comment(String comment) {
-        this.pendingComment = comment;
+        this.pendingComment = pendingComment.isEmpty() ? comment : pendingComment + "\n" + comment;
         return this;
     }
 

@@ -241,13 +241,14 @@ These conventions wire the `config` and `configClient` outputs into the jar and 
 Fabric 1.18.2-1.19.2 uses the archived `net.minecraftforge:forgeconfigapiport-fabric` artifact, which has no separate common artifact. Keep `VersionedConfigSpec` and other Forge Config API Port bindings in the Fabric project's `src/config`; `fabric-legacy-config-conventions` consumes the neutral declarations from root `common` and treats `<minecraft>/common/src/config` as optional. Do not apply it together with `fabric-config-conventions`.
 
 The builder supports primitive values, ranged numbers, strings, lists, enums,
-and nested sections. Use `translation(...)` to assign an exact translation key
-to the next entry or category regardless of its category path. Entries can be
-marked with `worldRestart()` on every platform or `gameRestart()` on NeoForge;
-platforms using the Forge Config API ignore `gameRestart()`. Prefer
-`category(...)` plus nested classes for hierarchical config; keep `push(...)`,
-`pop()`, and `pop(int count)` for low-level adapter work or unusual migration
-cases.
+and nested sections. Consecutive `comment(...)` calls are joined with newlines
+and applied to the next entry or category. Use `translation(...)` to assign an
+exact translation key to the next entry or category regardless of its category
+path. Entries can be marked with `worldRestart()` on every platform or
+`gameRestart()` on NeoForge; platforms using the Forge Config API ignore
+`gameRestart()`. Prefer `category(...)` plus nested classes for hierarchical
+config; keep `push(...)`, `pop()`, and `pop(int count)` for low-level adapter
+work or unusual migration cases.
 
 ```java
 package net.meatwo310.examplemod.config;

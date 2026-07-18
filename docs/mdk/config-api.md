@@ -44,9 +44,10 @@ classes solely for style. They add noise and do not clarify the config API.
 
 `ConfigEntryBuilder` is the normal entry-definition API:
 
-- `comment(String comment)` stores a comment for the next entry or category.
-  Blank comments are treated as absent during binding and must not be forwarded
-  to loader-specific config builders.
+- `comment(String comment)` appends a comment for the next entry or category.
+  Consecutive calls are joined with newlines in declaration order. Blank
+  comments are treated as absent during binding and must not be forwarded to
+  loader-specific config builders.
 - `translation(String translationKey)` assigns the exact translation key to
   the next entry or category without deriving it from the category path.
 - `worldRestart()` marks the next entry as requiring a world restart.
