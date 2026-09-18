@@ -158,6 +158,7 @@ val stageCommonForRuns = tasks.register<Copy>("stageLexForgeCommonForRuns") {
         project(commonProject).tasks.named("classes"),
         project(sharedCommonProject).tasks.named("classes"),
     )
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from(project(commonProject).sourceSets.main.get().output)
     from(project(sharedCommonProject).sourceSets.main.get().output)
     into(mainClassesDir)

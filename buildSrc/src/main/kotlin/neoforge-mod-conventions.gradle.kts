@@ -111,9 +111,11 @@ neoForge {
 
     mods {
         create(modId) {
-            sourceSet(sourceSets.main.get())
-            sourceSet(project(commonProject).sourceSets.main.get())
+            // UnionFileSystem searches later entries first, so register sources
+            // from least to most specific to match the packaged jar's precedence.
             sourceSet(project(sharedCommonProject).sourceSets.main.get())
+            sourceSet(project(commonProject).sourceSets.main.get())
+            sourceSet(sourceSets.main.get())
         }
     }
 }
