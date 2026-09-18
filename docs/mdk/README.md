@@ -46,6 +46,7 @@ Projects included by default in this template:
 - `26.1/common`, `26.1/fabric`, `26.1/neo`
 - `26.1.2/common`, `26.1.2/fabric`, `26.1.2/neo`
 - `26.2/common`, `26.2/fabric`, `26.2/neo`
+- `26.3/common`, `26.3/fabric`, `26.3/neo`
 
 ## Key Build Inputs
 

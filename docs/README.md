@@ -20,6 +20,7 @@ A Minecraft mod template for multi-version and multi-loader development, powered
 | 26.1      |   ✅   |    ❌    |    ✅    |
 | 26.1.2    |   🌟   |    ❌    |    🌟    |
 | 26.2      |   ✅   |    🚫    |    ✅    |
+| 26.3      |   ✅   |    🚫    |    ✅    |
 
 🌟 Primary support | ✅ Supported | 🚧 Partial support | ⏳ Planned | ❌ Not supported yet | 🚫 Unsupported
 
@@ -98,7 +99,7 @@ The standalone 1.7.10 Forge project uses `1.7.10/forge/src/main/resources/mcmod.
   - Java 8: `1.7.10`
   - Java 17: `common`, `1.18.2`, `1.19.2`, `1.20.1`
   - Java 21: `1.21.1`, `1.21.8`, `1.21.11`
-  - Java 25: `26.1`, `26.1.2`
+  - Java 25: `26.1`, `26.1.2`, `26.2`, `26.3`
 
 ## Building
 
