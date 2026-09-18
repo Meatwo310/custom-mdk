@@ -176,7 +176,6 @@ jobs:
           fi
 
       - name: Tag and push release refs
-        if: ${{ !cancelled() }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -195,7 +194,6 @@ jobs:
           git push --atomic origin "HEAD:$GITHUB_REF_NAME" "$RELEASE_TAG"
 
       - name: Create GitHub Release
-        if: ${{ !cancelled() }}
         uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ env.RELEASE_TAG }}
