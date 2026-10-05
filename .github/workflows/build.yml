@@ -54,6 +54,9 @@ jobs:
           jq . <<< "$JSON"
           echo "::endgroup::"
 
+      - name: Verify resource composition
+        run: ./gradlew -p buildSrc test --configuration-cache --no-daemon --max-workers=1
+
   build:
     needs: detect
     if: ${{ needs.detect.outputs.count != '0' }}

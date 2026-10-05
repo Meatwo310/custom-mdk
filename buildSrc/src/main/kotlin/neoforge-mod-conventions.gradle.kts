@@ -1,5 +1,6 @@
 import net.meatwo310.mdk.build.configureCiRuntimeMods
 import net.meatwo310.mdk.build.configurePlatformArtifacts
+import net.meatwo310.mdk.build.developmentModSourceSet
 import net.meatwo310.mdk.build.includeSourceSetArtifacts
 import net.meatwo310.mdk.build.supportsGameTestServer
 
@@ -62,6 +63,8 @@ configurations {
     runtimeClasspath.get().extendsFrom(localRuntime)
 }
 
+val developmentSourceSet = developmentModSourceSet()
+
 neoForge {
     version = neoVersion
     validateAccessTransformers = true
@@ -111,11 +114,7 @@ neoForge {
 
     mods {
         create(modId) {
-            // UnionFileSystem searches later entries first, so register sources
-            // from least to most specific to match the packaged jar's precedence.
-            sourceSet(project(sharedCommonProject).sourceSets.main.get())
-            sourceSet(project(commonProject).sourceSets.main.get())
-            sourceSet(sourceSets.main.get())
+            sourceSet(developmentSourceSet)
         }
     }
 }

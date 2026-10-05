@@ -92,6 +92,22 @@ For shared changes, build representative downstream projects:
 ./gradlew :1.18.2-forge:build :1.20.1-fabric:build :26.1-neo:build
 ```
 
+For resource composition changes, run the Kotlin/Gradle TestKit regression test
+with a JDK supported by the Gradle wrapper available through `JAVA_HOME`:
+
+```bash
+./gradlew -p buildSrc test --configuration-cache --no-daemon --max-workers=1
+```
+
+This checks project/source-set precedence, jar/development/source-resource
+agreement (including the expected classes), optional config, stale output removal,
+and configuration cache reuse with one worker and project parallelism disabled.
+The test runs through the standard `buildSrc` `test`/`check` tasks without
+configuring the repository's Minecraft projects and does not require Python.
+Also build and exercise actual runs for Legacy LexForge, ForgeGradle 7, NeoForge,
+and both Fabric Loom modes;
+the fixture does not launch Minecraft or test loader-specific run integration.
+
 For CI matrix or project inclusion changes:
 
 ```bash

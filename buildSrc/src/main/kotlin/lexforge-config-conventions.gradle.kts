@@ -16,18 +16,6 @@ plugins.withId("java-library") {
     for (configSourceSet in sharedConfig.including(config)) {
         main.compileClasspath += configSourceSet.output
     }
-
-    // ForgeGradle 7 treats output directories as separate mod roots in dev runs.
-    // Copy config classes beside the @Mod class and generated mods.toml so the
-    // complete mod is available from a single root without changing jar layout.
-    val stageConfigForRuns = tasks.register<Copy>("stageLexForgeConfigForRuns") {
-        dependsOn(tasks.named("classes"))
-        from(sharedConfig.including(config).map { it.output })
-        into(layout.buildDirectory.dir("classes/java/main"))
-    }
-    tasks.matching { it.name.startsWith("run") }.configureEach {
-        dependsOn(stageConfigForRuns)
-    }
 }
 
 plugins.withId("net.minecraftforge.gradle") {

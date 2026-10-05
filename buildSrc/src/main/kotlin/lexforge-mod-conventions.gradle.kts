@@ -1,7 +1,6 @@
 import net.meatwo310.mdk.build.*
 import net.minecraftforge.gradle.ForgeGradleExtension
 import net.minecraftforge.gradle.MinecraftExtensionForProject
-import org.gradle.api.file.DuplicatesStrategy
 
 plugins {
     `java-library`
@@ -83,13 +82,15 @@ configurations {
 
 minecraft.mappings("official", minecraftVersion)
 
+val developmentSourceSet = developmentModSourceSet()
+
 minecraft.runs {
     configureEach {
         workingDir = layout.projectDirectory.dir("run")
         systemProperty("forge.enabledGameTestNamespaces", modId)
         mods {
             create(modId) {
-                source(sourceSets.main.get())
+                source(developmentSourceSet)
             }
         }
     }
@@ -144,28 +145,6 @@ val generateModMetadata = tasks.register<GenerateLexForgeModMetadata>("generateM
 }
 
 sourceSets.main.get().resources.srcDir(generateModMetadata.flatMap { it.outputDirectory })
-
-// ForgeGradle 7 scans each output directory as a separate mod root. Keep the
-// generated metadata and compiled @Mod class in the same root for dev runs.
-val mainClassesDir = layout.buildDirectory.dir("classes/java/main")
-sourceSets.main.get().output.setResourcesDir(mainClassesDir.get().asFile)
-tasks.named<ProcessResources>("processResources") {
-    destinationDir = mainClassesDir.get().asFile
-}
-
-val stageCommonForRuns = tasks.register<Copy>("stageLexForgeCommonForRuns") {
-    dependsOn(
-        project(commonProject).tasks.named("classes"),
-        project(sharedCommonProject).tasks.named("classes"),
-    )
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from(project(commonProject).sourceSets.main.get().output)
-    from(project(sharedCommonProject).sourceSets.main.get().output)
-    into(mainClassesDir)
-}
-tasks.matching { it.name.startsWith("run") }.configureEach {
-    dependsOn(stageCommonForRuns)
-}
 
 tasks.named("sourcesJar") {
     dependsOn(generateModMetadata)
