@@ -55,7 +55,7 @@ jobs:
           echo "::endgroup::"
 
       - name: Verify resource composition
-        run: python3 buildSrc/src/test/resource-composition/verify.py
+        run: ./gradlew -p buildSrc test --configuration-cache --no-daemon --max-workers=1
 
   build:
     needs: detect
