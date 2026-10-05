@@ -54,6 +54,9 @@ jobs:
           jq . <<< "$JSON"
           echo "::endgroup::"
 
+      - name: Verify resource composition
+        run: python3 buildSrc/src/test/resource-composition/verify.py
+
   build:
     needs: detect
     if: ${{ needs.detect.outputs.count != '0' }}

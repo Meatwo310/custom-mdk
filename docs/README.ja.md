@@ -175,6 +175,14 @@ CIランタイムへの配置方法は、すべてのターゲットで共通で
 
 GTNHGradleを使用する1.7.10プロジェクトでは、依存関係の宣言を`1.7.10/forge/dependencies.gradle`に、追加のリポジトリを`1.7.10/forge/repositories.gradle`に保持します。`dependencies.gradle`に記載された設定を使用してください。たとえば、コンパイル時とローカル実行時に必要でMaven依存関係として公開しない依存関係には`devOnlyNonPublishable`を、ローカル実行時だけ必要な依存関係には`runtimeOnlyNonPublishable`を使用します。ターゲット、Forge、マッピング、GTNHGradleのオプションは`1.7.10/forge/gradle.properties`に保持してください。
 
+## リソースの優先順位
+
+同じ相対パスのリソースが複数ある場合、`platform > versioned-common > root-common`の順で採用します。同じプロジェクト内では`configClient > client > config > main`の順です。有効なソースセットだけが対象になります。プロジェクト間の優先順位を先に適用するため、platformの`main`リソースもroot-commonの`config`リソースより優先されます。選択されたファイルでリソース全体を置き換え、JSONの内容はマージしません。
+
+この選択規則は、配布jar、sources jar内のリソース、`runClient`・`runServer`・データ生成などの開発実行で共通です。生成リソースとローダーメタデータも、リソース処理後に同じ規則で扱います。開発実行には独立したmodディレクトリを使用し、コンパイル出力を上書きしません。単独の1.7.10 Forgeプロジェクトは、この共有リソース合成を使用しません。
+
+古い規約でForgeGradle 7ターゲットを実行したことがある場合は、以前の規約がコンパイル出力へコピーした共通ファイルを削除するため、`./gradlew clean`を一度実行してください。
+
 ## 設定システム
 
 共有設定エントリーは`common/src/config/java/.../config`にあります。`ConfigEntryBuilder`でエントリーを定義し、`ConfigEntries`としてまとめ、`ModConfigs`内の`ConfigDeclaration`を通じて各ファイルを公開します。

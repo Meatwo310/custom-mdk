@@ -92,6 +92,19 @@ For shared changes, build representative downstream projects:
 ./gradlew :1.18.2-forge:build :1.20.1-fabric:build :26.1-neo:build
 ```
 
+For resource composition changes, run the isolated regression fixture with a JDK
+supported by the Gradle wrapper available through `JAVA_HOME`:
+
+```bash
+python3 buildSrc/src/test/resource-composition/verify.py
+```
+
+This checks project/source-set precedence, jar/development/source-resource
+agreement, optional config, stale output removal, and configuration cache reuse
+with one worker and project parallelism disabled. Also build and exercise actual
+runs for Legacy LexForge, ForgeGradle 7, NeoForge, and both Fabric Loom modes;
+the fixture does not launch Minecraft or test loader-specific run integration.
+
 For CI matrix or project inclusion changes:
 
 ```bash
