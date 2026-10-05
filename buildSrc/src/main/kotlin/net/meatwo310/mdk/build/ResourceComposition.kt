@@ -26,6 +26,15 @@ private class ComposedResourceFilter(private val directory: File) : Action<FileC
     }
 }
 
+/** Raw inputs must not survive resource renames or exclusions in sources jars. */
+private class SourceResourceFilter(private val roots: Set<File>) : Action<FileCopyDetails> {
+    override fun execute(details: FileCopyDetails) {
+        if (roots.any { details.file.toPath().startsWith(it.toPath()) }) {
+            details.exclude()
+        }
+    }
+}
+
 private data class ResourceSource(val owner: Project, val sourceSet: SourceSet)
 
 class ResourceComposition internal constructor(private val project: Project) {
@@ -69,6 +78,12 @@ class ResourceComposition internal constructor(private val project: Project) {
                     dependsOn(owner.tasks.named(sourceSet.processResourcesTaskName))
                     from(sourceSet.output.resourcesDir)
                 }
+            }
+            val sourceResourceFilter = SourceResourceFilter(
+                sources.flatMap { it.sourceSet.resources.srcDirs }.toSet(),
+            )
+            project.tasks.withType<Jar>().matching { it.name == "sourcesJar" }.configureEach {
+                eachFile(sourceResourceFilter)
             }
             development?.let { configureDevelopmentClasspath(it) }
         }

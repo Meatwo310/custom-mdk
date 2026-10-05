@@ -29,6 +29,7 @@ class ResourceCompositionTest {
         val root = temporary.newFolder("resource-regression")
         val cases = resourceCases()
         prepareBuild(root, cases)
+        cases["renamed.txt"] = cases.remove("expanded.txt")!!
         val tasks = targets.flatMap { target ->
             listOf("jar", "sourcesJar", "stageModForDevelopment", "verifyRuntimeRoots").map { ":$target:$it" }
         }
@@ -97,6 +98,7 @@ class ResourceCompositionTest {
         }
         targets.forEach { target ->
             root.resolve("$target/src/main/resources/generated.txt").delete()
+            write(root.resolve("$target/src/main/resources/excluded.txt"), "must not be packaged\n")
             write(root.resolve("$target/src/main/resources/expanded.txt"), "\${probe}\n")
             write(root.resolve("$target/templates/generated.txt"), "\${probe}\n")
         }

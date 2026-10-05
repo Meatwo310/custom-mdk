@@ -43,7 +43,11 @@ subprojects.filter { it.name !in setOf("common", "version") }.forEach { target -
         }
         sets.named("main") { resources.srcDir(generated) }
         tasks.named<ProcessResources>("processResources") {
-            filesMatching("expanded.txt") { expand(mapOf("probe" to "platform:main")) }
+            filesMatching("expanded.txt") {
+                expand(mapOf("probe" to "platform:main"))
+                name = "renamed.txt"
+            }
+            exclude("excluded.txt")
         }
         developmentModSourceSet()
         // Persist paths as task inputs, avoiding Project/SourceSet access during execution.
