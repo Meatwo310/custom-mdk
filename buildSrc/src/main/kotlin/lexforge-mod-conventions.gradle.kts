@@ -171,10 +171,12 @@ tasks.named("sourcesJar") {
     dependsOn(generateModMetadata)
 }
 
+includeSourceSetArtifacts(
+    project(commonProject).sourceSets.main.get(),
+    project(sharedCommonProject).sourceSets.main.get(),
+)
+
 tasks.jar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from(project(commonProject).sourceSets.main.get().output)
-    from(project(sharedCommonProject).sourceSets.main.get().output)
     from(generateModMetadata)
     manifest.attributes(mapOf("MixinConfigs" to "$modId.mixins.json"))
 }

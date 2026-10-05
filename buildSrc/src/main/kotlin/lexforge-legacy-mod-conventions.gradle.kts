@@ -1,5 +1,4 @@
 import net.meatwo310.mdk.build.*
-import org.gradle.api.file.DuplicatesStrategy
 
 plugins {
     `java-library`
@@ -171,9 +170,11 @@ tasks.named("sourcesJar") {
     dependsOn(generateModMetadata)
 }
 
+includeSourceSetArtifacts(
+    project(commonProject).sourceSets.main.get(),
+    project(sharedCommonProject).sourceSets.main.get(),
+)
+
 tasks.jar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from(project(commonProject).sourceSets.main.get().output)
-    from(project(sharedCommonProject).sourceSets.main.get().output)
     manifest.attributes(mapOf("MixinConfigs" to "$modId.mixins.json"))
 }
