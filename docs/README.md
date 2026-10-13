@@ -404,7 +404,7 @@ Expose config files through `ConfigDeclaration` in `ModConfigs`:
 ```java
 public final class ModConfigs {
     public static final ConfigDeclaration SERVER =
-            ConfigDeclaration.of(ConfigSide.SERVER, ServerConfig.ENTRIES);
+            ConfigDeclaration.of(ConfigSide.SYNCED, ServerConfig.ENTRIES);
     public static final ConfigDeclaration CLIENT =
             ConfigDeclaration.of(ConfigSide.CLIENT, ClientConfig.ENTRIES, "examplemod-client-special.toml");
 
@@ -420,7 +420,9 @@ if (ServerConfig.ENABLE_FEATURE.getAsBoolean()) {
 }
 ```
 
-`ConfigSide.SERVER`, `ConfigSide.CLIENT`, and `ConfigSide.COMMON` are mapped to the loader-specific config type by each platform. Use `SERVER` for world/server-owned gameplay rules and balance values, `CLIENT` for local preferences such as rendering or UI options, and `COMMON` for installation-wide defaults that both physical sides load independently. The optional file name is passed through to the loader API; omit it to use the loader default.
+`ConfigSide.SYNCED`, `ConfigSide.CLIENT`, and `ConfigSide.LOCAL` are mapped to the loader-specific config type by each platform. Use `SYNCED` for world/server-owned gameplay rules and balance values, `CLIENT` for local preferences such as rendering or UI options, and `LOCAL` for installation-wide defaults that both physical sides load independently. The optional file name is passed through to the loader API; omit it to use the loader default.
+
+`SYNCED` values are sent to connected clients; never store secrets in them. The names `LOCAL` and `SYNCED` replace `COMMON` and `SERVER`. Loader mappings, config file locations, default file names, and synchronization behavior remain unchanged for the current targets.
 
 The common config declarations are loader-neutral. Each platform provides the dependency and registrar needed for its target, plus optional client-side helpers when it exposes a config screen:
 

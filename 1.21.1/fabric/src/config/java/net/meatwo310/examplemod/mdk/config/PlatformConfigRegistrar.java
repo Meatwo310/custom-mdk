@@ -18,8 +18,8 @@ public final class PlatformConfigRegistrar {
 
     private static ModConfig.Type toType(ConfigSide side) {
         return switch (side) {
-            case COMMON -> ModConfig.Type.COMMON;
-            case SERVER -> ModConfig.Type.SERVER;
+            case LOCAL -> ModConfig.Type.COMMON;
+            case SYNCED -> ModConfig.Type.SERVER;
             case CLIENT -> ModConfig.Type.CLIENT;
         };
     }
