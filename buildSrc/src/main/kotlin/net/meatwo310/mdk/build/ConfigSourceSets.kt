@@ -20,10 +20,7 @@ data class SharedConfigSourceSets(
 
 fun Project.configureConfigSourceSet(name: String = CONFIG_SOURCE_SET_NAME): SourceSet {
     val sourceSets = extensions.getByType<SourceSetContainer>()
-    val sourceSet = sourceSets.findByName(name) ?: sourceSets.create(name) {
-        java.srcDir("src/$name/java")
-        resources.srcDir("src/$name/resources")
-    }
+    val sourceSet = sourceSets.findByName(name) ?: sourceSets.create(name)
     sourceSet.compileClasspath += configurations.getByName("compileClasspath")
     sourceSet.runtimeClasspath += sourceSet.output + sourceSet.compileClasspath
     return sourceSet

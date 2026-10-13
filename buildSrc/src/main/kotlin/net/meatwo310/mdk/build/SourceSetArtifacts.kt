@@ -10,6 +10,9 @@ import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.withType
 
 fun Project.includeSourceSetArtifacts(vararg sourceSets: SourceSet) {
+    for (sourceSet in sourceSets) {
+        includeComposedResources(sourceSet)
+    }
     val mainSources = extensions.getByType<SourceSetContainer>()
         .named(SourceSet.MAIN_SOURCE_SET_NAME).get().allSource
     tasks.named<Jar>("jar") {

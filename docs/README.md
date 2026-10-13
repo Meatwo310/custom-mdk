@@ -198,6 +198,26 @@ dependency, or `runtimeOnlyNonPublishable` for a local runtime-only dependency.
 Keep target, Forge, mapping, and GTNHGradle options in
 `1.7.10/forge/gradle.properties`.
 
+## Resource Precedence
+
+When resources have the same relative path, the loader project takes precedence
+over version-specific common, which takes precedence over root common:
+`platform > versioned-common > root-common`. Within each project, the order is
+`configClient > client > config > main`; only enabled source sets participate.
+Project precedence is applied first, so a platform `main` resource also overrides
+a root-common `config` resource. The selected file replaces the whole resource;
+JSON contents are not merged.
+
+The same selection applies to distribution jars, resources in sources jars, and
+development runs such as `runClient`, `runServer`, and data generation. Generated
+resources and loader metadata participate after resource processing. Development
+runs use a separate staged mod directory, leaving compilation outputs intact.
+The standalone 1.7.10 Forge project does not use the shared resource composition.
+
+If you previously ran a ForgeGradle 7 target with the older conventions, run
+`./gradlew clean` once to remove shared files that those conventions copied into
+compilation outputs.
+
 ## Configuration System
 
 Shared config entries live in `common/src/config/java/.../config`. Define entries with `ConfigEntryBuilder`, collect them as `ConfigEntries`, and expose each file through a `ConfigDeclaration` in `ModConfigs`.

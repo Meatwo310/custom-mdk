@@ -1,5 +1,6 @@
 import net.meatwo310.mdk.build.PlatformArtifactsExtension
 import net.meatwo310.mdk.build.VersionCatalogLibrary
+import net.meatwo310.mdk.build.developmentModSourceSet
 import net.meatwo310.mdk.build.library
 import net.meatwo310.mdk.build.module
 import net.meatwo310.mdk.build.versionCatalog
@@ -19,19 +20,14 @@ val minecraftVersion = project.property("minecraftVersion").toString()
 val parchmentMinecraftVersion = project.property("parchmentMinecraftVersion").toString()
 val parchmentMappingsVersion = project.property("parchmentMappingsVersion").toString()
 
-val commonProject = ":$minecraftVersion-common"
-val sharedCommonProject = ":common"
-evaluationDependsOn(sharedCommonProject)
+val developmentSourceSet = developmentModSourceSet()
 
 loom {
     splitEnvironmentSourceSets()
 
     mods {
         create(modId) {
-            sourceSet(sourceSets.main.get())
-            sourceSet(sourceSets.named("client").get())
-            sourceSet(project(commonProject).sourceSets.main.get())
-            sourceSet(project(sharedCommonProject).sourceSets.main.get())
+            sourceSet(developmentSourceSet)
         }
     }
 

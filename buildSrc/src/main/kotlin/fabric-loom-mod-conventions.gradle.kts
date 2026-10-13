@@ -8,19 +8,14 @@ plugins {
 val modId = project.property("modId").toString()
 val minecraftVersion = project.property("minecraftVersion").toString()
 
-val commonProject = ":$minecraftVersion-common"
-val sharedCommonProject = ":common"
-evaluationDependsOn(sharedCommonProject)
+val developmentSourceSet = developmentModSourceSet()
 
 loom {
     splitEnvironmentSourceSets()
 
     mods {
         create(modId) {
-            sourceSet(sourceSets.main.get())
-            sourceSet(sourceSets.named("client").get())
-            sourceSet(project(commonProject).sourceSets.main.get())
-            sourceSet(project(sharedCommonProject).sourceSets.main.get())
+            sourceSet(developmentSourceSet)
         }
     }
 
