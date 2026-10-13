@@ -1,10 +1,4 @@
 {
-  "depends": {},
-  "mixins": [
-    "examplemod.mixins.json",
-    {
-      "config": "examplemod.client.mixins.json",
-      "environment": "client"
-    }
-  ]
+  "depends": {
+  }
 }

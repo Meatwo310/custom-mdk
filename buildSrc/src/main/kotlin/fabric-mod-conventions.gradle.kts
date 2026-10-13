@@ -73,6 +73,14 @@ val generateModMetadata = tasks.register<GenerateFabricModMetadata>("generateMod
     templateFile.set(layout.projectDirectory.file("src/main/templates/fabric.mod.json"))
     outputFile.set(generatedModMetadataDir.map { it.file("fabric.mod.json") })
     defaultModMetadataJson.set(fabricModMetadata.depends.map { JsonOutput.toJson(defaultModMetadata(it)) })
+    mixinConfigFiles.from(
+        fileTree("src/main/resources") {
+            include("$modId.mixins.json", "$modId.client.mixins.json")
+        },
+        fileTree("src/client/resources") {
+            include("$modId.mixins.json", "$modId.client.mixins.json")
+        },
+    )
 }
 
 tasks.processResources {
