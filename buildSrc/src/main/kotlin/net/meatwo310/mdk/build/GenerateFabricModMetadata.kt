@@ -3,6 +3,7 @@ package net.meatwo310.mdk.build
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.*
@@ -18,9 +19,24 @@ abstract class GenerateFabricModMetadata : DefaultTask() {
     @get:Input
     abstract val defaultModMetadataJson: Property<String>
 
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val mixinConfigFiles: ConfigurableFileCollection
+
     @TaskAction
     fun generate() {
-        val defaults = parseObject(defaultModMetadataJson.get())
+        val defaults = parseObject(defaultModMetadataJson.get()).toMutableMap()
+        val mixins = mixinConfigFiles.files
+            .sortedWith(compareBy({ it.name.endsWith(".client.mixins.json") }, { it.name }))
+            .distinctBy { it.name }
+            .map { file ->
+                if (file.name.endsWith(".client.mixins.json")) {
+                    linkedMapOf("config" to file.name, "environment" to "client")
+                } else {
+                    file.name
+                }
+            }
+        if (mixins.isNotEmpty()) defaults["mixins"] = mixins
         val overrides = parseObject(templateFile.get().asFile.readText())
         val modMetadata = mergeJsonObjects(defaults, overrides)
         outputFile.get().asFile.apply {
