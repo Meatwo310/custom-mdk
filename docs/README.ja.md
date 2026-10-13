@@ -351,7 +351,7 @@ cacheSize = 256
 ```java
 public final class ModConfigs {
     public static final ConfigDeclaration SERVER =
-            ConfigDeclaration.of(ConfigSide.SERVER, ServerConfig.ENTRIES);
+            ConfigDeclaration.of(ConfigSide.SYNCED, ServerConfig.ENTRIES);
     public static final ConfigDeclaration CLIENT =
             ConfigDeclaration.of(ConfigSide.CLIENT, ClientConfig.ENTRIES, "examplemod-client-special.toml");
 
@@ -367,7 +367,9 @@ if (ServerConfig.ENABLE_FEATURE.getAsBoolean()) {
 }
 ```
 
-`ConfigSide.SERVER`、`ConfigSide.CLIENT`、`ConfigSide.COMMON`は、各プラットフォームによってローダー固有の設定種別に割り当てられます。ワールドまたはサーバーが管理するゲームプレイルールやバランス値には`SERVER`、描画やUIなどのローカル設定には`CLIENT`、物理サイドごとに独立して読み込むインストール全体のデフォルト値には`COMMON`を使用します。任意のファイル名はローダーAPIへそのまま渡されます。ローダーのデフォルトを使う場合は省略してください。
+`ConfigSide.SYNCED`、`ConfigSide.CLIENT`、`ConfigSide.LOCAL`は、各プラットフォームによってローダー固有の設定種別に割り当てられます。ワールドまたはサーバーが管理するゲームプレイルールやバランス値には`SYNCED`、描画やUIなどのローカル設定には`CLIENT`、物理サイドごとに独立して読み込むインストール全体のデフォルト値には`LOCAL`を使用します。任意のファイル名はローダーAPIへそのまま渡されます。ローダーのデフォルトを使う場合は省略してください。
+
+`SYNCED`の値は接続したクライアントへ送信されるため、シークレットを保存しないでください。`LOCAL`と`SYNCED`は、それぞれ旧名の`COMMON`と`SERVER`に対応します。現在の対象では、ローダーへの対応付け、設定の保存先、デフォルトのファイル名、同期動作は変わりません。
 
 共通設定の宣言はローダーに依存しません。各プラットフォームは、対象に必要な依存関係と登録処理に加えて、設定画面を公開する場合は任意のクライアント側ヘルパーを提供します。
 
