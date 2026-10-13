@@ -1,6 +1,5 @@
 import groovy.json.JsonOutput
 import net.meatwo310.mdk.build.*
-import org.gradle.api.file.DuplicatesStrategy
 
 plugins {
     `java-library`
@@ -98,8 +97,7 @@ tasks.named("sourcesJar") {
     dependsOn(generateModMetadata)
 }
 
-tasks.jar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from(project(commonProject).sourceSets.main.get().output)
-    from(project(sharedCommonProject).sourceSets.main.get().output)
-}
+includeSourceSetArtifacts(
+    project(commonProject).sourceSets.main.get(),
+    project(sharedCommonProject).sourceSets.main.get(),
+)
