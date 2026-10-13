@@ -88,6 +88,7 @@ Fabricの`fabric.mod.json`は、`gradle.properties`、`version.txt`、Fabric規�
 
 ## 要件
 
+- 全Fabric対象でFabric Loader 0.19.5以降が必要です。
 - Gradleの設定にはJDK 25を推奨します。GitHub Actionsのビルド環境にも一致します。
 - LinuxおよびAppleシリコン搭載macOSでは、`nix develop`によりJDK 25とリポジトリの開発ツールを利用できます。
 - Gradleは、各Minecraftバージョンに必要なツールチェーンをFoojay Toolchain Resolverでダウンロードします。

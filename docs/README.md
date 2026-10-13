@@ -91,6 +91,7 @@ The standalone 1.7.10 Forge project uses `1.7.10/forge/src/main/resources/mcmod.
 
 ## Requirements
 
+- All Fabric targets require Fabric Loader 0.19.5 or newer.
 - JDK 25 is recommended for configuring Gradle and matches the GitHub Actions build environment.
 - On Linux and Apple silicon macOS, `nix develop` provides JDK 25 and the repository development tools.
 - Gradle downloads the toolchain needed by each Minecraft version through Foojay Toolchain Resolver.
