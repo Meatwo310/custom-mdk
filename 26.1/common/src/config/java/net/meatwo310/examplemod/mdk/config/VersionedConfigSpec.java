@@ -104,6 +104,12 @@ public final class VersionedConfigSpec {
         }
 
         @Override
+        public <T> ConfigEntryBinding<List<T>> defineListAllowEmpty(
+                String key, List<T> defaultValue, Supplier<T> newElementSupplier, Predicate<Object> elementValidator) {
+            return bindListValue(builder.defineListAllowEmpty(key, defaultValue, newElementSupplier, elementValidator));
+        }
+
+        @Override
         public <E extends Enum<E>> ConfigEntryBinding<E> defineEnum(String key, E defaultValue) {
             return bindValue(builder.defineEnum(key, defaultValue));
         }

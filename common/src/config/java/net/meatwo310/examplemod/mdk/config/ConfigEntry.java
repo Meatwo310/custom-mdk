@@ -158,6 +158,7 @@ public abstract class ConfigEntry<T> implements Supplier<T>, ConfigElement {
     public static class ListEntry<T> extends ConfigEntry<List<T>> {
         private final Supplier<T> newElementSupplier;
         private final Predicate<Object> elementValidator;
+        private final boolean allowEmpty;
 
         public ListEntry(
                 String key,
@@ -165,9 +166,20 @@ public abstract class ConfigEntry<T> implements Supplier<T>, ConfigElement {
                 List<T> defaultValue,
                 Supplier<T> newElementSupplier,
                 Predicate<Object> elementValidator) {
+            this(key, comment, defaultValue, newElementSupplier, elementValidator, false);
+        }
+
+        public ListEntry(
+                String key,
+                String comment,
+                List<T> defaultValue,
+                Supplier<T> newElementSupplier,
+                Predicate<Object> elementValidator,
+                boolean allowEmpty) {
             super(key, comment, List.copyOf(defaultValue));
             this.newElementSupplier = newElementSupplier;
             this.elementValidator = elementValidator;
+            this.allowEmpty = allowEmpty;
         }
 
         public Supplier<T> newElementSupplier() {
@@ -176,6 +188,10 @@ public abstract class ConfigEntry<T> implements Supplier<T>, ConfigElement {
 
         public Predicate<Object> elementValidator() {
             return elementValidator;
+        }
+
+        public boolean allowEmpty() {
+            return allowEmpty;
         }
 
         @Override

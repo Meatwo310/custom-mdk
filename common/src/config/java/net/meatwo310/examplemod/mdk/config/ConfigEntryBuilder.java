@@ -90,6 +90,18 @@ public class ConfigEntryBuilder {
                 key, pendingComment, defaultValue, newElementSupplier, elementValidator));
     }
 
+    /**
+     * Like {@link #defineList(String, List, Supplier, Predicate)}, but allows
+     * empty lists in NeoForge-style config screens.
+     * Elsewhere, the underlying implementations currently allow empty lists
+     * with either method.
+     */
+    public <T> ConfigEntry.ListEntry<T> defineListAllowEmpty(
+            String key, List<T> defaultValue, Supplier<T> newElementSupplier, Predicate<Object> elementValidator) {
+        return register(new ConfigEntry.ListEntry<>(
+                key, pendingComment, defaultValue, newElementSupplier, elementValidator, true));
+    }
+
     public <E extends Enum<E>> ConfigEntry.EnumEntry<E> defineEnum(String key, E defaultValue) {
         return register(new ConfigEntry.EnumEntry<>(
                 key, pendingComment, defaultValue, defaultValue.getDeclaringClass()));

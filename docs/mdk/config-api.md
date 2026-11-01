@@ -56,6 +56,10 @@ classes solely for style. They add noise and do not clarify the config API.
 - `define(...)` defines unrestricted primitive, boolean, or string values. Supported overloads are `int`, `long`, `double`, `boolean`, and `String`.
 - `defineInRange(...)` defines ranged numeric values. Supported overloads are `int`, `long`, and `double`.
 - `defineList(...)` defines a list from a default value, a new-element supplier for config screens, and an element validator.
+- `defineListAllowEmpty(...)` takes the same arguments as `defineList(...)`, but
+  allows empty lists in NeoForge-style config screens. Elsewhere, including
+  Configured and direct config file editing, the underlying implementations
+  currently allow empty lists with either method.
 - `defineEnum(...)` defines an enum value from its default enum constant.
 - `category(String key, ConfigEntries children)` appends a nested section and should be preferred for hierarchy.
 - `push(String key)`, `pop()`, and `pop(int count)` manually open and close

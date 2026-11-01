@@ -297,6 +297,15 @@ public final class ServerConfig {
                     value -> value instanceof String
             );
 
+    public static final ConfigEntry.ListEntry<String> EXCLUDED_ITEMS = BUILDER
+            .comment("Item ids excluded from the feature (may be empty).")
+            .defineListAllowEmpty(
+                    "excludedItems",
+                    List.of(),
+                    () -> "minecraft:stone",
+                    value -> value instanceof String
+            );
+
     public static final ConfigEntries ADVANCED = BUILDER
             .comment("Advanced server settings.")
             .category("advanced", Advanced.ENTRIES);
@@ -339,6 +348,7 @@ public final class ServerConfig {
 enableFeature = true
 maxStoredItems = 64
 allowedItems = ["minecraft:stone"]
+excludedItems = []
 
 [advanced]
 enableDebugLog = false

@@ -47,8 +47,11 @@ public final class ConfigEntryBinder implements ConfigVisitor {
     @Override
     public <T> void bind(ConfigEntry.ListEntry<T> entry) {
         comment(entry.comment());
-        var value = adapter.defineList(
-                entry.key(), entry.defaultValue(), entry.newElementSupplier(), entry.elementValidator());
+        var value = entry.allowEmpty()
+                ? adapter.defineListAllowEmpty(
+                        entry.key(), entry.defaultValue(), entry.newElementSupplier(), entry.elementValidator())
+                : adapter.defineList(
+                        entry.key(), entry.defaultValue(), entry.newElementSupplier(), entry.elementValidator());
         entry.bind(value);
     }
 
@@ -121,6 +124,9 @@ public final class ConfigEntryBinder implements ConfigVisitor {
         ConfigEntryBinding<String> defineString(String key, String defaultValue);
 
         <T> ConfigEntryBinding<List<T>> defineList(
+                String key, List<T> defaultValue, Supplier<T> newElementSupplier, Predicate<Object> elementValidator);
+
+        <T> ConfigEntryBinding<List<T>> defineListAllowEmpty(
                 String key, List<T> defaultValue, Supplier<T> newElementSupplier, Predicate<Object> elementValidator);
 
         <E extends Enum<E>> ConfigEntryBinding<E> defineEnum(String key, E defaultValue);
